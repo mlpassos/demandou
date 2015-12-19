@@ -1,0 +1,64 @@
+(function ($) {
+    "use strict";
+    var fn = {
+        // Funcionalidades
+        Iniciar: function () {
+            fn.App();
+        },
+        App : function () {
+            $('#formLogin').submit(function(e){
+                e.preventDefault();
+                var strUsuario = $("#usuario").val();
+                var strSenha   = $("#senha").val();
+                $.ajax({
+                    url: "http://localhost/demandou/usuario/autenticar",
+                    type: "POST",
+                    data: {
+                        usuario:strUsuario, 
+                        senha:strSenha,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.status == 'falha') {
+                            alert('Ooops, erro!');
+                        } else {
+                            console.log(data);
+                            if (data.codigo_perfil == 1) {
+                                // user
+                                window.location = "http://localhost/demandou/";    
+                            } else {
+                                // admin
+                                window.location = "http://localhost/demandou/admin";    
+                            }
+                        }
+                    },
+                    error: function(stc,error){
+                        console.log(error);
+                        console.log(stc)
+                    }
+                });
+            });
+            $('#logout').click(function(){
+                var strUsuario = $("#session-usuario").val();
+                //alert(strUsuario);
+                $.ajax({
+                    url: "http://localhost/demandou/usuario/logout",
+                    type: "POST",
+                    dataType: 'text',
+                    error: function(stc,error){
+                        console.log(error);
+                    }
+                }).done(function(response, status){
+                    if (status == "success") {
+                        window.location = "http://localhost/demandou/";
+                    } else {
+                        alert('Erro ao sair. Tente novamente. =]');
+                    }
+                });
+            });
+        }
+    }
+    $(document).ready(function () {
+        fn.Iniciar();
+    });
+})(jQuery);
