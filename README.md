@@ -18,27 +18,27 @@ TODO:
 
 * Authentication
 
-[OK] - Login
-[OK] - Logout
-[  ] - Profile Based Access Check (MY_CONTROLLER)
+- [OK] - Login
+- [OK] - Logout
+- [  ] - Profile Based Access Check (MY_CONTROLLER)
 
 * Users
 
-[OK] - List
-[OK] - Add
-[  ] - Edit
-[  ] - Delete
+- [OK] - List
+- [OK] - Add
+- [  ] - Edit
+- [  ] - Delete
 
 * Projects
 
-[  ] - List
-[  ] - Add
-[  ] - Edit
-[  ] - Delete
+- [  ] - List
+- [  ] - Add
+- [  ] - Edit
+- [  ] - Delete
 
 * Tasks
 
-[  ] - List
-[  ] - Add
-[  ] - Edit
-[  ] - Delete
+- [  ] - List
+- [  ] - Add
+- [  ] - Edit
+- [  ] - Delete
