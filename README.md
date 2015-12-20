@@ -16,28 +16,24 @@ Features:
 
 TODO:
 
-* Authentication
-
+Authentication
 - [OK] - Login
 - [OK] - Logout
 - [  ] - Profile Based Access Check (MY_CONTROLLER)
 
-* Users
-
+Users
 - [OK] - List
 - [OK] - Add
 - [  ] - Edit
 - [  ] - Delete
 
-* Projects
-
+Projects
 - [  ] - List
 - [  ] - Add
 - [  ] - Edit
 - [  ] - Delete
 
-* Tasks
-
+Tasks
 - [  ] - List
 - [  ] - Add
 - [  ] - Edit
