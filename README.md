@@ -4,7 +4,7 @@ Sistema para Gerenciamento de Demandas - Demandou?
 
 Demandou is being developed as an easy-to-use project management tool.
 
-Its a HTML5/CSS3/JS/PHP system but soon to be updated to a Web App with an API.
+Its an HTML5/CSS3/JS/PHP system but soon to be updated to a Web App with an API.
 
 Features:
 
