@@ -19,7 +19,7 @@ TODO:
 Authentication
 - [OK] - Login
 - [OK] - Logout
-- [  ] - Profile Based Access Check (MY_CONTROLLER)
+- [  ] - Profile Based Access Check (on constructor)
 
 Users
 - [OK] - List
