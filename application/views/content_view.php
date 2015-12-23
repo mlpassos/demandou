@@ -1,11 +1,15 @@
-<div class="container-fluid ajaxload">
+<div class="container ajaxload">
 	<div class="row">
-		<?php 
-		if ($this->session->userdata('logado')!==true) {
-			echo 'nao logado';
-		} else {
-			echo 'logado';
-		}
-		?>
+		<div class="col-lg-12">
+			<p>
+				<?php 
+					if ($this->session->userdata('logado')!==true) {
+						echo 'nao logado';
+					} else {
+						echo 'logado';
+					}
+				?>
+			</p>
+		</div>
 	</div>
 </div><!-- /.container -->
