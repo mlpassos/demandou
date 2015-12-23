@@ -13,10 +13,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         echo  "<meta name='" . $m['name'] . "' content='" . $m['content'] . "'>\n";
       }
     ?>
-    <meta name="author" content="">
+    <meta name="author" content="Márcio Passos">
     <link rel="icon" href="<?php echo base_url(); ?>/assets/favicon.ico">
 
-    <title>SECOM/DCI - Demandou 1.0</title>
+    <title>Demandou 1.0</title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url(); ?>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,19 +29,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         echo  "<link href='" . base_url() . "assets/estilos/" . $c['file'] . "' rel='stylesheet'>";
       }
     ?>
-        
-    
      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
   <body>
-
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -49,18 +45,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?php echo base_url(); ?>">Demandou</a>
+          <!-- <img src="http://www.finer.com.br/wp-content/uploads/2015/06/demanda-e1433765779365.png"> -->
+          <a class="navbar-brand" href="<?php echo base_url(); ?>">Demandou?</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse pull-right">
           <!-- SE USUÁRIO LOGADO MOSTRAR MENU -->
           <?php if ($this->session->userdata('logado')==true) { ?>
             <input type="hidden" name="session-usuario" id="session-usuario" class="session-usuario" value="<?php echo $this->session->userdata('login'); ?>">
+            
             <ul class="nav navbar-nav">
-              <li><a href="#" data-toggle="modal" data-target="#myModalAdicionarProjeto">+ Projeto</a></li>
-              <li><a href="#">Relatórios</a></li>
+              <?php 
+                foreach($menu as $m) {
+                  echo  "<li><a href='" . $m['link'] . "'>" . $m['name'] . "</a></li>";
+                }
+              ?>  
+              <!-- PADRÃO -->
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span class="icone-usuario glyphicon glyphicon-user"></span> <?php echo $this->session->userdata('login'); ?> <span class="caret"></span></a>
+                  <span class="icone-usuario glyphicon glyphicon-user"></span> 
+                  <?php echo $this->session->userdata('login'); ?> <span class="caret"></span>
+                </a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Perfil</a></li>
                   <li><a href="#">Configurações</a></li>
@@ -70,13 +74,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <li><a id="logout" href="#">Sair</a></li>
                 </ul>
               </li>
-              <!-- <li><a href="#contato">Contato</a></li> -->
+              <!-- PADRÃO -->
+
             </ul>
-            <!-- <div class="user-box ">
-              <span class="icone-usuario glyphicon glyphicon-user"></span>
-              <span class="nome-usuario">Nome do Usuário</span>
-            </div>
- -->          <!-- SE USUÁRIO NÃO LOGADO MOSTRAR CAIXA DE LOGIN -->
+          <!-- SE USUÁRIO NÃO LOGADO MOSTRAR CAIXA DE LOGIN -->
           <?php } else {  ?>
           <form id="formLogin" class="navbar-form navbar-right">
             <div class="form-group">

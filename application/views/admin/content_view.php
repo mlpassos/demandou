@@ -1,4 +1,4 @@
-<div class="container-fluid ajaxload">
+<div class="container ajaxload">
 
 <?php if ($this->session->userdata('logado')==true) { ?>
 <p>Bem vindo, <strong><?php echo $this->session->userdata('nome') . ' ' . $this->session->userdata('sobrenome'); ?></strong></p>

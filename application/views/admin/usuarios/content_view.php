@@ -1,4 +1,4 @@
-<div class="container-fluid ajaxload">
+<div class="container ajaxload">
 
 <?php if ($this->session->userdata('logado')==true) { ?>
 <div class="row">
@@ -9,7 +9,7 @@
 </div>
 <div class="row tarefas-grid">
 	<?php foreach($usuarios as $usuario) { ?>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
+	<div class="cor-coluna col-lg-4 col-md-3 col-sm-4 col-xs-12">
 		<div class="tarefas-box thumbnail">
 			<img class="img-circle" src="<?php echo base_url() . '/uploads/' . $usuario["arquivo_avatar"] ; ?>" alt="..." >
 			<div class="caption text-center">
