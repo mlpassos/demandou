@@ -75,6 +75,13 @@ class Usuario_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        public function listarAux()
+        {
+                $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+                $this->db->from('usuario');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
         public function listarPorUsuarioSenha($usuario,$senha)
         {
                 $senha = MD5($senha);

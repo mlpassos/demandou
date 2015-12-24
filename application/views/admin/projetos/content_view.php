@@ -2,7 +2,7 @@
 <?php if ($this->session->userdata('logado')==true) { ?>
 <div class="row">
 	<div class="col-lg-12 text-right">
-		<button class="btn btn-primary btn-large" type="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</button>
+		<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
 		<hr>
 	</div>
 </div>

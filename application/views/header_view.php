@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <ul class="nav navbar-nav">
               <?php 
                 foreach($menu as $m) {
-                  echo  "<li><a href='" . $m['link'] . "'>" . $m['name'] . "</a></li>";
+                  echo  "<li class='" . $m['class'] . "'><a href='" . $m['link'] . "'>" . $m['name'] . "</a></li>";
                 }
               ?>  
               <!-- PADRÃO -->

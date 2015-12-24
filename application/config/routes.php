@@ -51,10 +51,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'home_controller';
 $route['off'] = 'home_controller/off';
-$route['usuario/autenticar'] = 'usuario_controller/autenticar';
-$route['usuario/logout'] = 'usuario_controller/logout';
+$route['usuario/autenticar'] = 'auth_controller/autenticar';
+$route['usuario/logout'] = 'auth_controller/logout';
 $route['usuario/adicionar'] = 'usuario_controller/adicionar';
 $route['projetos'] = 'projeto_controller';
+$route['projeto/adicionar'] = 'projeto_controller/adicionar';
 $route['usuarios'] = 'usuario_controller';
 $route['admin'] = 'admin_controller';
 

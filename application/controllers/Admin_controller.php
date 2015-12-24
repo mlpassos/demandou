@@ -21,6 +21,10 @@ class Admin_controller extends MY_Controller {
 
 	public function __construct() {
         parent::__construct();
+        if ((int) $this->session->userdata('codigo_perfil')!==2) {
+        	redirect(base_url());
+        	// echo getType($this->session->userdata('codigo_perfil'));
+        }
     }
 
 	public function index()	{
@@ -39,17 +43,35 @@ class Admin_controller extends MY_Controller {
 			"content" => "admin,demandou,demandas, html5, sistema"
 			)
 		);
+		// MENU
+		$data_header['menu']=array(
+			array(
+				"name" => "Projetos",
+				"link" => base_url() . 'projetos',
+				"class" => ""
+				),
+				array(
+				"name" => "Usuários",
+				"link" => base_url() . 'usuarios',
+				"class" => ""
+				),
+				array(
+				"name" => "Relatórios",
+				"link" => base_url() . 'relatorios',
+				"class" => ""
+			)
+		);
 		// CSS
 		$data_header['css']=array(array('file' => 'estilos-principal.css')); 
 		// JS
 		$data_footer['js']=array(
-			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
-			array('file' =>  base_url() . '/assets/js/admin.js')
+			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			array('file' =>  base_url() . 'assets/js/admin.js')
 		);
 
-		$this->load->view('admin/header_view',$data_header);
+		$this->load->view('header_view',$data_header);
 		$this->load->view('admin/content_view');
-		$this->load->view('admin/footer_view',$data_footer);		
+		$this->load->view('footer_view',$data_footer);		
 	}
 
 }
