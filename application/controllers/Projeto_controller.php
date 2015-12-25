@@ -133,6 +133,16 @@ class Projeto_controller extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
+		if ($this->form_validation->run() == FALSE) {
+			// echo "inválido";
+		} else {
+			echo "válido";
+			$projeto = $this->input->post();
+			echo "<pre>";
+			var_dump($projeto);
+			echo "</pre>";
+		}
+
 		$this->load->view('header_view',$this->header);
 		$this->load->view('admin/projetos/content_adicionar_view', $data_content);
 		$this->load->view('footer_view',$data_footer);	
