@@ -78,6 +78,16 @@ $config = array(
                                 "required" => "O campo %s é necessário.",
                                 "valid_mail" => "O campo %s deve conter um endereço válido.",
                                 "is_unique" => "O %s já está associado a outro usuário."
+                                )
+                )
+        ),
+        'projeto_controller/adicionar' => array(
+                array(  
+                        'field' => 'titulo',
+                        'label' => 'Titulo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
                         )
                 )
         )
