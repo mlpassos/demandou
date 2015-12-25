@@ -2,7 +2,7 @@
 <?php if ($this->session->userdata('logado')==true) { ?>
 <div class="row">
 	<div class="col-lg-12 col-md-12">
-		<?php echo form_open('projeto/adicionar', ["id" => "frmUsuario-Adicionar", "class" => "usuario-adicionar", "role" => "form"]); ?>
+		<?php echo form_open('projeto/adicionar', ["id" => "frmProjeto-Adicionar", "class" => "projeto-adicionar", "role" => "form"]); ?>
 		  <div class="form-group">
 		    <label for="titulo">Título</label>
 		    <?php echo form_error('titulo'); ?>
@@ -61,7 +61,7 @@
 		  <div class="form-group">
 		    <label for="participantes">Participantes</label>
 		    <?php echo form_error('participantes'); ?>
-		    <select id="participantes" name="participantes" multiple="multiple" class="form-control">
+		    <select id="participantes" name="participantes[]" multiple="multiple" class="form-control">
 			  <?php 
 			    // var_dump($usuarios);
 			  	foreach($usuarios as $u) {
@@ -71,6 +71,9 @@
 			</select>
 		    <!-- <input type="text" class="form-control" id="participantes" name="participantes" placeholder="Nome"> -->
 		  </div>
+	</div>
+	<div class="col-lg-12 col-md-12">
+		<button type="submit" class="btn btn-default">Gravar</button>
 	</div>
 
 		<?php echo form_close(); ?>
