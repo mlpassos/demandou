@@ -7,6 +7,11 @@
         },
         App : function () {
 
+          $('#frmProjeto-Adicionar').submit(function(e){
+            // e.preventDefault();
+            // alert($('#participantes').val());
+          });
+
           // $( "#lider" ).autocomplete({
           //   source: lideres
           // });
