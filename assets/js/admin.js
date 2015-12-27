@@ -11,7 +11,7 @@
                 var strUsuario = $("#usuario").val();
                 var strSenha   = $("#senha").val();
                 $.ajax({
-                    url: "http://localhost/demandou/usuario/autenticar",
+                    url: "http://localhost/demandou-git/usuario/autenticar",
                     type: "POST",
                     data: {
                         usuario:strUsuario, 
@@ -25,10 +25,10 @@
                             console.log(data);
                             if (data.codigo_perfil == 1) {
                                 // user
-                                window.location = "http://localhost/demandou/";    
+                                window.location = "http://localhost/demandou-git/";    
                             } else {
                                 // admin
-                                window.location = "http://localhost/demandou/admin";    
+                                window.location = "http://localhost/demandou-git/admin";    
                             }
                         }
                     },
@@ -42,7 +42,7 @@
                 var strUsuario = $("#session-usuario").val();
                 //alert(strUsuario);
                 $.ajax({
-                    url: "http://localhost/demandou/usuario/logout",
+                    url: "http://localhost/demandou-git/usuario/logout",
                     type: "POST",
                     dataType: 'text',
                     error: function(stc,error){
@@ -50,7 +50,7 @@
                     }
                 }).done(function(response, status){
                     if (status == "success") {
-                        window.location = "http://localhost/demandou/";
+                        window.location = "http://localhost/demandou-git/";
                     } else {
                         alert('Erro ao sair. Tente novamente. =]');
                     }

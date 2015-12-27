@@ -6,12 +6,13 @@
         	fn.App();
         },
         App : function () {
+            alert('oi');
         	$('#formLogin').submit(function(e){
         		e.preventDefault();
         		var strUsuario = $("#usuario").val();
                 var strSenha   = $("#senha").val();
                 $.ajax({
-                    url: "http://localhost/demandou/usuario/autenticar",
+                    url: "http://localhost/demandou-git/usuario/autenticar",
                     type: "POST",
                     data: {
                         usuario:strUsuario, 
@@ -25,10 +26,10 @@
                             console.log(data);
                             if (data.codigo_perfil == 1) {
                                 // user
-                                window.location = "http://localhost/demandou/";    
+                                window.location = "http://localhost/demandou-git/";    
                             } else {
                                 // admin
-                                window.location = "http://localhost/demandou/admin";    
+                                window.location = "http://localhost/demandou-git/admin";    
                             }
                         }
                     },
@@ -60,7 +61,7 @@
                 var strUsuario = $("#session-usuario").val();
                 //alert(strUsuario);
                 $.ajax({
-                    url: "http://localhost/demandou/usuario/logout",
+                    url: "http://localhost/demandou-git/usuario/logout",
                     type: "POST",
                     dataType: 'text',
                     // ajaxSend: function(){$("body").css("background-color","blue");},
@@ -73,7 +74,7 @@
                 }).done(function(response, status){
                     if (status == "success") {
                         //alert(response);
-                        window.location = "http://localhost/demandou/";
+                        window.location = "http://localhost/demandou-git/";
                     } else {
                         alert('Erro ao sair. Tente novamente. =]');
                     }
