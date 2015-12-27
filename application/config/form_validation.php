@@ -89,6 +89,46 @@ $config = array(
                         'errors' => array(
                                 "required" => "O campo %s é necessário."
                         )
+                ),
+                array(  
+                        'field' => 'descricao',
+                        'label' => 'Descrição',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'data_inicio',
+                        'label' => 'Início',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                 array(  
+                        'field' => 'data_prazo',
+                        'label' => 'Prazo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                  array(  
+                        'field' => 'lider',
+                        'label' => 'Líder',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'participantes[]',
+                        'label' => 'Participantes',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
                 )
         )
         //  ),
