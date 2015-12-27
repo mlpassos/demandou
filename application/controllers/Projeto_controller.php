@@ -133,18 +133,25 @@ class Projeto_controller extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		if ($this->form_validation->run() == FALSE) {
-			// echo "inválido";
-		} else {
-			echo "válido";
-			$projeto = $this->input->post();
-			echo "<pre>";
-			var_dump($projeto);
-			echo "</pre>";
-		}
-
 		$this->load->view('header_view',$this->header);
-		$this->load->view('admin/projetos/content_adicionar_view', $data_content);
+		
+		if ($this->form_validation->run() == FALSE) {
+			//echo "inválido";
+			$this->load->view('admin/projetos/content_adicionar_view', $data_content);
+		} else {
+			// echo "válido";
+			$projeto = $this->input->post();
+			// echo "<pre>";
+			// var_dump($projeto);
+			// echo "</pre>";
+			$this->load->model('projeto_model');
+			if ($this->projeto_model->inserir($projeto)) {
+				$data['titulo'] = $projeto['titulo'];
+				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
+			} else {
+				echo "Oops, deu bug. Tente novamente? =]";
+			}
+		}
 		$this->load->view('footer_view',$data_footer);	
 	}
 }
