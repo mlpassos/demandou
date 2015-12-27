@@ -70,18 +70,13 @@
           };
           $("#lider").select2({
             maximumSelectionLength: 1,
-            // placeholder: "Escolha alguém...",
             templateResult: formatState
-
-          }
-          );
-          $("#participantes").select2(
-            // placeholder: "Escolha alguém..."
-          );
+          });
+          $("#participantes").select2();
 
 
-          }
-      }
+        }
+    }
           // var REGEX_EMAIL = '([a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@' +
           //         '(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)';
 
