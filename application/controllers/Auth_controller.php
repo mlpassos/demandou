@@ -32,6 +32,7 @@ class Auth_controller extends MY_Controller {
 				$res = array();
 				$resultado = array();
 				foreach($data['usuario'] as $usuario) :
+					$resultado['codigo_usuario'] = $usuario['codigo'];
 					$resultado['login'] = $usuario['login'];
 					$resultado['nome'] = $usuario['nome'];
 					$resultado['sobrenome'] = $usuario['sobrenome'];
@@ -41,6 +42,7 @@ class Auth_controller extends MY_Controller {
 				endforeach;
 				// loga, cria session
 				$this->session->set_userdata( array(
+					'codigo_usuario'=> $resultado['codigo_usuario'],
 		            'login'=> $resultado['login'],
 		            'nome'=> $resultado['nome'],
 		            'sobrenome'=>$resultado['sobrenome'],
