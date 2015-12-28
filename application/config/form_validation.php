@@ -130,30 +130,57 @@ $config = array(
                                 "required" => "O campo %s é necessário."
                         )
                 )
+        ),
+        'tarefa_controller/adicionar' => array(
+                array(  
+                        'field' => 'titulo',
+                        'label' => 'Titulo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'descricao',
+                        'label' => 'Descrição',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'data_inicio',
+                        'label' => 'Início',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                 array(  
+                        'field' => 'data_prazo',
+                        'label' => 'Prazo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                  array(  
+                        'field' => 'lider',
+                        'label' => 'Líder',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'participantes[]',
+                        'label' => 'Participantes',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                )
         )
-        //  ),
-        // 'email' => array(
-        //         array(
-        //                 'field' => 'emailaddress',
-        //                 'label' => 'EmailAddress',
-        //                 'rules' => 'required|valid_email'
-        //         ),
-        //         array(
-        //                 'field' => 'name',
-        //                 'label' => 'Name',
-        //                 'rules' => 'required|alpha'
-        //         ),
-        //         array(
-        //                 'field' => 'title',
-        //                 'label' => 'Title',
-        //                 'rules' => 'required'
-        //         ),
-        //         array(
-        //                 'field' => 'message',
-        //                 'label' => 'MessageBody',
-        //                 'rules' => 'required'
-        //         )
-        // )
 );
 
 $config['error_prefix'] = '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;<span class="sr-only">Error:</span>';

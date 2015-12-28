@@ -1,54 +1,120 @@
-<div class="container-fluid ajaxload">
-<?php if ($this->session->userdata('logado')==true) { ?>
+<div class="container ajaxload">
+<?php if ($this->session->userdata('logado')==true) { 
+echo $codigo_projeto;
+	?>
+
 <div class="row">
-	<div class="col-lg-12 text-right">
-		<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
-		<hr>
-	</div>
-</div>
-<div class="row tarefas-grid">
-	<!-- <pre>
-	<?php var_dump($projetos); ?>
-	</pre> -->
-	<?php foreach($projetos as $p) { ?>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3><?php echo $p['titulo'];?></h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	<?php 
-		        	$this->load->helper('text');
-		        	echo word_limiter($p['descricao'],20);
-		        	?> 
-		        </p>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	<?php 
-		        	$this->load->helper('date');
-		        	$timestamp = strtotime($p['data_prazo']);
-					$now = time();
-					if( strtotime($p['data_prazo']) < strtotime('now') ) {
-						echo 'atrasado';
-					} else {
-						echo timespan($now, $timestamp);
-					}
-		        	?> 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
+	<div class="col-lg-9 col-md-9">
+		<div class="col-lg-12 col-md-12">
+			<?php 
+			$hidden = array("codigo_projeto"=>$codigo_projeto);
+			echo form_open('tarefa/adicionar', ["id" => "frmTarefa-Adicionar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
+			  <div class="form-group">
+			    <label for="titulo">Título</label>
+			    <?php echo form_error('titulo'); ?>
+			    <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo set_value('titulo'); ?>" placeholder="Título">
+			  </div>
+			  <div class="form-group">
+			    <label for="descricao">Descrição</label>
+			    <?php 
+			    echo form_error('descricao'); 
+				$props = array(
+					"class" => "form-control",
+					"id" => "descricao",
+					"name" => "descricao",
+					"value" => set_value('descricao'),
+					"placeholder" => "descricao",
+					"rows" => "3"
+				);
+			    echo form_textarea($props);
+			    ?>
+			  </div>
 		</div>
+		<div class="col-lg-6 col-md-6">
+			  <div class="form-group">
+			    <label for="data_nascimento">Início</label>
+			    <?php echo form_error('data_inicio'); ?>
+			    <input type="date" class="form-control" id="data_inicio" name="data_inicio" placeholder="Nome">
+			  </div>
+		</div>
+		<div class="col-lg-6 col-md-6">
+			  <div class="form-group">
+			    <label for="data_nascimento">Prazo</label>
+			    <?php echo form_error('data_prazo'); ?>
+			    <input type="date" class="form-control" id="data_prazo" name="data_prazo" placeholder="Nome">
+			  </div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<hr>
+		</div>
+		
+		<div class="col-lg-6 col-md-6">
+			  <div class="form-group">
+			    <label for="lider">Líder</label>
+			    <?php echo form_error('lider'); ?>
+			    <!-- <input type="text" class="form-control" id="lider" name="lider" placeholder="Líder do projeto..."> -->
+			    <select id="lider" name="lider" multiple="multiple" class="form-control">
+				  <?php 
+				    // var_dump($usuarios);
+				  	foreach($usuarios as $u) {
+				  		echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+				  	}
+				  ?>
+				</select>
+			  </div>
+		</div>
+		<div class="col-lg-6 col-md-6">
+			  <div class="form-group">
+			    <label for="participantes">Participantes</label>
+			    <?php echo form_error('participantes'); ?>
+			    <select id="participantes" name="participantes[]" multiple="multiple" class="form-control">
+				  <?php 
+				    // var_dump($usuarios);
+				  	foreach($usuarios as $u) {
+				  		echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+				  	}
+				  ?>
+				</select>
+			    <!-- <input type="text" class="form-control" id="participantes" name="participantes" placeholder="Nome"> -->
+			  </div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<button type="submit" class="btn btn-default">Adicionar</button>
+		</div>
+		<?php echo form_close(); ?>
 	</div>
-	<?php }; ?>
+<!-- </div> -->
+<!-- <div class="row"> -->
+	<div class="col-lg-3 col-md-3">
+		<h3>Tarefas do Projeto</h3>
+		<?php 
+		if (isset($tarefas)) {
+			foreach ($tarefas as $t) {?>
+			<hr>
+			<div class="media">
+			  <div class="media-left">
+			   <!--  <a href="#">
+			      <img class="media-object" src="http://placehold.it/80x80" alt="...">
+			    </a> -->
+			    <p class="tarefa-dia"><?php 
+			    $timestamp = strtotime($t['data_prazo']);
+				echo date("d", $timestamp);
+			    ?>
+			</p>
+			    <p class="tarefa-mes"><?php echo date("M", $timestamp);?>|<?php echo date("Y", $timestamp);?></p>
+			  </div>
+			  <div class="media-body">
+			    <h4 class="media-heading"><?php echo $t['titulo']; ?></h4>
+			    <?php echo $t['descricao']; ?>
+			  </div>
+			</div>
+		<?php 
+			}
+		} else {
+			echo "Ainda sem tarefas.";
+		}
+		?>
+	</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

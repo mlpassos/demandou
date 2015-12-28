@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Projeto_model extends CI_Model {
+class Tarefa_model extends CI_Model {
 
         public $codigo;
         public $titulo;
@@ -10,6 +10,7 @@ class Projeto_model extends CI_Model {
         public $data_prazo;
         public $data_fim;
         public $criado_por;
+        public $codigo_projeto;
         public $codigo_status;
 
         public function __construct()
@@ -18,51 +19,52 @@ class Projeto_model extends CI_Model {
                 parent::__construct();
         }
 
-        public function inserir($projeto) {
+        public function inserir($tarefa)
+        {
                 // hack pra converter data do input html5 no formato mysql
-                $ano = date("Y",strtotime($projeto['data_inicio']));
-                $mes = date("m",strtotime($projeto['data_inicio']));
-                $dia = date("d",strtotime($projeto['data_inicio']));
+                $ano = date("Y",strtotime($tarefa['data_inicio']));
+                $mes = date("m",strtotime($tarefa['data_inicio']));
+                $dia = date("d",strtotime($tarefa['data_inicio']));
 
-                $anop = date("Y",strtotime($projeto['data_prazo']));
-                $mesp = date("m",strtotime($projeto['data_prazo']));
-                $diap = date("d",strtotime($projeto['data_prazo']));
+                $anop = date("Y",strtotime($tarefa['data_prazo']));
+                $mesp = date("m",strtotime($tarefa['data_prazo']));
+                $diap = date("d",strtotime($tarefa['data_prazo']));
                 // instancia o objeto
                 $this->codigo = NULL;
-                $this->titulo = $projeto['titulo'];
-                $this->descricao = $projeto['descricao'];
+                $this->titulo = $tarefa['titulo'];
+                $this->descricao = $tarefa['descricao'];
    
                 $this->data_inicio = $ano . '-' . $mes . '-' . $dia;
                 $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
                 $this->data_fim = NULL;
 
                 $this->criado_por = $this->session->userdata('codigo_usuario');
-
+                $this->codigo_projeto = $tarefa['codigo_projeto'];
                 // usuário ativo
                 $this->codigo_status = 1;
                 // echo "<pre>";
                 //   var_dump($this);
                 // echo "</pre>";
-                if ($this->db->insert('projeto', $this)) {
+                if ($this->db->insert('tarefa', $this)) {
                   $inserido = $this->db->insert_id();
                   // atribuir usuários
                   $lider =  $this->input->post('lider');
                   $participantes = $this->input->post('participantes');
                   $obj = array(
                     "codigo_usuario" => $lider,
-                    "codigo_projeto" => $inserido,
+                    "codigo_tarefa" => $inserido,
                     "codigo_papel" => 1
                     );
                   //var_dump($inserido);
-                  $this->db->insert('usuario_projeto', $obj);
+                  $this->db->insert('usuario_tarefa', $obj);
 
                   foreach($participantes as $p) {
                     $obj_p = array(
                     "codigo_usuario" => $p,
-                    "codigo_projeto" => $inserido,
+                    "codigo_tarefa" => $inserido,
                     "codigo_papel" => 2
                     );
-                    if ($this->db->insert('usuario_projeto', $obj_p)) {
+                    if ($this->db->insert('usuario_tarefa', $obj_p)) {
                         //echo "Inserido: " . $obj_p['codigo_usuario'] . "<br>";
                     }
                   }
@@ -72,7 +74,8 @@ class Projeto_model extends CI_Model {
                 }
         }
 
-        public function alterar($codigo) {
+        public function alterar($codigo)
+        {
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
@@ -80,7 +83,8 @@ class Projeto_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function excluir($codigo) {
+        public function excluir($codigo)
+        {
                 $this->db->where('codigo', $codigo);
                 return $this->db->delete('tb_livro');
         }
@@ -99,23 +103,13 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
-        public function listarPorUsuario($codigo_usuario)
-        {
-                // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
-                $this->db->from('projeto');
-                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
-                $this->db->where('usuario.codigo', $codigo_usuario);
-                $query = $this->db->get();
-                return $query->result_array();
-        }
         public function listarPorCodigo($codigo_projeto)
         {
                 // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
-                $this->db->from('projeto');
-                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
-                $this->db->where('projeto.codigo', $codigo_projeto);
+                $this->db->from('tarefa');
+                // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
+                $this->db->where('codigo_projeto', $codigo_projeto);
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -128,4 +122,11 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get('usuario');
                 return $query->result_array();              
         }
+        public function listarPorUsuario($usuario)
+        {
+                $this->db->where('login', $usuario);
+                $query = $this->db->get('usuario');
+                return $query->result_array();              
+        }
+
 }

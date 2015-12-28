@@ -56,6 +56,8 @@ $route['usuario/logout'] = 'auth_controller/logout';
 $route['usuario/adicionar'] = 'usuario_controller/adicionar';
 $route['projetos'] = 'projeto_controller';
 $route['projeto/adicionar'] = 'projeto_controller/adicionar';
+$route['tarefa/adicionar'] = 'tarefa_controller/adicionar';
+$route['tarefa/adicionar/(:num)'] = 'tarefa_controller/adicionar/$1';
 $route['usuarios'] = 'usuario_controller';
 $route['admin'] = 'admin_controller';
 

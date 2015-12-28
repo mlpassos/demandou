@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Projeto_controller extends MY_Controller {
+class Tarefa_controller extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -62,81 +62,78 @@ class Projeto_controller extends MY_Controller {
 		}
     }
 
-	public function index()	{
-		
-		if( $this->session->userdata('logado') ) {
-			$this->load->model('projeto_model');
-        	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
-    	} 
+	// public function index()	{
+	// 	// META
+	// 	$this->header['meta'] = array(
+	// 		array(
+	// 		"name" => "title",
+	// 		"content" => "Página do Administrador - Adicionar Tarefa a Projeto"
+	// 		),
+	// 		array(
+	// 		"name" => "description",
+	// 		"content" => "Tarefas"
+	// 		),
+	// 		array(
+	// 		"name" => "keywords",
+	// 		"content" => "admin,demandou,demandas, html5, sistema"
+	// 		)
+	// 	);
 
+	// 	// CSS
+	// 	$this->header['css']=array(
+	// 		array('file' => 'estilos-principal.css'),
+	// 		array('file' => 'estilos-projetos-tarefas.css')
+	// 	); 
+	// 	// JS
+	// 	$data_footer['js']=array(
+	// 		// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+	// 		array('file' =>  base_url() . 'assets/js/global.js'),
+	// 		array('file' =>  base_url() . 'assets/js/admin.js'),
+	// 		array('file' =>  base_url() . 'assets/js/tarefas-adicionar.js')
+	// 	);
+
+	// 	$this->load->view('header_view',$this->header);
+	// 	$this->load->view('admin/projetos/content_view');
+	// 	$this->load->view('footer_view',$data_footer);	
+	// }
+	public function adicionar($codigo_projeto=null) {
+		// echo $this->uri->segment(3);
+		// echo $codigo_projeto;
 		// META
 		$this->header['meta'] = array(
 			array(
 			"name" => "title",
-			"content" => "Página do Administrador - PROJETOS"
+			"content" => "Adicionar Tarefa"
 			),
 			array(
 			"name" => "description",
-			"content" => "Projetos"
+			"content" => "Adicionar Tarefa"
 			),
 			array(
 			"name" => "keywords",
 			"content" => "admin,demandou,demandas, html5, sistema"
 			)
 		);
-
 		// CSS
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
-			array('file' => 'estilos-projetos.css')
-		); 
-		// JS
-		$data_footer['js']=array(
-			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
-			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/admin.js'),
-			array('file' =>  base_url() . 'assets/js/projetos.js')
-		);
-
-		$this->load->view('header_view',$this->header);
-		$this->load->view('admin/projetos/content_view', $conteudo);
-		$this->load->view('footer_view',$data_footer);	
-	}
-	public function adicionar() {
-		// META
-		$this->header['meta'] = array(
-			array(
-			"name" => "title",
-			"content" => "Adicionar Projeto"
-			),
-			array(
-			"name" => "description",
-			"content" => "Adicionar Projeto"
-			),
-			array(
-			"name" => "keywords",
-			"content" => "admin,demandou,demandas, html5, sistema"
-			)
-		);
-
-		// CSS
-		$this->header['css']=array(
-			array('file' => 'estilos-principal.css'),
-			array('file' => 'estilos-projetos-adicionar.css'),
+			array('file' => 'estilos-tarefas-adicionar.css'),
 			array('file' => 'select2.min.css')
 			); 
 		// CONTEUDO
-		$this->load->model('usuario_model');
-		$data_content['usuarios'] = $this->usuario_model->listarAux();
+		$this->load->model('projeto_model');
+		$data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
+		$data_content['codigo_projeto'] = $codigo_projeto;
+		$this->load->model('tarefa_model');
+		$data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
 
 		// JS
 		$data_footer['js']=array(
 			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js')
+			array('file' =>  base_url() . 'assets/js/tarefas_adicionar.js')
 		);
-
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -144,18 +141,17 @@ class Projeto_controller extends MY_Controller {
 		
 		if ($this->form_validation->run() == FALSE) {
 			//echo "inválido";
-			$this->load->view('admin/projetos/content_adicionar_view', $data_content);
+			$this->load->view('admin/tarefas/content_adicionar_view', $data_content);
 		} else {
 			// echo "válido";
-			$projeto = $this->input->post();
-			// echo "<pre>";
-			// var_dump($projeto);
-			// echo "</pre>";
-			$this->load->model('projeto_model');
-			$data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
-			if ($data['codigo_projeto']!==false) {
-				$data['projeto'] = $projeto;
-				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
+			$tarefa = $this->input->post();
+			echo "<pre>";
+			var_dump($tarefa);
+			echo "</pre>";
+			$this->load->model('tarefa_model');
+			if ($this->tarefa_model->inserir($tarefa)) {
+				$data['tarefa'] = $tarefa;
+				$this->load->view('admin/tarefas/adicionar_sucesso_view.php', $data);
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}

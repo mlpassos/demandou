@@ -23,7 +23,6 @@ class Usuario_controller extends MY_Controller {
         parent::__construct();
 
         if ((int) $this->session->userdata('codigo_perfil')!==2) {
-        	// echo getType($this->session->userdata('codigo_perfil'));
         	redirect(base_url());
         }
     }
@@ -67,10 +66,14 @@ class Usuario_controller extends MY_Controller {
 			)
 		);
 		// CSS
-		$data_header['css']=array(array('file' => 'estilos-principal.css')); 
+		$data_header['css']=array(
+			array('file' => 'estilos-principal.css'),
+			array('file' => 'estilos-usuarios.css')
+		); 
 		// JS
 		$data_footer['js']=array(
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			array('file' =>  base_url() . 'assets/js/usuarios.js')
 		);
@@ -116,10 +119,12 @@ class Usuario_controller extends MY_Controller {
 		);
 		// CSS
 		$data_header['css']=array(
-			array('file' => 'estilos-principal.css')
+			array('file' => 'estilos-principal.css'),
+			array('file' => 'estilos-usuarios-adicionar.css')
 			); 
 		// JS
 		$data_footer['js']=array(
+			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			array('file' =>  base_url() . 'assets/js/usuarios_adicionar.js')
 		);

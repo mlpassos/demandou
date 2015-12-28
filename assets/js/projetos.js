@@ -9,13 +9,13 @@
             $('.tarefas-grid').masonry({
                 itemSelector: '.cor-coluna',
             });
-             $('#myModalTarefaVer').on('shown.bs.modal', function (event) {
+            $('#myModalTarefaVer').on('shown.bs.modal', function (event) {
               var button = $(event.relatedTarget); // Button that triggered the modal
               var codigotarefa = button.data('codigotarefa');
 
               var modal = $(this);
               // ajax pegando os dados da tarefa
-              modal.find('.modal-title').text('Visualizar tarefa' + codigotarefa);
+              modal.find('.modal-title').text('Visualizar tarefas de ' + codigotarefa);
               // modal.find('.modal-body').text('Corpo...');
             });
             $('#myModalTarefaAdicionar').on('shown.bs.modal', function (event) {
