@@ -39,8 +39,6 @@
                 icon.removeClass('glyphicon-floppy-disk').addClass('glyphicon-floppy-saved');
                 alert('ok');
             });
-
-            // PREVIEW DA IMAGEM DO avatar
         }
     }
     $(document).ready(function () {

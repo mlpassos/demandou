@@ -1,0 +1,29 @@
+.tarefa-dia {
+	font-size: 25px;
+	text-align: center;
+	border-bottom: 1px solid black;
+}
+.tarefa-mes {
+	font-size:12px;
+}
+.media-left {
+	text-align:center;
+	/*background-color:#f0f0f0;*/
+}
+.tarefas-sucesso {
+	padding:5px;
+}
+.tarefas-add-box {
+	/*background-color:red;*/
+}
+.tarefas-added-box {
+	overflow:auto;
+	/*height:100vh;*/
+	/*background-color:green;*/
+}
+.tarefas-added-box hr {
+	height:1px;
+	background-color:black;
+	/*padding:0;*/
+	margin:5px;
+}

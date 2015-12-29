@@ -7,7 +7,6 @@
         },
         App : function () {
             // PREVIEW DA IMAGEM DO avatar
-
             var inputElement = document.getElementById("userfile");
             inputElement.addEventListener("change", function(){
               var fileList = this.files;
