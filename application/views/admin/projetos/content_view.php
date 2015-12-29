@@ -7,12 +7,19 @@
 	</div>
 </div>
 <div class="row tarefas-grid">
+<<<<<<< HEAD
 	<!-- <pre> -->
 	<?php //var_dump($projetos); ?>
 	<!-- </pre> -->
 	<?php 
 	// echo "user: " . $this->session->userdata('codigo_ususario');
 	foreach($projetos as $p) { ?>
+=======
+	<!-- <pre>
+	<?php var_dump($projetos); ?>
+	</pre> -->
+	<?php foreach($projetos as $p) { ?>
+>>>>>>> origin/master
 	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
 		<!-- <div class="tarefas-box <?php //if ( strtotime($p['data_prazo']) < strtotime('now') ) { echo 'bg-danger'; } else { echo 'bg-info'; } ?>"> -->
 			<?php 
@@ -40,12 +47,16 @@
 		        	<?php 
 		        	$this->load->helper('text');
 		        	echo word_limiter($p['descricao'],20);
+<<<<<<< HEAD
 		        	// echo $p['descricao'];
+=======
+>>>>>>> origin/master
 		        	?> 
 		        </p>
 		        <p id="tarefas-descricao-1" class="teste">
 		        	<?php 
 		        	$this->load->helper('date');
+<<<<<<< HEAD
 		        	$timestamp = strtotime($p['data_inicio']);
 					$now = time();
 					if( strtotime($p['data_inicio']) < strtotime('now') ) {
@@ -55,11 +66,18 @@
 					}
 					echo "<br>";
 					$timestamp = strtotime($p['data_prazo']);
+=======
+		        	$timestamp = strtotime($p['data_prazo']);
+>>>>>>> origin/master
 					$now = time();
 					if( strtotime($p['data_prazo']) < strtotime('now') ) {
 						echo 'atrasado';
 					} else {
+<<<<<<< HEAD
 						echo 'Termina em: ' . timespan($now, $timestamp);
+=======
+						echo timespan($now, $timestamp);
+>>>>>>> origin/master
 					}
 		        	?> 
 		        </p>

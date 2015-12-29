@@ -63,7 +63,11 @@ class Projeto_controller extends MY_Controller {
     }
 
 	public function index()	{
+<<<<<<< HEAD
 		// echo "usuario: " . $this->session->userdata('codigo_usuario');
+=======
+		
+>>>>>>> origin/master
 		if( $this->session->userdata('logado') ) {
 			$this->load->model('projeto_model');
         	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));

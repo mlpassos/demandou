@@ -104,12 +104,19 @@ class Projeto_model extends CI_Model {
         public function listarPorUsuario($codigo_usuario)
         {
                 // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+<<<<<<< HEAD
                 // $this->output->enable_profiler(TRUE);
                 $this->db->from('projeto');
                 $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
                 $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
                 $this->db->where('usuario_projeto.codigo_usuario', $codigo_usuario);
                 $this->db->order_by('projeto.data_inicio', 'DESC');
+=======
+                $this->db->from('projeto');
+                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
+                $this->db->where('usuario.codigo', $codigo_usuario);
+>>>>>>> origin/master
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -120,7 +127,10 @@ class Projeto_model extends CI_Model {
                 $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
                 $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
                 $this->db->where('projeto.codigo', $codigo_projeto);
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
                 $query = $this->db->get();
                 return $query->result_array();
         }

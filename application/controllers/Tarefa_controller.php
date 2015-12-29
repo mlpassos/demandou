@@ -96,6 +96,7 @@ class Tarefa_controller extends MY_Controller {
 	// 	$this->load->view('admin/projetos/content_view');
 	// 	$this->load->view('footer_view',$data_footer);	
 	// }
+<<<<<<< HEAD
 	public function adicionar() {
 		// echo $this->uri->segment(3);
 		// echo $codigo_projeto;
@@ -109,6 +110,11 @@ class Tarefa_controller extends MY_Controller {
 		$codigo_projeto = $dadosflash['codigo_projeto'];
 		$this->session->keep_flashdata('adicionar_ao_projeto');
 		// var_dump($codigo_projeto);
+=======
+	public function adicionar($codigo_projeto=null) {
+		// echo $this->uri->segment(3);
+		// echo $codigo_projeto;
+>>>>>>> origin/master
 		// META
 		$this->header['meta'] = array(
 			array(
@@ -151,6 +157,7 @@ class Tarefa_controller extends MY_Controller {
 		
 		if ($this->form_validation->run() == FALSE) {
 			//echo "inválido";
+<<<<<<< HEAD
 			// if ($this->input->post('adicionar_ao_projeto')!==NULL) {
 			// 	// echo "null senhor";
 			// } else {
@@ -172,6 +179,19 @@ class Tarefa_controller extends MY_Controller {
 				$this->session->set_flashdata('adicionar_ao_projeto',$dadosenviar);
 				//var_dump($this->session->flashdata('adicionar_ao_projeto'));
 				redirect(base_url() . 'tarefa/adicionar');
+=======
+			$this->load->view('admin/tarefas/content_adicionar_view', $data_content);
+		} else {
+			// echo "válido";
+			$tarefa = $this->input->post();
+			echo "<pre>";
+			var_dump($tarefa);
+			echo "</pre>";
+			$this->load->model('tarefa_model');
+			if ($this->tarefa_model->inserir($tarefa)) {
+				$data['tarefa'] = $tarefa;
+				$this->load->view('admin/tarefas/adicionar_sucesso_view.php', $data);
+>>>>>>> origin/master
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}
