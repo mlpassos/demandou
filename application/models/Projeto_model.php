@@ -6,6 +6,7 @@ class Projeto_model extends CI_Model {
         public $codigo;
         public $titulo;
         public $descricao;
+        public $prioridade;
         public $data_inicio;
         public $data_prazo;
         public $data_fim;
@@ -18,8 +19,7 @@ class Projeto_model extends CI_Model {
                 parent::__construct();
         }
 
-        public function inserir($projeto)
-        {
+        public function inserir($projeto) {
                 // hack pra converter data do input html5 no formato mysql
                 $ano = date("Y",strtotime($projeto['data_inicio']));
                 $mes = date("m",strtotime($projeto['data_inicio']));
@@ -32,6 +32,7 @@ class Projeto_model extends CI_Model {
                 $this->codigo = NULL;
                 $this->titulo = $projeto['titulo'];
                 $this->descricao = $projeto['descricao'];
+                $this->prioridade = $projeto['prioridade'];
    
                 $this->data_inicio = $ano . '-' . $mes . '-' . $dia;
                 $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
@@ -67,14 +68,13 @@ class Projeto_model extends CI_Model {
                         //echo "Inserido: " . $obj_p['codigo_usuario'] . "<br>";
                     }
                   }
-                  return true;//<br>Código: " . $inserido;
+                  return $inserido;//<br>Código: " . $inserido;
                 } else {
                   return false;      
                 }
         }
 
-        public function alterar($codigo)
-        {
+        public function alterar($codigo) {
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
@@ -82,8 +82,7 @@ class Projeto_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function excluir($codigo)
-        {
+        public function excluir($codigo) {
                 $this->db->where('codigo', $codigo);
                 return $this->db->delete('tb_livro');
         }
@@ -102,6 +101,30 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        public function listarPorUsuario($codigo_usuario)
+        {
+                // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+                // $this->output->enable_profiler(TRUE);
+                $this->db->from('projeto');
+                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
+                $this->db->where('usuario_projeto.codigo_usuario', $codigo_usuario);
+                $this->db->order_by('projeto.data_inicio', 'DESC');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+        public function listarPorCodigo($codigo_projeto)
+        {
+                // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+                $this->db->from('projeto');
+                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
+                $this->db->where('projeto.codigo', $codigo_projeto);
+
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+
         public function listarPorUsuarioSenha($usuario,$senha)
         {
                 $senha = MD5($senha);
@@ -110,11 +133,4 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get('usuario');
                 return $query->result_array();              
         }
-        public function listarPorUsuario($usuario)
-        {
-                $this->db->where('login', $usuario);
-                $query = $this->db->get('usuario');
-                return $query->result_array();              
-        }
-
 }
