@@ -7,21 +7,68 @@
 	</div>
 </div>
 <div class="row tarefas-grid">
+	<!-- <pre> -->
+	<?php //var_dump($projetos); ?>
+	<!-- </pre> -->
+	<?php 
+	// echo "user: " . $this->session->userdata('codigo_ususario');
+	foreach($projetos as $p) { ?>
 	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
+		<!-- <div class="tarefas-box <?php //if ( strtotime($p['data_prazo']) < strtotime('now') ) { echo 'bg-danger'; } else { echo 'bg-info'; } ?>"> -->
+			<?php 
+				switch ($p['prioridade']) {
+	        		case '3':
+	        			$prioridadesClass = 'bg-danger';
+	        			break;
+	        		case '2':
+	        			$prioridadesClass = 'bg-warning';
+	        			break;
+	        		case '1':
+	        			$prioridadesClass = 'bg-success';
+	        			break;
+	        		default:
+	        			$prioridadesClass = 'bg-info';
+	        			break;
+	        	}
+			?>
+			<div class="tarefas-box <?php echo $prioridadesClass; ?>">
 			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
 			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
+		        <h3><?php echo $p['titulo'];?></h3>
 		        <hr>
 		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
+		        	<?php 
+		        	$this->load->helper('text');
+		        	echo word_limiter($p['descricao'],20);
+		        	// echo $p['descricao'];
+		        	?> 
+		        </p>
+		        <p id="tarefas-descricao-1" class="teste">
+		        	<?php 
+		        	$this->load->helper('date');
+		        	$timestamp = strtotime($p['data_inicio']);
+					$now = time();
+					if( strtotime($p['data_inicio']) < strtotime('now') ) {
+						echo 'Começou há: ' . timespan($timestamp, $now);
+					} else {
+						echo 'Começa em: ' . timespan($now, $timestamp);
+					}
+					echo "<br>";
+					$timestamp = strtotime($p['data_prazo']);
+					$now = time();
+					if( strtotime($p['data_prazo']) < strtotime('now') ) {
+						echo 'atrasado';
+					} else {
+						echo 'Termina em: ' . timespan($now, $timestamp);
+					}
+		        	?> 
 		        </p>
 		    	<p>
 		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
+		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
   						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
 		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
+		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
   						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
 		    		</a> 
 		    		 
@@ -29,248 +76,7 @@
 		    </div>
 		</div>
 	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-warning">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-danger">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-info">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-warning">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-danger">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-info">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<div class="tarefas-box bg-success">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-		        <h3>Sistema de Demandas DCI</h3>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	Desenvolver um sistema simples para gerencia das demandas individuais e do grupo da DCI/SECOM. 
-		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="001" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
-		    	</p>
-		    </div>
-		</div>
-	</div>
+	<?php }; ?>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
