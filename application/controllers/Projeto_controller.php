@@ -63,6 +63,12 @@ class Projeto_controller extends MY_Controller {
     }
 
 	public function index()	{
+		// echo "usuario: " . $this->session->userdata('codigo_usuario');
+		if( $this->session->userdata('logado') ) {
+			$this->load->model('projeto_model');
+        	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
+    	} 
+
 		// META
 		$this->header['meta'] = array(
 			array(
@@ -81,17 +87,19 @@ class Projeto_controller extends MY_Controller {
 
 		// CSS
 		$this->header['css']=array(
-			array('file' => 'estilos-principal.css')
+			array('file' => 'estilos-principal.css'),
+			array('file' => 'estilos-projetos.css')
 		); 
 		// JS
 		$data_footer['js']=array(
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
 
 		$this->load->view('header_view',$this->header);
-		$this->load->view('admin/projetos/content_view');
+		$this->load->view('admin/projetos/content_view', $conteudo);
 		$this->load->view('footer_view',$data_footer);	
 	}
 	public function adicionar() {
@@ -114,10 +122,10 @@ class Projeto_controller extends MY_Controller {
 		// CSS
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
-			// array('file' => 'selectize.bootstrap3.css')
-			// array('file' => 'jquery-ui.css')
+			array('file' => 'estilos-projetos-adicionar.css'),
 			array('file' => 'select2.min.css')
 			); 
+		
 		// CONTEUDO
 		$this->load->model('usuario_model');
 		$data_content['usuarios'] = $this->usuario_model->listarAux();
@@ -126,7 +134,7 @@ class Projeto_controller extends MY_Controller {
 		$data_footer['js']=array(
 			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
-			array('file' =>  base_url() . 'assets/js/admin.js'),
+			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js')
 		);
 
@@ -145,8 +153,9 @@ class Projeto_controller extends MY_Controller {
 			// var_dump($projeto);
 			// echo "</pre>";
 			$this->load->model('projeto_model');
-			if ($this->projeto_model->inserir($projeto)) {
-				$data['titulo'] = $projeto['titulo'];
+			$data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
+			if ($data['codigo_projeto']!==false) {
+				$data['projeto'] = $projeto;
 				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
