@@ -433,14 +433,45 @@
               
               // modal.find('.modal-body').text('Corpo...');
             });
-            $('#myModalTarefaAdicionar').on('shown.bs.modal', function (event) {
+            $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
+              $('#myModalTarefaVer .modal-tarefas-lista').html('');
+            });
+            $('#myModalTarefaVer').on('show.bs.modal', function (event) {
               var button = $(event.relatedTarget); // Button that triggered the modal
-              var codigotarefa = button.data('codigotarefa');
-
+              var codigo_projeto = button.data('codigoprojeto');
               var modal = $(this);
+              var titulo = button.data('titulo');
+              modal.find('.modal-title').text(titulo);
+              $.ajax({
+                method: 'post',
+                url: 'http://localhost/demandou-git/tarefa/jsonusertasks',
+                data: {
+                  'codigo_projeto' : codigo_projeto
+                },
+                dataType: 'json',
+                success: function(data) {
+                  //alert('sucesso');
+                  // console.log(data.length);
+                  
+                  if (data.length==0) {
+                    // nada
+                    $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Relaxe, sem tarefas no projeto pra você ainda.</p>');
+                  } else {
+                    data.forEach(function(item){
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Titulo:' +  item.titulo + '</p>'); 
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Início:' +  formataData(new Date(item.data_inicio)) + '</p>'); 
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p>'); 
+                    });
+                  }
+                },
+                error: function(error) {
+                  alert('erro');
+                  console.log(error);
+                },
+              });
               // ajax pegando os dados da tarefa
-              modal.find('.modal-title').text('Adicionar à ' + codigotarefa);
-              modal.find('.modal-body').text('Corpo...');
+              modal.find('.modal-title').text('Tarefas de ' + codigo_projeto);
+              // modal.find('.modal-body').text('Corpo...');
             });
             $('body').delegate('#projeto-add-tarefa','click', function(){
                 var titulo = $('#projeto-titulo').val();
