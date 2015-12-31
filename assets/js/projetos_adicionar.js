@@ -35,14 +35,13 @@
             templateResult: formatState
           });
           $("#participantes").select2();
-<<<<<<< HEAD
+
 
           $('#data_inicio').change(function(){
             var min = $(this).val();
             $('#data_prazo').attr('min', min);
           });
-=======
->>>>>>> origin/master
+
         }
     }
     $(document).ready(function () {

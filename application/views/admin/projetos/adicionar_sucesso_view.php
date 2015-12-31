@@ -8,7 +8,7 @@
 				O projeto <strong><?php echo $projeto['titulo']; ?></strong> foi criado com sucesso.
 			</p>
 		</div>
-<<<<<<< HEAD
+
 		<?php 
 		// $hidden = array("adicionar_ao_projeto"=>$codigo_projeto);
 		// echo form_open('tarefa/adicionar', ["id" => "frmTarefa-AdicionarAoProjeto", "class" => "tarefa-adicionar-ao-projeto", "role" => "form"], $hidden); 
@@ -22,9 +22,9 @@
 		<a href="<?php echo base_url() . 'tarefa/adicionar'; ?>" class="btn btn-primary btn-medium" role="button">Adicionar tarefas ao projeto</a>
 		<!-- <button type="submit" class="btn btn-default">Adicionar tarefas ao projeto</button> -->
 		<?php //echo form_close(); ?>
-=======
-		<a href="<?php echo base_url() . 'tarefa/adicionar/' . $codigo_projeto; ?>" class="btn btn-primary btn-medium" role="button">Adicionar tarefas ao projeto</a>
->>>>>>> origin/master
+
+		
+
 	</div>
 	<!-- <div class="col-lg-4"></div> -->
 </div>

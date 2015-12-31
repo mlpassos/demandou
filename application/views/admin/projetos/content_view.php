@@ -7,19 +7,14 @@
 	</div>
 </div>
 <div class="row tarefas-grid">
-<<<<<<< HEAD
+
 	<!-- <pre> -->
-	<?php //var_dump($projetos); ?>
-	<!-- </pre> -->
-	<?php 
-	// echo "user: " . $this->session->userdata('codigo_ususario');
-	foreach($projetos as $p) { ?>
-=======
-	<!-- <pre>
-	<?php var_dump($projetos); ?>
-	</pre> -->
+
+	
+
+	
 	<?php foreach($projetos as $p) { ?>
->>>>>>> origin/master
+
 	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
 		<!-- <div class="tarefas-box <?php //if ( strtotime($p['data_prazo']) < strtotime('now') ) { echo 'bg-danger'; } else { echo 'bg-info'; } ?>"> -->
 			<?php 
@@ -41,63 +36,131 @@
 			<div class="tarefas-box <?php echo $prioridadesClass; ?>">
 			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
 			<div class="caption">
+				
 		        <h3><?php echo $p['titulo'];?></h3>
 		        <hr>
 		        <p id="tarefas-descricao-1" class="teste">
 		        	<?php 
 		        	$this->load->helper('text');
 		        	echo word_limiter($p['descricao'],20);
-<<<<<<< HEAD
-		        	// echo $p['descricao'];
-=======
->>>>>>> origin/master
 		        	?> 
 		        </p>
 		        <p id="tarefas-descricao-1" class="teste">
 		        	<?php 
 		        	$this->load->helper('date');
-<<<<<<< HEAD
-		        	$timestamp = strtotime($p['data_inicio']);
-					$now = time();
-					if( strtotime($p['data_inicio']) < strtotime('now') ) {
-						echo 'Começou há: ' . timespan($timestamp, $now);
-					} else {
-						echo 'Começa em: ' . timespan($now, $timestamp);
-					}
-					echo "<br>";
-					$timestamp = strtotime($p['data_prazo']);
-=======
+
+		   //      	// INÍCIO
+		   //      	$timestamp = strtotime($p['data_inicio']);
+					// $now = time();
+					// if( strtotime($p['data_inicio']) < strtotime('now') ) {
+					// 	echo "<span class='glyphicon glyphicon-play-circle'></span> ";
+					// 	echo timespan($timestamp, $now) . "<br>";
+					// } else {
+					// 	echo "<span class='glyphicon glyphicon-off'></span> ";
+					// 	echo timespan($now, $timestamp) . "<br>";
+					// }
+					
+					// echo "<br>";
+
+					// PRAZO
 		        	$timestamp = strtotime($p['data_prazo']);
->>>>>>> origin/master
 					$now = time();
 					if( strtotime($p['data_prazo']) < strtotime('now') ) {
-						echo 'atrasado';
+						// echo '<span class="bg-success">ATRASADO</span>';
+						echo '<span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
 					} else {
-<<<<<<< HEAD
-						echo 'Termina em: ' . timespan($now, $timestamp);
-=======
+						echo "<span class='glyphicon glyphicon-time'></span> ";
 						echo timespan($now, $timestamp);
->>>>>>> origin/master
 					}
+
 		        	?> 
 		        </p>
-		    	<p>
-		    		
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
-  						<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 
-		    		</a> 
-		    		<a href="#" class="btn btn-primary btn-xs" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-  						<span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-		    		</a> 
-		    		 
+		        <p class="">
+		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">
+			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
+	  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+			    		</a> 
+			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
+	  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn glyphicon glyphicon-edit" aria-hidden="true"></span>
+			    		</a>
+			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
+	  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
+	  						Tarefas <span class="projetos-acoes-btn badge">
+	  							<?php 
+	  								$res = array();
+	  								$achou = false;
+	  								foreach($tarefas as $t) {
+	  								 	if ($t['codigo_projeto']==$p['codigo']) {
+	  								 		$res['tarefa_total']=$t['tarefa_total'];
+	  								 		$achou = true;
+	  								 		break;
+	  								 	} else {
+	  								 		//$achou = false;
+	  								 	}
+	  								}
+	  								if ($achou===true) {
+	  									echo $res['tarefa_total'];
+	  								} else {
+	  									echo "0";
+	  								}
+	  							;?>
+	  						</span>
+			    		</a>
+			    	</div> 
 		    	</p>
 		    </div>
 		</div>
 	</div>
 	<?php }; ?>
 </div>
+<!-- <div class="row">
+	<div class="col-lg-6 col-md-6">
+		<section class="cd-horizontal-timeline">
+				<div class="timeline">
+					<div class="events-wrapper">
+						<div class="events">
+							<ol>
+								<li><a href="#0" data-date="16/01/2014" class="selected">16 Jan</a></li>
+								<li><a href="#0" data-date="28/02/2014">28 Feb</a></li>
+								
+							</ol>
+			 
+							<span class="filling-line" aria-hidden="true"></span>
+						</div> 
+					</div> 
+						
+					<ul class="cd-timeline-navigation">
+						<li><a href="#0" class="prev inactive">Prev</a></li>
+						<li><a href="#0" class="next">Next</a></li>
+					</ul>
+				</div>
+			 
+				<div class="events-content">
+					<ol>
+						<li class="selected" data-date="16/01/2014">
+							<h2>Horizontal Timeline</h2>
+							<em>January 16th, 2014</em>
+							<p>	
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+							</p>
+						</li>
+			 
+						<li data-date="28/02/2014">
+							<h2>Horizontal Timeline</h2>
+							<em>January 16th, 2014</em>
+							<p>	
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
+							</p>
+						</li>
+			 
+						
+					</ol>
+				</div> 
+		</section>
+	</div>
+</div> -->
 <!-- Modal -->
-<div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModalProjetoVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -105,7 +168,23 @@
         <h4 class="modal-title" id="myModalLabel">Modal Ver</h4>
       </div>
       <div class="modal-body">
-        ...
+        <p class="descricao"></p>
+        <p class="data-inicio"></p>
+        <p class="data-prazo"></p>
+        <p class="data-faltam"></p>
+        Tempo consumido (%)
+        <div class="progress">
+		  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+		    
+		  </div>
+		</div>
+		<?php echo date("d-m-Y h:i:s"); ?>
+		<div class="modal-tarefas-lista">
+			
+		</div>
+		<!-- <div class="modal-tarefas-timeline"> -->
+			
+		<!-- </div> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>

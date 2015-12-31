@@ -19,12 +19,8 @@ class Tarefa_model extends CI_Model {
                 parent::__construct();
         }
 
-<<<<<<< HEAD
+
         public function inserir($tarefa) {
-=======
-        public function inserir($tarefa)
-        {
->>>>>>> origin/master
                 // hack pra converter data do input html5 no formato mysql
                 $ano = date("Y",strtotime($tarefa['data_inicio']));
                 $mes = date("m",strtotime($tarefa['data_inicio']));
@@ -78,12 +74,10 @@ class Tarefa_model extends CI_Model {
                 }
         }
 
-<<<<<<< HEAD
+
         public function alterar($codigo) {
-=======
-        public function alterar($codigo)
-        {
->>>>>>> origin/master
+
+
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
@@ -91,73 +85,67 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-<<<<<<< HEAD
         public function excluir($codigo) {
                 $this->db->where('codigo', $codigo);
                 return $this->db->delete('tb_livro');
         }
-        public function listar() {
-=======
-        public function excluir($codigo)
-        {
-                $this->db->where('codigo', $codigo);
-                return $this->db->delete('tb_livro');
-        }
+
         public function listar()
         {
->>>>>>> origin/master
+
                 $this->db->select('*');
                 $this->db->from('usuario');
                 $this->db->join('usuario_funcao', 'usuario_funcao.codigo = usuario.codigo_funcao');
                 $query = $this->db->get();
                 return $query->result_array();
         }
-<<<<<<< HEAD
+
         public function listarAux() {
-=======
-        public function listarAux()
-        {
->>>>>>> origin/master
                 $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
                 $this->db->from('usuario');
                 $query = $this->db->get();
                 return $query->result_array();
         }
-<<<<<<< HEAD
+        public function jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario) {
+                //$res = array("response"=>"ok");
+                $this->db->select('t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario');
+                $this->db->from('tarefa as t');
+                $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
+                $this->db->where('t.codigo_projeto', $codigo_projeto);
+                $this->db->where('ut.codigo_usuario', $codigo_usuario);
+                $this->db->order_by('data_prazo', 'ASC');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
         public function listarPorCodigo($codigo_projeto) {
-=======
-        public function listarPorCodigo($codigo_projeto)
-        {
->>>>>>> origin/master
                 // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
                 $this->db->from('tarefa');
                 // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
                 // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
                 $this->db->where('codigo_projeto', $codigo_projeto);
-<<<<<<< HEAD
                 $this->db->order_by('data_prazo', 'ASC');
-=======
->>>>>>> origin/master
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        public function listarPorUsuario($codigo_usuario) {
+                $this->db->select('count(t.codigo) as tarefa_total, ut.codigo_usuario as codigo_usuario, t.codigo_projeto as codigo_projeto');
+                $this->db->from('tarefa as t');
+                $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                $this->db->where('ut.codigo_usuario', $codigo_usuario);
+                $this->db->group_by('t.codigo_projeto');
+                // $this->db->order_by('data_prazo', 'ASC');
+                $query = $this->db->get();
+                return $query->result_array();
 
-<<<<<<< HEAD
-=======
-        public function listarPorUsuarioSenha($usuario,$senha)
-        {
-                $senha = MD5($senha);
-                $this->db->where('login', $usuario);
-                $this->db->where('senha', $senha);
-                $query = $this->db->get('usuario');
-                return $query->result_array();              
-        }
-        public function listarPorUsuario($usuario)
-        {
-                $this->db->where('login', $usuario);
-                $query = $this->db->get('usuario');
-                return $query->result_array();              
-        }
+                // SELECT  count(`t`.`codigo`) as total, `ut`.`codigo_usuario` as codigo_usuario, `t`.`codigo_projeto` as codigo_projeto
+                // FROM  `tarefa` AS  `t` 
+                // JOIN  `usuario_tarefa` AS  `ut` ON  `t`.`codigo` =  `ut`.`codigo_tarefa` 
+                // JOIN  `usuario` AS  `u` ON  `ut`.`codigo_usuario` =  `u`.`codigo` 
+                // WHERE  `ut`.`codigo_usuario` =  '5'
+                // group by `t`.`codigo_projeto` 
+                // ORDER BY  `t`.`data_prazo` ASC 
 
->>>>>>> origin/master
+
+        }
 }

@@ -103,20 +103,26 @@ class Projeto_model extends CI_Model {
         }
         public function listarPorUsuario($codigo_usuario)
         {
-                // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
-<<<<<<< HEAD
+                //$this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+
                 // $this->output->enable_profiler(TRUE);
-                $this->db->from('projeto');
-                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
-                $this->db->where('usuario_projeto.codigo_usuario', $codigo_usuario);
-                $this->db->order_by('projeto.data_inicio', 'DESC');
-=======
-                $this->db->from('projeto');
-                $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
-                $this->db->where('usuario.codigo', $codigo_usuario);
->>>>>>> origin/master
+                
+                $this->db->select("p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
+                $this->db->from('projeto as p');
+                // $this->db->join('tarefa as t', 'p.codigo=t.codigo_projeto');
+                // $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                // $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
+                // $this->db->group_by('p.codigo');
+                $this->db->where('up.codigo_usuario', $codigo_usuario);
+                // $this->db->where('ut.codigo_usuario', $codigo_usuario);
+                $this->db->order_by('p.data_prazo', 'ASC');
+
+                // $this->db->from('projeto');
+                // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                // $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
+                // $this->db->where('usuario.codigo', $codigo_usuario);
+
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -127,10 +133,6 @@ class Projeto_model extends CI_Model {
                 $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
                 $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
                 $this->db->where('projeto.codigo', $codigo_projeto);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
                 $query = $this->db->get();
                 return $query->result_array();
         }

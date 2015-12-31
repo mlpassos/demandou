@@ -27,7 +27,7 @@
 .tarefas-box {
 	position:relative;
 	display: block;
-    padding: 4px;
+    padding: 10px;
     margin-bottom: 20px;
     line-height: 1.42857143;
     -webkit-transition: border .2s ease-in-out;
@@ -35,6 +35,7 @@
     transition: border .2s ease-in-out;
 }
 .tarefas-box:after {     
+  opacity:1;
   content: "";
   position:absolute;
   z-index:-1;
@@ -49,22 +50,30 @@
   -o-transform: matrix(-1, -0.1, 0, 1, 0, 0);
   -ms-transform: matrix(-1, -0.1, 0, 1, 0, 0);
   transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -webkit-transition: all .275s ease-in-out;
+  -o-transition: all .275s ease-in-out;
+  transition: all .275s ease-in-out;
 }
 .tarefas-box img {
 	max-width:60%;
 }
-<<<<<<< HEAD
+
 .prioridades {
 	padding:5px;
 }
-=======
->>>>>>> origin/master
-/*#projeto-add-tarefa {
-	display:none;
+.tarefas-acoes {
+	opacity:0;
+	-webkit-transition: all .275s ease-in-out;
+    -o-transition: all .275s ease-in-out;
+    transition: all .275s ease-in-out;
 }
-.form-head-next {
-	display:none;
+.tarefas-box:hover .tarefas-acoes {
+	opacity:1;
 }
-form {
-	margin:10px auto;
-}*/
+.tarefas-box:hover:after  {
+	opacity:0;
+}
+.projetos-acoes-btn {
+  /*font-size:22px;*/
+}
+

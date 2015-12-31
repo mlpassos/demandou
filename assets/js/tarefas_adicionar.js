@@ -19,7 +19,7 @@
             templateResult: formatState
           });
           $("#participantes").select2();
-<<<<<<< HEAD
+
           
           var tamTarefasAdded = $('.tarefas-added-box').height();
           var tamTarefasAdd = $('.tarefas-add-box').height();
@@ -59,8 +59,7 @@
             $('#data_prazo').attr('min', min);
           });
 
-=======
->>>>>>> origin/master
+
         }
     }
     $(document).ready(function () {

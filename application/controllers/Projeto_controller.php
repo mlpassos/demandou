@@ -63,14 +63,14 @@ class Projeto_controller extends MY_Controller {
     }
 
 	public function index()	{
-<<<<<<< HEAD
+
 		// echo "usuario: " . $this->session->userdata('codigo_usuario');
-=======
-		
->>>>>>> origin/master
+
 		if( $this->session->userdata('logado') ) {
 			$this->load->model('projeto_model');
         	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
+        	$this->load->model('tarefa_model');
+        	$conteudo['tarefas'] = $this->tarefa_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
     	} 
 
 		// META
@@ -92,6 +92,7 @@ class Projeto_controller extends MY_Controller {
 		// CSS
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
+			// array('file' => 'horizontal-timeline.css'),
 			array('file' => 'estilos-projetos.css')
 		); 
 		// JS
@@ -99,6 +100,8 @@ class Projeto_controller extends MY_Controller {
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
+			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
+			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
 
