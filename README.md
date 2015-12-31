@@ -19,7 +19,7 @@ TODO:
 Authentication
 - [OK] - Login
 - [OK] - Logout
-- [  ] - Profile Based Access Check (on constructor)
+- [OK] - Profile Based Access Check
 
 Users
 - [OK] - List
@@ -28,13 +28,13 @@ Users
 - [  ] - Delete
 
 Projects
-- [  ] - List
-- [  ] - Add
+- [OK] - List
+- [OK] - Add
 - [  ] - Edit
 - [  ] - Delete
 
 Tasks
-- [  ] - List
-- [  ] - Add
+- [OK] - List
+- [OK] - Add
 - [  ] - Edit
 - [  ] - Delete
