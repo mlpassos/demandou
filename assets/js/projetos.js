@@ -458,9 +458,10 @@
                     $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Relaxe, sem tarefas no projeto pra você ainda.</p>');
                   } else {
                     data.forEach(function(item){
-                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Titulo:' +  item.titulo + '</p>'); 
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<div class="panel panel-primary"><div class="panel-heading"><h3 class="panel-title">' +  item.titulo + '</h3></div>'); 
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<div class="panel-body"><p class="well">' +  item.descricao + '</p>'); 
                       $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Início:' +  formataData(new Date(item.data_inicio)) + '</p>'); 
-                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p>'); 
+                      $('#myModalTarefaVer .modal-tarefas-lista').append('<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p></div></div>'); 
                     });
                   }
                 },
