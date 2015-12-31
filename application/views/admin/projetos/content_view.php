@@ -83,7 +83,7 @@
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
 	  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn glyphicon glyphicon-edit" aria-hidden="true"></span>
 			    		</a>
-			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
+			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 	  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
 	  						Tarefas <span class="projetos-acoes-btn badge">
 	  							<?php 
@@ -194,7 +194,7 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModalTarefaAdicionar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -202,7 +202,8 @@
         <h4 class="modal-title" id="myModalLabel">Modal Adicionar</h4>
       </div>
       <div class="modal-body">
-        ...
+        <div class="modal-tarefas-lista">		
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
