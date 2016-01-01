@@ -38,6 +38,10 @@
 			<div class="caption">
 				
 		        <h3><?php echo $p['titulo'];?></h3>
+		        	<?php 
+		        	if ($p['papel']=="Líder") {
+						echo '<i class="fa fa-user"> ' . $p['papel'] . '</i>';
+		        	}?>
 		        <hr>
 		        <p id="tarefas-descricao-1" class="teste">
 		        	<?php 
@@ -74,8 +78,12 @@
 					}
 
 		        	?> 
+		        	<!-- 98943-0789   -->
 		        </p>
-		        <p class="">
+		        
+		    </div>
+		    <!-- FOOTER  -->
+		    
 		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
 	  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
@@ -107,14 +115,13 @@
 	  						</span>
 			    		</a>
 			    	</div> 
-		    	</p>
-		    </div>
+
 		</div>
 	</div>
 	<?php }; ?>
 </div>
 <!-- <div class="row">
-	<div class="col-lg-6 col-md-6">
+	<div class="col-lg-12 col-md-12">
 		<section class="cd-horizontal-timeline">
 				<div class="timeline">
 					<div class="events-wrapper">
@@ -122,22 +129,18 @@
 							<ol>
 								<li><a href="#0" data-date="16/01/2014" class="selected">16 Jan</a></li>
 								<li><a href="#0" data-date="28/02/2014">28 Feb</a></li>
-								
 							</ol>
-			 
 							<span class="filling-line" aria-hidden="true"></span>
 						</div> 
 					</div> 
-						
-					<ul class="cd-timeline-navigation">
+     				<ul class="cd-timeline-navigation">
 						<li><a href="#0" class="prev inactive">Prev</a></li>
 						<li><a href="#0" class="next">Next</a></li>
 					</ul>
 				</div>
-			 
 				<div class="events-content">
 					<ol>
-						<li class="selected" data-date="16/01/2014">
+						<li data-date="16/01/2014" class="selected">
 							<h2>Horizontal Timeline</h2>
 							<em>January 16th, 2014</em>
 							<p>	
@@ -152,8 +155,6 @@
 								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum praesentium officia, fugit recusandae ipsa, quia velit nulla adipisci? Consequuntur aspernatur at, eaque hic repellendus sit dicta consequatur quae, ut harum ipsam molestias maxime non nisi reiciendis eligendi! Doloremque quia pariatur harum ea amet quibusdam quisquam, quae, temporibus dolores porro doloribus.
 							</p>
 						</li>
-			 
-						
 					</ol>
 				</div> 
 		</section>
@@ -178,10 +179,7 @@
 		    
 		  </div>
 		</div>
-		<?php echo date("d-m-Y h:i:s"); ?>
-		<div class="modal-tarefas-lista">
-			
-		</div>
+		
 		<!-- <div class="modal-tarefas-timeline"> -->
 			
 		<!-- </div> -->

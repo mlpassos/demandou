@@ -30,6 +30,7 @@
             );
             return $state;
           };
+          
           $("#lider").select2({
             maximumSelectionLength: 1,
             templateResult: formatState

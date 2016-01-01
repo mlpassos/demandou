@@ -108,9 +108,11 @@ class Tarefa_model extends CI_Model {
         }
         public function jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario) {
                 //$res = array("response"=>"ok");
-                $this->db->select('t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario');
+                // $this->output->enable_profiler(TRUE);
+                $this->db->select('t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario, pa.nome as papel');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                $this->db->join('papel as pa', 'ut.codigo_papel=pa.codigo');
                 // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
                 $this->db->where('t.codigo_projeto', $codigo_projeto);
                 $this->db->where('ut.codigo_usuario', $codigo_usuario);

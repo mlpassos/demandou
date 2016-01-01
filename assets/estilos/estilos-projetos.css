@@ -63,17 +63,31 @@
 }
 .tarefas-acoes {
 	opacity:0;
+  /*background-color:blue !important;*/
+  /*width:100%;*/
+  /*padding:5px;*/
+  transform: translateY(100%);
 	-webkit-transition: all .275s ease-in-out;
     -o-transition: all .275s ease-in-out;
     transition: all .275s ease-in-out;
 }
 .tarefas-box:hover .tarefas-acoes {
 	opacity:1;
+  transform: translateY(-45%);
 }
 .tarefas-box:hover:after  {
 	opacity:0;
 }
 .projetos-acoes-btn {
   /*font-size:22px;*/
+}
+.projetos-box {
+  overflow:hidden;
+}
+.projetos-box .tarefas-box {
+  transition: transform 0.4s;
+}
+.projetos-box .tarefas-box:hover {
+  transform: translateY(-50px);
 }
 
