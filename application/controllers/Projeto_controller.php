@@ -93,15 +93,16 @@ class Projeto_controller extends MY_Controller {
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
 			// array('file' => 'horizontal-timeline.css'),
+			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
 			array('file' => 'estilos-projetos.css')
 		); 
 		// JS
 		$data_footer['js']=array(
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
-			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
 
