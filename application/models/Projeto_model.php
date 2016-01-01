@@ -107,11 +107,12 @@ class Projeto_model extends CI_Model {
 
                 // $this->output->enable_profiler(TRUE);
                 
-                $this->db->select("p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
+                $this->db->select("pa.nome as papel, p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
                 $this->db->from('projeto as p');
                 // $this->db->join('tarefa as t', 'p.codigo=t.codigo_projeto');
                 // $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
                 $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
                 // $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
                 // $this->db->group_by('p.codigo');
                 $this->db->where('up.codigo_usuario', $codigo_usuario);
