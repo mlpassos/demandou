@@ -74,14 +74,10 @@ class Tarefa_model extends CI_Model {
                 }
         }
 
-
         public function alterar($codigo) {
-
-
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
-
                 $this->db->insert('entries', $this);
         }
 
@@ -90,12 +86,31 @@ class Tarefa_model extends CI_Model {
                 return $this->db->delete('tb_livro');
         }
 
+        public function listarCompletas($codigo_projeto=null) {
+           $sql = "SELECT * , (\n"
+                . "SELECT COUNT( * ) \n"
+                . "FROM tarefa\n"
+                . "WHERE codigo_projeto =9\n"
+                . "AND data_fim IS NOT NULL\n"
+                . ") AS completas,(\n"
+                . "SELECT COUNT( * ) \n"
+                . "FROM tarefa\n"
+                . "WHERE codigo_projeto =9\n"
+                . ") AS total\n"
+                . "FROM tarefa\n"
+                . "WHERE codigo_projeto =9\n"
+                . "LIMIT 0 , 30";
+            echo $sql;
+        }
+
         public function listar()
         {
-
-                $this->db->select('*');
-                $this->db->from('usuario');
-                $this->db->join('usuario_funcao', 'usuario_funcao.codigo = usuario.codigo_funcao');
+                // $this->db->from('tarefa');
+                $this->db->distinct();
+                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario as codigo_usuario');
+                $this->db->from('tarefa as t');
+                $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -109,17 +124,41 @@ class Tarefa_model extends CI_Model {
         public function jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario, pa.nome as papel');
+                $this->db->select('t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  ut.codigo_usuario, pa.nome as papel');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
                 $this->db->join('papel as pa', 'ut.codigo_papel=pa.codigo');
                 // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
                 $this->db->where('t.codigo_projeto', $codigo_projeto);
                 $this->db->where('ut.codigo_usuario', $codigo_usuario);
-                $this->db->order_by('data_prazo', 'ASC');
+                $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
         }
+
+        public function jsonTarefasPorProjeto($codigo_projeto) {
+                $this->db->select('pa.nome as papel, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto =' . $codigo_projeto . ') AS total, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto = ' . $codigo_projeto . ' AND data_fim IS NOT NULL ) AS completas, ut.codigo_usuario, t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim');
+                $this->db->from('tarefa as t');
+                $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+                $this->db->join('papel as pa', 'ut.codigo_papel=pa.codigo');
+                $this->db->where('t.codigo_projeto', $codigo_projeto);
+                $this->db->order_by('t.codigo', 'ASC');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+
+        // public function jsonTarefasUserInfo($codigo_tarefa) {
+        //         $this->db->select('t.codigo as codigo_tarefa, pa.nome as papel, ut.codigo_usuario as codigo_usuario');
+        //         $this->db->from('tarefa as t');
+        //         $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
+        //         $this->db->join('papel as pa', 'ut.codigo_papel=pa.codigo');
+        //         $this->db->where('t.codigo', $codigo_tarefa);
+        //         $this->db->group_by('ut.codigo_usuario');
+        //         $this->db->order_by('data_prazo', 'ASC');
+        //         $query = $this->db->get();
+        //         return $query->result_array();
+        // }
+        
         public function listarPorCodigo($codigo_projeto) {
                 // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
                 $this->db->from('tarefa');
@@ -130,6 +169,7 @@ class Tarefa_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        // envia total de tarefas por usuário
         public function listarPorUsuario($codigo_usuario) {
                 $this->db->select('count(t.codigo) as tarefa_total, ut.codigo_usuario as codigo_usuario, t.codigo_projeto as codigo_projeto');
                 $this->db->from('tarefa as t');

@@ -78,7 +78,6 @@ class Projeto_model extends CI_Model {
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
-
                 $this->db->insert('entries', $this);
         }
 
@@ -105,7 +104,7 @@ class Projeto_model extends CI_Model {
         {
                 //$this->db->select('codigo, nome, sobrenome, arquivo_avatar');
 
-                // $this->output->enable_profiler(TRUE);
+                $this->output->enable_profiler(TRUE);
                 
                 $this->db->select("pa.nome as papel, p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
                 $this->db->from('projeto as p');
