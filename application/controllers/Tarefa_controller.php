@@ -105,6 +105,23 @@ class Tarefa_controller extends MY_Controller {
     	echo json_encode($data['tarefas']);
 
     }
+
+	public function json_projecttasks() {
+    	$codigo_projeto = $this->input->post('codigo_projeto');
+    	$this->load->model('tarefa_model');
+    	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorProjeto($codigo_projeto);
+    	echo json_encode($data['tarefas']);
+
+    }
+
+    // public function json_tasksuserinfo() {
+    // 	$codigo_tarefa = $this->input->post('codigo_tarefa');
+    // 	$this->load->model('tarefa_model');
+    // 	$data['tarefas_userinfo'] = $this->tarefa_model->jsonTarefasUserInfo($codigo_tarefa);
+    // 	echo json_encode($data['tarefas_userinfo']);
+
+    // }
+
 	public function adicionar() {
 		// echo $this->uri->segment(3);
 		// echo $codigo_projeto;

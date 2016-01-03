@@ -70,7 +70,12 @@ class Projeto_controller extends MY_Controller {
 			$this->load->model('projeto_model');
         	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
         	$this->load->model('tarefa_model');
-        	$conteudo['tarefas'] = $this->tarefa_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
+        	// echo $this->tarefa_model->listarCompletas();
+
+        	// envia tarefas por usuário, no caso de participantes, exibe apenas as tarefas do usuário
+        	// $conteudo['tarefas_usuario'] = $this->tarefa_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
+        	// envia tarefas por projeto, para os líderes, exibe todas as tarefas do usuário
+        	$conteudo['tarefas_projeto'] = $this->tarefa_model->listar();
     	} 
 
 		// META
