@@ -7,83 +7,58 @@
 	</div>
 </div>
 <div class="row tarefas-grid">
-
-	<!-- <pre> -->
-
-	
-
-	
 	<?php foreach($projetos as $p) { ?>
+		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
+				<?php 
+					switch ($p['prioridade']) {
+		        		case '3':
+		        			$prioridadesClass = 'bg-danger';
+		        			break;
+		        		case '2':
+		        			$prioridadesClass = 'bg-warning';
+		        			break;
+		        		case '1':
+		        			$prioridadesClass = 'bg-success';
+		        			break;
+		        		default:
+		        			$prioridadesClass = 'bg-info';
+		        			break;
+		        	}
+				?>
+				<div class="tarefas-box <?php echo $prioridadesClass; ?>">
+					<div class="caption">
+				        <h3><?php echo $p['titulo'];?></h3>
+				        	<?php 
+				        	$lider = false;
+				        	if ($p['papel']=="Líder") {
+				        		$lider = true;
+								echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
+				        	}?>
+				        <hr>
+				        <p id="tarefas-descricao-1" class="teste">
+				        	<?php 
+				        	$this->load->helper('text');
+				        	echo word_limiter($p['descricao'],20);
+				        	?> 
+				        </p>
+				        <p id="tarefas-descricao-1" class="teste">
+				        	<?php 
+				        	$this->load->helper('date');
 
-	<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
-		<!-- <div class="tarefas-box <?php //if ( strtotime($p['data_prazo']) < strtotime('now') ) { echo 'bg-danger'; } else { echo 'bg-info'; } ?>"> -->
-			<?php 
-				switch ($p['prioridade']) {
-	        		case '3':
-	        			$prioridadesClass = 'bg-danger';
-	        			break;
-	        		case '2':
-	        			$prioridadesClass = 'bg-warning';
-	        			break;
-	        		case '1':
-	        			$prioridadesClass = 'bg-success';
-	        			break;
-	        		default:
-	        			$prioridadesClass = 'bg-info';
-	        			break;
-	        	}
-			?>
-			<div class="tarefas-box <?php echo $prioridadesClass; ?>">
-			<!-- <img src="http://placehold.it/60x60" alt="..." class="img-circle"> -->
-			<div class="caption">
-				
-		        <h3><?php echo $p['titulo'];?></h3>
-		        	<?php 
-		        	if ($p['papel']=="Líder") {
-						echo '<i class="fa fa-user"> ' . $p['papel'] . '</i>';
-		        	}?>
-		        <hr>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	<?php 
-		        	$this->load->helper('text');
-		        	echo word_limiter($p['descricao'],20);
-		        	?> 
-		        </p>
-		        <p id="tarefas-descricao-1" class="teste">
-		        	<?php 
-		        	$this->load->helper('date');
-
-		   //      	// INÍCIO
-		   //      	$timestamp = strtotime($p['data_inicio']);
-					// $now = time();
-					// if( strtotime($p['data_inicio']) < strtotime('now') ) {
-					// 	echo "<span class='glyphicon glyphicon-play-circle'></span> ";
-					// 	echo timespan($timestamp, $now) . "<br>";
-					// } else {
-					// 	echo "<span class='glyphicon glyphicon-off'></span> ";
-					// 	echo timespan($now, $timestamp) . "<br>";
-					// }
-					
-					// echo "<br>";
-
-					// PRAZO
-		        	$timestamp = strtotime($p['data_prazo']);
-					$now = time();
-					if( strtotime($p['data_prazo']) < strtotime('now') ) {
-						// echo '<span class="bg-success">ATRASADO</span>';
-						echo '<span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
-					} else {
-						echo "<span class='glyphicon glyphicon-time'></span> ";
-						echo timespan($now, $timestamp);
-					}
-
-		        	?> 
-		        	<!-- 98943-0789   -->
-		        </p>
-		        
-		    </div>
-		    <!-- FOOTER  -->
-		    
+				   			// PRAZO
+				        	$timestamp = strtotime($p['data_prazo']);
+							$now = time();
+							if( strtotime($p['data_prazo']) < strtotime('now') ) {
+								// echo '<span class="bg-success">ATRASADO</span>';
+								echo '<span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
+							} else {
+								echo "<span class='glyphicon glyphicon-time'></span> ";
+								echo timespan($now, $timestamp);
+							}
+				        	?> 
+				        </p>
+				    </div>
+			    	<!-- FOOTER  -->
 		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
 	  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
@@ -91,33 +66,113 @@
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
 	  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn glyphicon glyphicon-edit" aria-hidden="true"></span>
 			    		</a>
-			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
+			    		<a href="#" class="btn btn-default btn-sm" role="button" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 	  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
-	  						Tarefas <span class="projetos-acoes-btn badge">
+	  						<?php 
+	  						if ($lider) {
+	  							echo "Tarefas do Projeto ";
+	  						} else {
+	  							echo "Suas Tarefas ";
+	  						} ?>
+	  						<span class="projetos-acoes-btn badge">
 	  							<?php 
 	  								$res = array();
 	  								$achou = false;
-	  								foreach($tarefas as $t) {
-	  								 	if ($t['codigo_projeto']==$p['codigo']) {
-	  								 		$res['tarefa_total']=$t['tarefa_total'];
-	  								 		$achou = true;
-	  								 		break;
-	  								 	} else {
-	  								 		//$achou = false;
-	  								 	}
+	  								if ($lider) {
+	  									$tasks = $tarefas_projeto;
+	  									$res['tarefa_total'] = 0;
+	  									$res['tarefa_completadas'] = 0;
+	  									$aux = "";
+	  									foreach($tasks as $t) {
+		  								 	if ($t['codigo_projeto']==$p['codigo']) {
+		  								 		if ($aux !== $t['codigo_tarefa']) {
+		  								 			// diferente
+		  								 			if ($t['data_fim']!==null) {
+		  								 				// $andamento = true;
+		  								 				$res['tarefa_completadas']++;
+		  								 			}
+		  								 			$res['tarefa_total']++;
+		  								 			$aux = $t['codigo_tarefa'];
+		  								 			$achou = true;
+		  								 		} else {
+		  								 			// igual
+		  								 		}
+		  								 		//break;
+		  								 	}
+	  									}
+	  								} else {
+	  									// participante, retornar tarefas por usuário
+	  									$achou = false;
+	  									$tasks = $tarefas_projeto;
+	  									$res['tarefa_total'] = 0;
+	  									$res['tarefa_total_projeto'] = 0;
+	  									$res['tarefa_completadas'] = 0;
+	  									$res['tarefa_completadas_usuario']=0;
+	  									$aux = "";
+	  									foreach($tasks as $t) {
+	  										if ($t['codigo_projeto']==$p['codigo']) {
+	  											if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
+			  								 		// tarefas totais do usuário
+			  								 		$res['tarefa_total']++;
+			  								 		$achou = true;
+		  										}
+		  										if ($aux !== $t['codigo_tarefa']) {
+			  										if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
+				  										if ($t['data_fim']!==null) {
+			  								 				// geral do projeto
+			  								 				$res['tarefa_completadas_usuario']++;
+			  								 			}
+			  								 		}
+			  								 		if ($t['data_fim']!==null) {
+		  								 				// geral do projeto
+		  								 				$res['tarefa_completadas']++;
+		  								 			}
+													$res['tarefa_total_projeto']++;
+				  								 	$aux = $t['codigo_tarefa'];
+			  									} 
+			  								}
+	  									}
 	  								}
 	  								if ($achou===true) {
-	  									echo $res['tarefa_total'];
+	  									if ($lider) {
+	  										echo $res['tarefa_total'] . ' <span class="badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
+	  									} else {
+	  										echo $res['tarefa_total'] . ' <span class="badge" style="background-color:blue;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
+	  									}
 	  								} else {
-	  									echo "0";
+	  									echo "0";// . ' / ' . $res['tarefa_completadas'];
 	  								}
 	  							;?>
 	  						</span>
 			    		</a>
 			    	</div> 
-
+			    	<div class="projeto-andamento">
+			    		<?php 
+			    		// if ($lider) {
+				    		if ($lider) {
+				    			$tarefa_total = $res['tarefa_total'];
+				    		} else {
+				    			$tarefa_total = $res['tarefa_total_projeto'];
+				    		}
+				    		$tarefa_completadas = $res['tarefa_completadas'];
+				    		if ($tarefa_completadas>0 AND $tarefa_total>0) {
+				    			$andamentoValor = number_format(($tarefa_completadas/$tarefa_total) * 100,2);
+				    	?>	<div class="progress">
+		  						<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $andamentoValor . '%'; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $andamentoValor .'%'; ?>;min-width: 2em;">
+								<?php echo $andamentoValor . '%'; ?>
+		  						</div>
+							</div>
+						<?php 
+							} else {
+								echo "sem andamento";
+							}
+						// } else {
+						// 	echo "sem acesso";
+						// }
+			    		?>
+			    	</div>
+				</div>
 		</div>
-	</div>
 	<?php }; ?>
 </div>
 <!-- <div class="row">

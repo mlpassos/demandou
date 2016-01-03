@@ -9,7 +9,7 @@
         App : function () {
                   var timelines = $('.cd-horizontal-timeline'),
                   eventsMinDistance = 100;
-                  console.log(initTimeline(timelines));
+                  // console.log(initTimeline(timelines));
                   (timelines.length > 0) && initTimeline(timelines);
 
                   function initTimeline(timelines) {
@@ -424,39 +424,94 @@
                   // modal.find('.modal-body').find('.data-prazo').text('');
                   //moda.find('.modal-tarefas-lista').html('');
             });
+            // function getTasksUsersInfo(codigo_tarefa) {
+            //   var res = "nada";
+            //   var ajax = $.ajax({
+            //             method: 'post',
+            //             url: 'http://localhost/demandou-git/tarefa/jsontasksuserinfo',
+            //             async: false,
+            //             data: {
+            //               'codigo_tarefa' : codigo_tarefa
+            //             },
+            //             dataType: 'json',
+            //             success: function(data) {
+            //               res = data;
+            //               return res;
+            //             },
+            //             error: function(error) {
+            //               alert('erro');
+            //               console.log(error);
+            //             },
+            //           }).done(function(data){
+            //           });
+            //           console.log(res);
+            //     // return res;
+            //     var result = new Array();
+            //     res.forEach(function(item){
+            //       result.push(item.papel, item.codigo_usuario);// + ',';
+            //     });
+            //     return result;
+            // }
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_projeto = button.data('codigoprojeto');
                     var modal = $(this);
                     var titulo = button.data('titulo');
+                    var lider = button.data('lider');
+                    if (lider == 1) {
+                      var url = 'http://localhost/demandou-git/tarefa/jsonprojecttasks';
+                    } else {
+                      var url = 'http://localhost/demandou-git/tarefa/jsonusertasks';
+                    }
                     modal.find('.modal-title').text(titulo);
                     $.ajax({
                       method: 'post',
-                      url: 'http://localhost/demandou-git/tarefa/jsonusertasks',
+                      url: url,
                       data: {
                         'codigo_projeto' : codigo_projeto
                       },
                       dataType: 'json',
                       success: function(data) {
                         //alert('sucesso');
-                        // console.log(data.length);
+                        console.log(data);
                         
                         if (data.length==0) {
                           // nada
                           $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-star"></span>Relaxe, sem tarefas no projeto pra você ainda.</p>');
                         } else {
+                          var aux = "";
                           data.forEach(function(item){
-                            $('#myModalTarefaVer .modal-tarefas-lista').append(''
-                              + '<div class="panel panel-primary">'
-                              + '<div class="panel-heading">'
-                              + '<h3 class="panel-title">' +  item.titulo + '(' + item.papel + ')' + '</h3>'
-                              + '</div>' 
-                              + '<div class="panel-body">'
-                              + '<p>' +  item.descricao + '</p>' 
-                              + '<p>Início:' +  formataData(new Date(item.data_inicio)) + '</p>' 
-                              + '<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p>'
-                              + '</div>'
-                              + '</div>'); 
+                            // console.log(item);
+                            if (aux!==item.codigo_tarefa) {
+                              // alert('diferente');
+                              // if (typeof(item.papel)!=="undefined") {
+                              //   var papel = item.papel;
+                              // } else {
+                              //   console.log(typeof(papel));
+                              //   // var papel = "";
+                              // }
+                              $('#myModalTarefaVer .modal-tarefas-lista').append(''
+                                + '<div class="panel panel-primary">'
+                                + '<div class="panel-heading">'
+                                + '<h3 class="panel-title">'+item.titulo+'</h3>'
+                                + '</div>' 
+                                + '<div class="panel-body">'
+                                + '<p>' +  item.descricao + '</p>' 
+                                + '<p>Início:' +  formataData(new Date(item.data_inicio)) + '</p>' 
+                                + '<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p>'
+                                + '<div class="panel-footer">'
+                                + '<ul class="participantes tarefa-' + item.codigo_tarefa + '">'
+                                + '<li>' + item.codigo_usuario + '-' + item.papel + '</li>' 
+                                + '</ul>'  
+                                + "</div>"
+                                + '</div>'
+                                + '</div>');
+                                aux = item.codigo_tarefa; 
+                            } else {
+                              // faz nada, é igual
+                              $("#myModalTarefaVer .tarefa-" + item.codigo_tarefa).append('<li>' + item.codigo_usuario + '-' + item.papel + '</li>');
+                            }
+                            // aqui
                           });
                         }
                       },
