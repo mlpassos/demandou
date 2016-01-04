@@ -170,24 +170,22 @@ class Tarefa_controller extends MY_Controller {
 		
 		if ($this->form_validation->run() == FALSE) {
 			//echo "inválido";
+				// $this->output->enable_profiler(TRUE);
 				$this->load->view('admin/tarefas/content_adicionar_view', $data_content);
 			// }
 		} else {
 			// echo "válido";
 			$tarefa = $this->input->post();
+			// $tarefa['codigo_usuario']
 			// echo "<pre>";
 			// var_dump($tarefa);
 			// echo "</pre>";
+			// $this->output->enable_profiler(TRUE);
 			$this->load->model('tarefa_model');
 			if ($this->tarefa_model->inserir($tarefa)) {
-				// $data['tarefa'] = $tarefa;
-				// $this->load->view('admin/tarefas/adicionar_sucesso_view.php', $data);
-				// $this->load->view('admin/tarefas/content_adicionar_view', $data_content);
 				$dadosenviar = array('codigo_projeto'=>$tarefa['codigo_projeto']);
 				$this->session->set_flashdata('adicionar_ao_projeto',$dadosenviar);
-				//var_dump($this->session->flashdata('adicionar_ao_projeto'));
 				redirect(base_url() . 'tarefa/adicionar');
-
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}
