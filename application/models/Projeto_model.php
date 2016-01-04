@@ -13,12 +13,10 @@ class Projeto_model extends CI_Model {
         public $criado_por;
         public $codigo_status;
 
-        public function __construct()
-        {
+        public function __construct() {
                 // Call the CI_Model constructor
                 parent::__construct();
         }
-
         public function inserir($projeto) {
                 // hack pra converter data do input html5 no formato mysql
                 $ano = date("Y",strtotime($projeto['data_inicio']));
@@ -73,14 +71,12 @@ class Projeto_model extends CI_Model {
                   return false;      
                 }
         }
-
         public function alterar($codigo) {
                 $this->title    = $_POST['title']; // please read the below note
                 $this->content  = $_POST['content'];
                 $this->date     = time();
                 $this->db->insert('entries', $this);
         }
-
         public function excluir($codigo) {
                 $this->db->where('codigo', $codigo);
                 return $this->db->delete('tb_livro');
@@ -100,49 +96,37 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
-        public function listarPorUsuario($codigo_usuario)
-        {
-                //$this->db->select('codigo, nome, sobrenome, arquivo_avatar');
-
-                $this->output->enable_profiler(TRUE);
-                
+        public function listarPorUsuario($codigo_usuario) {
+                // $this->output->enable_profiler(TRUE);
                 $this->db->select("pa.nome as papel, p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
                 $this->db->from('projeto as p');
-                // $this->db->join('tarefa as t', 'p.codigo=t.codigo_projeto');
-                // $this->db->join('usuario_tarefa as ut', 't.codigo=ut.codigo_tarefa');
                 $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
                 $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
-                // $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
-                // $this->db->group_by('p.codigo');
                 $this->db->where('up.codigo_usuario', $codigo_usuario);
-                // $this->db->where('ut.codigo_usuario', $codigo_usuario);
                 $this->db->order_by('p.data_prazo', 'ASC');
-
-                // $this->db->from('projeto');
-                // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                // $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
-                // $this->db->where('usuario.codigo', $codigo_usuario);
-
                 $query = $this->db->get();
                 return $query->result_array();
+
+                // SELECT  
+                //     `pa`.`nome` AS  `papel` ,  `p`.`codigo` AS  `codigo_projeto` ,  `p`.`titulo` AS  `titulo` ,  `p`.`descricao` AS  `descricao` ,  `p`.`data_inicio` AS  `data_inicio` ,  
+                //     `p`.`data_prazo` AS  `data_prazo` ,  `p`.`prioridade` AS `prioridade`,
+                //     `t`.`codigo` AS  `codigo_tarefa` ,  `t`.`titulo` as tarefa_titulo ,  `t`.`descricao` as tarefa_descricao ,  `t`.`codigo_usuario` as codigo_usuario, `t`.`data_inicio` as tarefa_data_inicio ,  
+                //     `t`.`data_prazo` as tarefa_data_prazo ,  `t`.`data_fim` as `tarefa_data_fim` 
+                //     FROM  `projeto` AS  `p` 
+                //     JOIN  `usuario_projeto` AS  `up` ON  `p`.`codigo` =  `up`.`codigo_projeto` 
+                //     JOIN  `papel` AS  `pa` ON  `up`.`codigo_papel` =  `pa`.`codigo` 
+                //     JOIN  `tarefa` AS  `t` ON  `p`.`codigo` =  `t`.`codigo_projeto` 
+                //     WHERE  `up`.`codigo_usuario` =  '5'
+                //     ORDER BY  `p`.`data_prazo` ASC 
+                //     LIMIT 0 , 30
+
         }
-        public function listarPorCodigo($codigo_projeto)
-        {
-                // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
+        public function listarPorCodigo($codigo_projeto) {
                 $this->db->from('projeto');
                 $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
                 $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
                 $this->db->where('projeto.codigo', $codigo_projeto);
                 $query = $this->db->get();
                 return $query->result_array();
-        }
-
-        public function listarPorUsuarioSenha($usuario,$senha)
-        {
-                $senha = MD5($senha);
-                $this->db->where('login', $usuario);
-                $this->db->where('senha', $senha);
-                $query = $this->db->get('usuario');
-                return $query->result_array();              
         }
 }
