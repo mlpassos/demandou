@@ -18,7 +18,7 @@
             maximumSelectionLength: 1,
             templateResult: formatState
           });
-          $("#participantes").select2();
+          // $("#participantes").select2();
 
           
           var tamTarefasAdded = $('.tarefas-added-box').height();
