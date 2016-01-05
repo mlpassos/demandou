@@ -63,21 +63,13 @@ class Projeto_controller extends MY_Controller {
     }
 
 	public function index()	{
-
-		// echo "usuario: " . $this->session->userdata('codigo_usuario');
-
 		if( $this->session->userdata('logado') ) {
 			$this->load->model('projeto_model');
         	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
         	$this->load->model('tarefa_model');
-        	// echo $this->tarefa_model->listarCompletas();
-
-        	// envia tarefas por usuário, no caso de participantes, exibe apenas as tarefas do usuário
-        	// $conteudo['tarefas_usuario'] = $this->tarefa_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
         	// envia tarefas por projeto, para os líderes, exibe todas as tarefas do usuário
         	$conteudo['tarefas_projeto'] = $this->tarefa_model->listar();
     	} 
-
 		// META
 		$this->header['meta'] = array(
 			array(
@@ -93,11 +85,10 @@ class Projeto_controller extends MY_Controller {
 			"content" => "admin,demandou,demandas, html5, sistema"
 			)
 		);
-
 		// CSS
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
-			// array('file' => 'horizontal-timeline.css'),
+			array('file' => 'iphone-style.css'),
 			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
 			array('file' => 'estilos-projetos.css')
 		); 
@@ -105,16 +96,17 @@ class Projeto_controller extends MY_Controller {
 		$data_footer['js']=array(
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
+			array('file' =>  base_url() . 'assets/js/iphone-style-checkboxes.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
-
 		$this->load->view('header_view',$this->header);
 		$this->load->view('admin/projetos/content_view', $conteudo);
 		$this->load->view('footer_view',$data_footer);	
 	}
+	
 	public function adicionar() {
 		// META
 		$this->header['meta'] = array(
