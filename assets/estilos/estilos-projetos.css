@@ -61,6 +61,12 @@
 .prioridades {
 	padding:5px;
 }
+.tarefa-prioridade-cor {
+
+}
+#myModalTarefaVer .modal-footer {
+  background-color:transparent;
+}
 .tarefas-acoes {
 	opacity:0;
   /*background-color:blue !important;*/
@@ -70,6 +76,10 @@
 	-webkit-transition: all .275s ease-in-out;
     -o-transition: all .275s ease-in-out;
     transition: all .275s ease-in-out;
+}
+
+.tarefa-observacao {
+  display:none;
 }
 .tarefas-box:hover .tarefas-acoes {
 	opacity:1;
@@ -91,3 +101,47 @@
   transform: translateY(-50px);
 }
 
+.carousel-control.right, .carousel-control.left {
+  background-image:none;
+}
+
+.carousel-indicators li {
+  background-color:rgba(0,0,0,.3);
+}
+.carousel-indicators .active {
+  /*background-color:rgba(0,0,0,.8);*/
+  border:1px solid black;
+}
+
+/* checkbox style */
+
+/* Container */
+span.switch {
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 105px;
+  height: 30px;
+  vertical-align: middle;
+}
+/* Background image */
+span.switch .background {
+  background: url('../images/switch-background.png');
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 161px;
+  height: 30px;
+}
+/* Mask */
+span.switch .mask {
+  background: url('../images/switch-mask.png');
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 105px;
+  height: 30px;
+}
