@@ -105,6 +105,14 @@
   background-image:none;
 }
 
+.carousel-control.right span, .carousel-control.left span {
+  color:rgba(0,0,0,.3);
+}
+
+.carousel-indicators {
+  top:20px;
+}
+
 .carousel-indicators li {
   background-color:rgba(0,0,0,.3);
 }
