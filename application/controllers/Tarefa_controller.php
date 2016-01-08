@@ -119,9 +119,13 @@ class Tarefa_controller extends MY_Controller {
     	$observacao = $this->input->post('observacao');
     	$lider = $this->input->post('lider');
     	$this->load->model('tarefa_model');
-    	$data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao, $lider);
-    	echo json_encode($data['fim']);
-
+    	
+    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao, $lider)) {
+    		echo json_encode($data['fim']);	
+    	} else {
+    		echo json_encode(array('status'=>'falha'));
+    	}
+    	
     }
 
 
