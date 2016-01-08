@@ -65,19 +65,32 @@ class Tarefa_model extends CI_Model {
             $dados['tarefa'] = array(
                 "data_fim" => date("Y-m-d"),
             );
+            // onde colocar o fim
+            $this->db->where('codigo', $codigo_tarefa);
+            // se finalizar tarefa corretamente
+            if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                $dados['observacao'] = array(
+                    "codigo_tarefa" => $codigo_tarefa,
+                    "observacao" => $observacao,
+                    "data_criada" => date("Y-m-d"),
+                    "lider" => $lider,
+                    "lida" => 0,
+                    "aceite" => 0,
+                    "resposta" => "Em análise."
+                );
+                // insere observação
+                if ( $this->db->insert('tarefa_observacoes', $dados['observacao']) ) {
+                    return true;
+                } else {
+                    return false;
+                    //array("status"=>"falha");
+                }
 
-            return $dados['tarefa'];
-            // $this->db->where('codigo', $codigo_tarefa);
-            // $this->db->update('tarefa', $dados['tarefa']);
+            } else {
+                return false;
+            }
             
-            // $dados['observacao'] = array(
-            //         "codigo_tarefa" => $codigo_tarefa,
-            //         "observacao" => $observacao,
-            //         "data_criado" => ,
-            //         "lida" +> null,
-            //         "aceite" => 0,
-            //         "resposta" => 0
-            // );
+            
 
         }
 
