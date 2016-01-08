@@ -83,7 +83,7 @@
 }
 .tarefas-box:hover .tarefas-acoes {
 	opacity:1;
-  transform: translateY(-45%);
+  transform: translateY(0%);
 }
 .tarefas-box:hover:after  {
 	opacity:0;
@@ -187,14 +187,22 @@
 }
 
 .panel-body {
-  padding-top:35px;
+  padding-top:50px;
 }
 
 .tarefa-avatar {
-  width:40px;
-  height:40px;
+  width:50px;
+  height:50px;
   margin-right:5px;
 }
+
+.img-thumbnail {
+padding:2px;
+border:initial;
+}
+
+
+
 /* checkbox style */
 
 /* Container */

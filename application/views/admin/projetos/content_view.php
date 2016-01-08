@@ -38,24 +38,30 @@
 				        <p id="tarefas-descricao-1" class="teste">
 				        	<?php 
 				        	$this->load->helper('text');
-				        	// echo word_limiter($p['descricao'],20);
-				        	echo $p['descricao'];
+				        	echo word_limiter($p['descricao'],20);
+				        	//echo $p['descricao'];
 				        	?> 
 				        </p>
 				        <p id="tarefas-descricao-1" class="teste">
 				        	<?php 
 				        	$this->load->helper('date');
 
+							// INíCIO
+				        	// $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
+							echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<span class="fa fa-play-circle"></span> ' : '<span class="fa fa-pause-circle"></span> ' ;
+							//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
+							// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
+
 				   			// PRAZO
-				        	$timestamp = strtotime($p['data_prazo']);
+				   			$timestamp = strtotime($p['data_prazo']);
 							$now = time();
 							if( strtotime($p['data_prazo']) < strtotime('now') ) {
-								// echo '<span class="bg-success">ATRASADO</span>';
-								echo '<span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
-							} else {
-								echo "<span class='glyphicon glyphicon-time'></span> ";
-								echo timespan($now, $timestamp);
-							}
+								echo '<br><span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
+							} 
+							// else {
+							// 	echo "<br><span class='glyphicon glyphicon-time'></span> ";
+							// 	echo timespan($now, $timestamp);
+							// }
 				        	?> 
 				        </p>
 				    </div>
@@ -165,7 +171,7 @@
 							</div>
 						<?php 
 							} else {
-								echo "sem andamento";
+								echo "<i class='fa fa-exclamation-circle'></i> Ainda sem andamento.";
 							}
 						// } else {
 						// 	echo "sem acesso";
@@ -267,81 +273,18 @@
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModalAdicionarProjeto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModalTarefaFinalizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Adicionar Projeto</h4>
+        <h4 class="modal-title" id="myModalLabel">Finalizar tarefa</h4>
       </div>
       <div class="modal-body">
-        <form>
-        	<div class="form-head">
-			  <div class="form-group">
-			    <label for="projeto-titulo">Título</label>
-			    <input type="text" class="form-control" id="projeto-titulo" placeholder="Email">
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleInputPassword1">Prazo</label>
-			    <input type="date" class="form-control" id="exampleInputPassword1" placeholder="Prazo">
-			  </div>
-			  <div class="radios">
-			  	  <label for="inlineRadioOptions">Prioridade</label><br>
-				  <label class="radio-inline">
-					  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Baixa
-				  </label>
-				  <label class="radio-inline">
-				    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Média
-				  </label>
-				  <label class="radio-inline">
-				    <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> Alta
-				  </label>
-			  </div>
-			  <div class="form-group">
-			    <label for="exampleInputEmail1">Descrição</label>
-			    <textarea class="form-control" id="exampleInputEmail1"></textarea>
-			  </div>
-			</div>
-			<div class="form-head-next">
-			  	<div class="tarefas-container">
-					<ul class="tarefas-menu">
-						<li class="tarefas-item">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							<span class="tarefas-remover glyphicon glyphicon-remove"></span>
-						</li>
-						<li class="tarefas-item">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							<span class="tarefas-remover glyphicon glyphicon-remove"></span>
-						</li>
-						<li class="tarefas-item">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							<span class="tarefas-remover glyphicon glyphicon-remove"></span>
-						</li>
-						<li class="tarefas-item">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-							<span class="tarefas-remover glyphicon glyphicon-remove"></span>
-						</li>
-					</ul>
-					<form action="">
-					  <div class="form-group">
-					    <label for="exampleInputEmail1">Descrição tarefa</label>
-					    <textarea class="form-control" id="exampleInputEmail1"></textarea>
-					  </div>
-					  <button type="submit" class="btn btn-default">Adicionar</button>				
-					</form>
-				</div>
-			</div>
-		  <button id="projeto-gravar" type="button" class="btn btn-primary">
-		  	<span class="glyphicon glyphicon-floppy-disk"></span> Gravar
-		  </button>
-		  <button id="projeto-add-tarefa" type="button" class="btn btn-default">
-		  	<span class="glyphicon glyphicon-tasks"></span> Tarefas
-		  </button>
-		</form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <!-- <button type="button" class="btn btn-primary">Gravar</button> -->
+        <button type="button" class="btn btn-primary">Gravar</button>
       </div>
     </div>
   </div>
