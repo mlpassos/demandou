@@ -38,7 +38,8 @@
 				        <p id="tarefas-descricao-1" class="teste">
 				        	<?php 
 				        	$this->load->helper('text');
-				        	echo word_limiter($p['descricao'],20);
+				        	// echo word_limiter($p['descricao'],20);
+				        	echo $p['descricao'];
 				        	?> 
 				        </p>
 				        <p id="tarefas-descricao-1" class="teste">
