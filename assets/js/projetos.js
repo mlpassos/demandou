@@ -379,7 +379,7 @@
                                 var porcento = 100;
                               } 
                             } else {
-                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias.').addClass('alert alert-warning').removeClass('alert-danger alert-success');
+                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias para terminar.').addClass('alert alert-warning').removeClass('alert-danger alert-success');
                               var porcento = [(total-faltam) * 100] / total;
                             }
                             modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', porcento.toFixed(2) + '%').text(porcento.toFixed(2)+'%');
@@ -446,7 +446,7 @@
             //     });
             //     return result;
             // }
-            function usuarioAcoes(codigoUsuarioAtual, codigoUsuarioTarefa,data_inicio,data_prazo, codigoTarefa, lider) {
+            function usuarioAcoes(codigoUsuarioAtual, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider) {
                   var hoje = new Date();
                   var data_inicio = new Date(data_inicio);
                   var data_prazo = new Date(data_prazo);
@@ -461,16 +461,16 @@
                       // nao começou
                       var comecou = false;
                       if (check_inicio==0) {
-                        output += '<p class="alert alert-success">Começou hoje</p>';
+                        output += '<p class="alert alert-info">Começou hoje</p>';
                       } else {
                         if (check_inicio == 1) {
-                          output += '<p class="alert alert-success">Começa amanhã</p>';
+                          output += '<p class="alert alert-info">Começa amanhã</p>';
                         } else {
-                          output += '<p class="alert alert-success">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
+                          output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
                         }
                       }
                       // progress bar 0
-                      output += '<div class="progress">'
+                      output += 'Tempo consumido (%)<div class="progress">'
                                 + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
                                 + '0%'
                                 + '</div>'
@@ -481,48 +481,55 @@
                       if (check_fim<=0) {
                         if (check_fim==0) { 
                           var porcento = 100;
-                          output += '<p class="alert alert-danger">Termina hoje!</p>';
+                          output += '<p class="alert alert-info">Termina hoje!</p>';
                         } else {
                           // atrasado
                           var porcento = 100;
-                          output += '<p class="alert alert-danger">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia' : faltam*(-1) + ' dias') + ', finalize para negociar novo prazo.</p>';
+                          output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia' : faltam*(-1) + ' dias') + ', finalize para negociar novo prazo.</p>';
                         } 
                       } else {
                         var porcento = [(total-faltam) * 100] / total;
-                        output += '<p class="alert alert-warning">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
+                        output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
                         
                       }
-                      output += '<div class="progress">'
+                      output += 'Tempo consumido (%)<div class="progress">'
                                 + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
                                 + porcento.toFixed(2) + '%'
                                 + '</div>'
                                 + '</div>'
                   }
 
-                  if ((check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1)) {
-                        output += '<div class="form-group">'
-                              + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
-                              + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
-                              + '</div>'
-                              + '<div class="form-group">'
-                              + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-lider="' + lider + '">'
-                              + '<label for="tarefa_observacao">Observações</label>'
-                              + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
-                              + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
-                              + '</div>'
-                              + '</div>';
+                  if ( (check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1) ) {
+                        // já foi finalizada antes?
+                        // console.log(typeof(data_fim));
+                        if (data_fim===null) {
+                              console.log('igual');
+                              output += '<div class="form-group">'
+                                    + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
+                                    + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
+                                    + '</div>'
+                                    + '<div class="form-group">'
+                                    + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-lider="' + lider + '">'
+                                    + '<label for="tarefa_observacao">Observações</label>'
+                                    + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
+                                    + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
+                                    + '</div>'
+                                    + '</div>';
 
-                              // '<div>'
-                              // +'<label class="checkbox-inline">'
-                              // +'<input class="switch" type="checkbox" name="tarefa_fim" id="tarefa_fim">'
-                              // +'</label>'
-                              // +'<label class="checkbox-inline">'
-                              // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade2" value="2"> <span class="prioridades-radio bg-warning">MÉDIA</span>'
-                              // +'</label>'
-                              // +'<label class="checkbox-inline">'
-                              // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade3" value="1"> <span class="prioridades-radio bg-success">BAIXA</span>'
-                              // +'</label>'
-                              // +'</div>';
+                                    // '<div>'
+                                    // +'<label class="checkbox-inline">'
+                                    // +'<input class="switch" type="checkbox" name="tarefa_fim" id="tarefa_fim">'
+                                    // +'</label>'
+                                    // +'<label class="checkbox-inline">'
+                                    // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade2" value="2"> <span class="prioridades-radio bg-warning">MÉDIA</span>'
+                                    // +'</label>'
+                                    // +'<label class="checkbox-inline">'
+                                    // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade3" value="1"> <span class="prioridades-radio bg-success">BAIXA</span>'
+                                    // +'</label>'
+                                    // +'</div>';
+                        } else {
+                              output += '<p class="alert alert-info">Tarefa já finalizada.</p>';
+                        }
                   } 
                   // $(':checkbox').iphoneStyle();
                   return output
@@ -562,35 +569,7 @@
                   return out;
             }
 
-            $('body').delegate('#tarefa_gravar','click', function(){
-                  var res = $('input#tarefa_encerrar.switch')[0].checked;
-                  console.log(res);
-                  if (res) {
-                    // grava
-                    var observacao = $('#tarefa_observacao').val();
-                    var lider = $(this).parent().attr('data-lider');
-                    var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
-                    var url = 'http://localhost/demandou-git/tarefa/finalizar';
-                    $.ajax({
-                            method: 'post',
-                            url: url,
-                            data: {
-                              'codigo_tarefa' : codigo_tarefa,
-                              'observacao' : observacao,
-                              'lider': lider
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                              console.log(data);
-
-                            },
-                            error: function(error) {
-                              console.log(error);
-                            }
-                    });
-                  }
-            });
-            
+          
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_projeto = button.data('codigoprojeto');
@@ -612,7 +591,7 @@
                         console.log(data);
                         if (data.length==0) {
                           // nada
-                          $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-star"></span>Relaxe, sem tarefas no projeto pra você ainda.</p>');
+                          $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-exclamation-triangle"></span> Relaxe, sem tarefas no projeto ainda, mas não se preocupe, você será avisado. =]</p>');
                         } else {
                           var aux = "";
                           var output = '<div id="carousel-example-generic" class="carousel slide">'
@@ -669,7 +648,7 @@
                                       // + '<ul class="tarefa-' + item.codigo_tarefa + '">'
                                       // + '<li>' + item.codigo_usuario + '-' + item.nome + ' ' + item.sobrenome + '</li>' 
                                       // + '</ul>' 
-                                        + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.codigo_tarefa, lider) + '</div>'
+                                        + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.data_fim, item.codigo_tarefa, lider) + '</div>'
                                         // + '</div>'
                                        + '</div>'
                                        + '</div>'
@@ -728,12 +707,14 @@
                               // console.log('Foi pra ' + $(this).next()[0].checked);
                               $(this).find(".background").animate({left: "-56px"}, 200);
                               $('.tarefa-obs-' + codigo_tarefa).hide('slow');
+                              // $('#myModalTarefaFinalizar').modal('hide');
                             // Otherwise, slide switch on
                             } else {
                               // console.log($(this).next()[0].attributes[4].value);
                               // console.log($(this).next()[0].codigotarefa);
                               // var codigo_tarefa = $(this).next()[0].attr('data-codigotarefa');
                               $('.tarefa-obs-' + codigo_tarefa).show('slow');
+                              // $('#myModalTarefaFinalizar').modal('show');
                               $(this).find(".background").animate({left: "0px"}, 200);
                               // console.log($(this).next()[0].checked);
                             }
@@ -743,17 +724,33 @@
                         });
                     });
             });
-            $('body').delegate('#projeto-add-tarefa','click', function(){
-                      var titulo = $('#projeto-titulo').val();
-                      //alert(titulo);
-                      $('.form-head').toggle('slow');
-                      $('.form-head-next').toggle('slow');
-            });
-            $('body').delegate('#projeto-gravar','click', function(){
-                      var icon = $('#projeto-gravar').children('span');
-                      $('#projeto-add-tarefa').fadeToggle('slow');
-                      icon.removeClass('glyphicon-floppy-disk').addClass('glyphicon-floppy-saved');
-                      alert('ok');
+            $('body').delegate('#tarefa_gravar','click', function(){
+                  var res = $('input#tarefa_encerrar.switch')[0].checked;
+                  console.log(res);
+                  if (res) {
+                    // grava
+                    var observacao = $('#tarefa_observacao').val();
+                    var lider = $(this).parent().attr('data-lider');
+                    var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
+                    var url = 'http://localhost/demandou-git/tarefa/finalizar';
+                    $.ajax({
+                            method: 'post',
+                            url: url,
+                            data: {
+                              'codigo_tarefa' : codigo_tarefa,
+                              'observacao' : observacao,
+                              'lider': lider
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                              console.log(data);
+
+                            },
+                            error: function(error) {
+                              console.log(error);
+                            }
+                    });
+                  }
             });
         }
 
