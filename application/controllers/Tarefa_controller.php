@@ -114,13 +114,17 @@ class Tarefa_controller extends MY_Controller {
 
     }
 
-    // public function json_tasksuserinfo() {
-    // 	$codigo_tarefa = $this->input->post('codigo_tarefa');
-    // 	$this->load->model('tarefa_model');
-    // 	$data['tarefas_userinfo'] = $this->tarefa_model->jsonTarefasUserInfo($codigo_tarefa);
-    // 	echo json_encode($data['tarefas_userinfo']);
+    public function finalizar() {
+    	$codigo_tarefa = $this->input->post('codigo_tarefa');
+    	$observacao = $this->input->post('observacao');
+    	$lider = $this->input->post('lider');
+    	$this->load->model('tarefa_model');
+    	$data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao, $lider);
+    	echo json_encode($data['fim']);
 
-    // }
+    }
+
+
 
 	public function adicionar() {
 		// echo $this->uri->segment(3);

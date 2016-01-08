@@ -446,7 +446,7 @@
             //     });
             //     return result;
             // }
-            function usuarioAcoes(codigoUsuarioAtual, codigoUsuarioTarefa,data_inicio,data_prazo, codigoTarefa) {
+            function usuarioAcoes(codigoUsuarioAtual, codigoUsuarioTarefa,data_inicio,data_prazo, codigoTarefa, lider) {
                   var hoje = new Date();
                   var data_inicio = new Date(data_inicio);
                   var data_prazo = new Date(data_prazo);
@@ -489,7 +489,7 @@
                         } 
                       } else {
                         var porcento = [(total-faltam) * 100] / total;
-                        output += '<p class="alert alert-warning">' + 'Faltam ' + check_fim + ' dias.' + '</p>';
+                        output += '<p class="alert alert-warning">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
                         
                       }
                       output += '<div class="progress">'
@@ -499,13 +499,13 @@
                                 + '</div>'
                   }
 
-                  if (check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) {
+                  if ((check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1)) {
                         output += '<div class="form-group">'
                               + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
                               + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
                               + '</div>'
                               + '<div class="form-group">'
-                              + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'">'
+                              + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-lider="' + lider + '">'
                               + '<label for="tarefa_observacao">Observações</label>'
                               + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
                               + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
@@ -567,9 +567,27 @@
                   console.log(res);
                   if (res) {
                     // grava
-                    var obs = $('#tarefa_observacao').val();
-                    alert(obs);
-                    alert($(this).parent().attr('class'));
+                    var observacao = $('#tarefa_observacao').val();
+                    var lider = $(this).parent().attr('data-lider');
+                    var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
+                    var url = 'http://localhost/demandou-git/tarefa/finalizar';
+                    $.ajax({
+                            method: 'post',
+                            url: url,
+                            data: {
+                              'codigo_tarefa' : codigo_tarefa,
+                              'observacao' : observacao,
+                              'lider': lider
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                              console.log(data);
+
+                            },
+                            error: function(error) {
+                              console.log(error);
+                            }
+                    });
                   }
             });
             
@@ -651,7 +669,7 @@
                                       // + '<ul class="tarefa-' + item.codigo_tarefa + '">'
                                       // + '<li>' + item.codigo_usuario + '-' + item.nome + ' ' + item.sobrenome + '</li>' 
                                       // + '</ul>' 
-                                        + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.codigo_tarefa) + '</div>'
+                                        + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.codigo_tarefa, lider) + '</div>'
                                         // + '</div>'
                                        + '</div>'
                                        + '</div>'
@@ -682,6 +700,9 @@
                         console.log(error);
                       },
                     }).done(function(){
+
+                        $('#carousel-example-generic').carousel('pause');
+
                         // $(':checkbox').iphoneStyle();
                         $("input[type=checkbox].switch").each(function() {
                             // Insert mark-up for switch

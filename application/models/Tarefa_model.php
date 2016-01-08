@@ -60,6 +60,27 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
+        public function finalizar($codigo_tarefa,$observacao,$lider) {
+            
+            $dados['tarefa'] = array(
+                "data_fim" => date("Y-m-d"),
+            );
+
+            return $dados['tarefa'];
+            // $this->db->where('codigo', $codigo_tarefa);
+            // $this->db->update('tarefa', $dados['tarefa']);
+            
+            // $dados['observacao'] = array(
+            //         "codigo_tarefa" => $codigo_tarefa,
+            //         "observacao" => $observacao,
+            //         "data_criado" => ,
+            //         "lida" +> null,
+            //         "aceite" => 0,
+            //         "resposta" => 0
+            // );
+
+        }
+
         public function excluir($codigo) {
                 $this->db->where('codigo', $codigo);
                 return $this->db->delete('tb_livro');
