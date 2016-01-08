@@ -485,7 +485,7 @@
                         } else {
                           // atrasado
                           var porcento = 100;
-                          output += '<p class="alert alert-danger">' + 'Atrasado ' + faltam*(-1) + ' dias.' + '</p>';
+                          output += '<p class="alert alert-danger">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia' : faltam*(-1) + ' dias') + ', finalize para negociar novo prazo.</p>';
                         } 
                       } else {
                         var porcento = [(total-faltam) * 100] / total;
@@ -508,6 +508,7 @@
                               + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'">'
                               + '<label for="tarefa_observacao">Observações</label>'
                               + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
+                              + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
                               + '</div>'
                               + '</div>';
 
@@ -533,22 +534,25 @@
                   switch(code) {
                        case 3:
                             var out = {
-                                'cor': "#F2DEDE",
-                                'texto': 'ALTA'
+                                'classe': "danger",
+                                'texto': 'ALTA',
+                                'cor': '#F2DEDE'
                             }
                             break;
                         case 2:
                             // var out = "#FCF8E3";
                             var out = {
-                                'cor': "#FCF8E3",
-                                'texto': 'MÉDIA'
+                                'classe': "warning",
+                                'texto': 'MÉDIA',
+                                'cor': '#FCF8E3'
                             }
                             break;
                         case 1:
                             // var out = "#DFF0D8";
                             var out = {
-                                'cor': "#DFF0D8",
-                                'texto': 'BAIXA'
+                                'classe': "success",
+                                'texto': 'BAIXA',
+                                'cor': '#DFF0D8'
                             }
                             break;
                         default:
@@ -557,6 +561,17 @@
                   }     
                   return out;
             }
+
+            $('body').delegate('#tarefa_gravar','click', function(){
+                  var res = $('input#tarefa_encerrar.switch')[0].checked;
+                  console.log(res);
+                  if (res) {
+                    // grava
+                    var obs = $('#tarefa_observacao').val();
+                    alert(obs);
+                    alert($(this).parent().attr('class'));
+                  }
+            });
             
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
@@ -582,10 +597,10 @@
                           $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-star"></span>Relaxe, sem tarefas no projeto pra você ainda.</p>');
                         } else {
                           var aux = "";
-                          var output = '<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">'
+                          var output = '<div id="carousel-example-generic" class="carousel slide">'
                                        + '<ol class="carousel-indicators">';
                           for (var i = 0; i <= data.length - 1;  i++) {
-                                output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>'
+                                output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
                           };
                                        // 
                                        // 
@@ -599,24 +614,45 @@
                               // $('#myModalTarefaVer .modal-tarefas-lista').append(''
                                       // output += ''//
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
-                                      output += '<div class="panel panel-primary">'
+                                      output += '<div class="panel panel-' + getTarefaPrioridade(item.prioridade).classe + '">'
                                         + '<div class="panel-heading">'
-                                         + '<h2 class="panel-title">'+item.titulo+'</h2>'
-                                         + '<i class="fa fa-user"></i><small> ' + item.nome + ' ' + item.sobrenome + '</small>'
-                                      // + '<span class="badge" style="background-color:' +  getTarefaPrioridade(item.prioridade).cor + ';">' + getTarefaPrioridade(item.prioridade).texto + '</span>'
+                                         + '<div class="pull-left">'
+                                          + '<h2 class="panel-title">'+item.titulo+'</h2>'
+                                         + '</div>'
+                                         + '<div class="pull-right">'
+
+                                         // + '<div class="media">'
+                                         //  + '<div class="media-left">'
+                                         // + '<a href="#">'
+                                         // + '<img class="media-object tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
+                                         // + '</a>'
+                                         //  + '</div>'
+                                         //  + '<div class="media-body">'
+                                         // + '<h4 class="media-heading">' + item.nome + ' ' + item.sobrenome + '</h4>'
+                                         // + '<small>' + item.usuario_funcao + '</small>'
+                                         //  + '</div>'
+                                         //  + '</div>'
+                                          
+                                          + '<img class="img-thumbnail tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
+                                          + '<div class="pull-right">'
+                                          + '<small> ' + item.nome + ' ' + item.sobrenome + '</small>'
+                                          + '<em><small> ' + item.usuario_funcao + '</small></em>'
+                                          + '</div>'      
+                                         + '</div>'
+                                        // + '<span class="badge" style="background-color:' +  getTarefaPrioridade(item.prioridade).cor + ';">' + getTarefaPrioridade(item.prioridade).texto + '</span>'
                                         + '</div>' 
                                         + '<div class="panel-body" style="background-color:' +  getTarefaPrioridade(item.prioridade).cor + ';">'
-                                         + '<div class="panel-footer">'
+                                         // + '<div class="panel-footer">'
                                           + '<p>' +  item.descricao + '</p>' 
                                           + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(new Date(item.data_inicio)) + '</p>' 
                                           + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(new Date(item.data_prazo)) + '</p>'
-                                        + '</div>'
-                                        + '<div class="panel-footer">'
+                                        // + '</div>'
+                                        // + '<div class="panel-footer">'
                                       // + '<ul class="tarefa-' + item.codigo_tarefa + '">'
                                       // + '<li>' + item.codigo_usuario + '-' + item.nome + ' ' + item.sobrenome + '</li>' 
                                       // + '</ul>' 
                                         + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.codigo_tarefa) + '</div>'
-                                        + '</div>'
+                                        // + '</div>'
                                        + '</div>'
                                        + '</div>'
                                        + '</div>';//);
