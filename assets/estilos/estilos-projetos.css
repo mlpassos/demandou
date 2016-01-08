@@ -88,6 +88,9 @@
 .tarefas-box:hover:after  {
 	opacity:0;
 }
+#tarefa_gravar {
+  margin-top:5px;
+}
 .projetos-acoes-btn {
   /*font-size:22px;*/
 }
@@ -110,17 +113,88 @@
 }
 
 .carousel-indicators {
-  top:20px;
+  
+}
+
+.carousel-indicators {
+    top:-50px;
 }
 
 .carousel-indicators li {
-  background-color:rgba(0,0,0,.3);
+  background-color:#337AB7;
+  border-radius:initial;
+  opacity:.5;
+  width:15px; 
+  height:15px;
 }
-.carousel-indicators .active {
-  /*background-color:rgba(0,0,0,.8);*/
+.carousel-indicators li.active {
+  background-color:#337AB7;
   border:1px solid black;
+  opacity:1;
+  width:17px; 
+  height:17px;
 }
 
+.carousel-control {
+    /*position: absolute;*/
+    top: -20px;
+    bottom: initial; 
+    /*left: 0;*/
+     width: auto; 
+}
+
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-next, .carousel-control .icon-prev {
+  font-size:17px;
+}
+
+.panel {
+  border-radius:initial;
+  border:initial;
+}
+.panel:after {     
+  opacity:1;
+  content: "";
+  position:absolute;
+  z-index:-1;
+  right:1px;
+  bottom:25px;
+  width:90%;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow:2px 15px 5px rgba(0, 0, 0, 0.40);
+  -moz-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -webkit-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -o-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -ms-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -webkit-transition: all .275s ease-in-out;
+  -o-transition: all .275s ease-in-out;
+  transition: all .275s ease-in-out;
+}
+
+.panel-heading small {
+  display:block;
+}
+
+.panel-heading {
+    padding: 10px 15px;
+    border-bottom: initial; 
+    border-top-left-radius: initial; 
+    border-top-right-radius: initial;
+}
+.panel-title {
+    font-size:22px;
+}
+
+.panel-body {
+  padding-top:35px;
+}
+
+.tarefa-avatar {
+  width:40px;
+  height:40px;
+  margin-right:5px;
+}
 /* checkbox style */
 
 /* Container */
