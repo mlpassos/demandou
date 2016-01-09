@@ -114,16 +114,56 @@ class Tarefa_controller extends MY_Controller {
 
     }
 
+    public function json_tasksobs() {
+    	$codigo_tarefa = $this->input->post('codigo_tarefa');
+    	$this->load->model('tarefa_model');
+    	$data['observacoes'] = $this->tarefa_model->jsonTarefasObservacoes($codigo_tarefa);
+    	echo json_encode($data['observacoes']);
+    }
+
+
     public function finalizar() {
     	$codigo_tarefa = $this->input->post('codigo_tarefa');
     	$observacao = $this->input->post('observacao');
     	$lider = $this->input->post('lider');
+    	$atrasado = $this->input->post('atrasado');
+    	// usuário dono da tarefa
+    	$usuario_tarefa = $this->input->post('codigo_usuario');
+    	// usuário atual
+    	$usuario = $this->session->userdata('codigo_usuario');
+
+    	if ($usuario_tarefa !== $usuario) {
+    		// a tarefa está sendo finalizada pelo admin ou pelo líder, ela é forçada
+    		$codigo_tipo = 3;
+    	} else {
+    		// o próprio usuário está finalizando a tarefa
+    		// está atrasado?
+    		if ($atrasado==1) {
+    			// tarefa do tipo extensão de prazo
+    			$codigo_tipo = 2;
+    		} else {
+    			// tarefa do tipo finalização normal
+    			$codigo_tipo = 1;
+    		}
+
+    	}
+    	
     	$this->load->model('tarefa_model');
     	
-    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao, $lider)) {
-    		echo json_encode($data['fim']);	
+    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo)) {
+    		echo json_encode(
+    			array(
+    				'status' => 'sucesso',
+    				'mensagem' => 'Tarefa finalizada com sucesso. Observação enviada.'
+    				)
+    		);	
     	} else {
-    		echo json_encode(array('status'=>'falha'));
+    		echo json_encode(
+    			array(
+    				'status'=>'falha',
+    				'mensagem' => 'Ooops, deu bug. De novo? =]'
+    			)
+    		);
     	}
     	
     }

@@ -446,7 +446,7 @@
             //     });
             //     return result;
             // }
-            function usuarioAcoes(codigoUsuarioAtual, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider) {
+            function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
                   var data_inicio = new Date(data_inicio);
                   var data_prazo = new Date(data_prazo);
@@ -454,7 +454,7 @@
                   var total = Math.floor((data_prazo - data_inicio) / (1000*60*60*24));
                   var check_inicio = Math.floor((data_inicio - hoje) / (1000*60*60*24));
                   var check_fim = Math.floor((data_prazo - hoje) / (1000*60*60*24));
-
+                  var atrasado = 0;
                   var output = "";
 
                   if (check_inicio>=0) {
@@ -485,6 +485,7 @@
                         } else {
                           // atrasado
                           var porcento = 100;
+                          var atrasado = 1;
                           output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia' : faltam*(-1) + ' dias') + ', finalize para negociar novo prazo.</p>';
                         } 
                       } else {
@@ -509,26 +510,81 @@
                                     + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
                                     + '</div>'
                                     + '<div class="form-group">'
-                                    + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-lider="' + lider + '">'
+                                    + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-atrasado="' + atrasado + '" data-lider="' + lider + '" data-codigousuario="' + codigoUsuarioTarefa + '">'
                                     + '<label for="tarefa_observacao">Observações</label>'
                                     + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
                                     + '</div>'
                                     + '</div>';
+                              // se existir respostas, exibir...
 
-                                    // '<div>'
-                                    // +'<label class="checkbox-inline">'
-                                    // +'<input class="switch" type="checkbox" name="tarefa_fim" id="tarefa_fim">'
-                                    // +'</label>'
-                                    // +'<label class="checkbox-inline">'
-                                    // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade2" value="2"> <span class="prioridades-radio bg-warning">MÉDIA</span>'
-                                    // +'</label>'
-                                    // +'<label class="checkbox-inline">'
-                                    // +'  <input class="switch" type="checkbox" name="prioridade" id="prioridade3" value="1"> <span class="prioridades-radio bg-success">BAIXA</span>'
-                                    // +'</label>'
-                                    // +'</div>';
                         } else {
-                              output += '<p class="alert alert-info">Tarefa já finalizada.</p>';
+                              // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
+                              if (encerrada===null) {
+                                    output += '<p class="alert alert-info">Tarefa finalizada, aguardando validação.</p>';
+                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
+                                    console.log('buscando respostas e aguardando validação...');
+                                    // exibir observações e respostas
+                                    // caso seja negada a extensão de prazo e forçado encerramento mostrar obs e respostas
+                                    // caso tenha sido aceito, irá pro data_fim===null
+                                    var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
+                                    $.ajax({
+                                        method: 'post',
+                                        url: url,
+                                        // async:false,
+                                        data: {
+                                          'codigo_tarefa' : codigoTarefa
+                                        },
+                                        dataType: 'json',
+                                        success: function(data) {
+                                          //if (data.length>0) {
+                                                // alert('aqui');
+                                                data.forEach(function(item){
+                                                      console.log(item);
+                                                      $('.tarefa-observacoes-' + codigoTarefa).append(''
+                                                       // observações
+                                                    + '<div class="media">'
+                                                    + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
+                                                     + '<div class="media-left">'
+                                                      + '<a href="#">'
+                                                      + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
+                                                      + '<small>' + UsuarioTarefaNome + '</small>'
+                                                      + '</a>'
+                                                     + '</div>'
+                                                     + '<div class="media-body">'
+                                                      + '<h4 class="media-heading">' + item.tipo + '</h4>'
+                                                      + '<p>' + item.observacao + '</p>'
+                                                     + '</div>'
+                                                     + '</div>'
+                                                      // respostas
+                                                     + '<div class="media">'
+                                                    + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
+                                                     + '<div class="media-left">'
+                                                      + '<a href="#">'
+                                                      + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                                                      + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
+                                                      + '</a>'
+                                                     + '</div>'
+                                                     + '<div class="media-body">'
+                                                      + '<h4 class="media-heading">Resposta</h4>'
+                                                       + '<p>' + item.resposta + '</p>'
+                                                     + '</div>'
+                                                     + '</div>'
+                                                       );
+                                                });
+                                          //}
+                                        },
+                                        error: function (error) {
+                                          console.log('erro: ' + error);
+                                        }
+                                    }).done(function(data){
+                                         // return output;
+                                    });
+
+                              } else {
+                                    output += '<p class="alert alert-info">Tarefa finalizada e avaliada com sucesso.</p>';
+                                    // console.log('buscando respostas mas já avaliada com sucesso.');
+                              }
                         }
                   } 
                   // $(':checkbox').iphoneStyle();
@@ -648,7 +704,7 @@
                                       // + '<ul class="tarefa-' + item.codigo_tarefa + '">'
                                       // + '<li>' + item.codigo_usuario + '-' + item.nome + ' ' + item.sobrenome + '</li>' 
                                       // + '</ul>' 
-                                        + '<div>' + usuarioAcoes(codigo_usuario, item.codigo_usuario, item.data_inicio, item.data_prazo, item.data_fim, item.codigo_tarefa, lider) + '</div>'
+                                        + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, item.data_inicio, item.data_prazo, item.data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'
                                         // + '</div>'
                                        + '</div>'
                                        + '</div>'
@@ -724,6 +780,7 @@
                         });
                     });
             });
+            
             $('body').delegate('#tarefa_gravar','click', function(){
                   var res = $('input#tarefa_encerrar.switch')[0].checked;
                   console.log(res);
@@ -731,6 +788,8 @@
                     // grava
                     var observacao = $('#tarefa_observacao').val();
                     var lider = $(this).parent().attr('data-lider');
+                    var atrasado = $(this).parent().attr('data-atrasado');
+                    var codigo_usuario = $(this).parent().attr('data-codigousuario');
                     var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
                     var url = 'http://localhost/demandou-git/tarefa/finalizar';
                     $.ajax({
@@ -739,7 +798,9 @@
                             data: {
                               'codigo_tarefa' : codigo_tarefa,
                               'observacao' : observacao,
-                              'lider': lider
+                              'lider': lider,
+                              'atrasado' : atrasado,
+                              'codigo_usuario': codigo_usuario
                             },
                             dataType: 'json',
                             success: function(data) {

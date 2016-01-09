@@ -60,7 +60,7 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function finalizar($codigo_tarefa,$observacao,$lider) {
+        public function finalizar($codigo_tarefa,$observacao,$codigo_tipo) {
             
             $dados['tarefa'] = array(
                 "data_fim" => date("Y-m-d"),
@@ -73,10 +73,9 @@ class Tarefa_model extends CI_Model {
                     "codigo_tarefa" => $codigo_tarefa,
                     "observacao" => $observacao,
                     "data_criada" => date("Y-m-d"),
-                    "lider" => $lider,
-                    "lida" => 0,
-                    "aceite" => 0,
-                    "resposta" => "Em análise."
+                    "codigo_tipo" => $codigo_tipo,
+                    // 1 - Em andamento
+                    "codigo_status_obs" => 1
                 );
                 // insere observação
                 if ( $this->db->insert('tarefa_observacoes', $dados['observacao']) ) {
@@ -114,6 +113,24 @@ class Tarefa_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+
+        public function jsonTarefasObservacoes($codigo_tarefa) {
+                //$res = array("response"=>"ok");
+                // $this->output->enable_profiler(TRUE);
+                $this->db->select('ot.tipo, res.resposta, res.data_resposta, res.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
+                $this->db->from('tarefa as t');
+                $this->db->join('tarefa_observacoes as obs', 't.codigo = obs.codigo_tarefa');
+                $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
+                $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
+                $this->db->join('usuario as u', 'res.inserido_por = u.codigo');
+                $this->db->where('t.codigo', $codigo_tarefa);
+                $this->db->order_by('obs.data_criada', 'DESC');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+
+
+
         public function jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
@@ -127,7 +144,7 @@ class Tarefa_model extends CI_Model {
         }
 
         public function jsonTarefasPorProjeto($codigo_projeto) {
-                $this->db->select('t.prioridade, u.nome, u.sobrenome, u.arquivo_avatar, uf.titulo as usuario_funcao, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto =' . $codigo_projeto . ') AS total, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto = ' . $codigo_projeto . ' AND data_fim IS NOT NULL ) AS completas, t.codigo_usuario, t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim');
+                $this->db->select('t.encerrada, t.encerrada_por, t.prioridade, u.nome, u.sobrenome, u.arquivo_avatar, uf.titulo as usuario_funcao, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto =' . $codigo_projeto . ') AS total, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto = ' . $codigo_projeto . ' AND data_fim IS NOT NULL ) AS completas, t.codigo_usuario, t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario as u', 't.codigo_usuario=u.codigo');
                 $this->db->join('usuario_funcao as uf', 'u.codigo_funcao=uf.codigo');
