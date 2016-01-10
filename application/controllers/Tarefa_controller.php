@@ -106,6 +106,14 @@ class Tarefa_controller extends MY_Controller {
 
     }
 
+
+    public function json_tarefas() {
+    	$this->load->model('tarefa_model');
+    	$data['tarefas'] = $this->tarefa_model->listar();
+    	echo json_encode($data['tarefas']);
+
+    }
+
 	public function json_projecttasks() {
     	$codigo_projeto = $this->input->post('codigo_projeto');
     	$this->load->model('tarefa_model');
