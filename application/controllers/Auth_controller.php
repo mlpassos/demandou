@@ -38,6 +38,7 @@ class Auth_controller extends MY_Controller {
 					$resultado['sobrenome'] = $usuario['sobrenome'];
 					$resultado['codigo_perfil'] = $usuario['codigo_perfil'];
 					$resultado['codigo_status'] = $usuario['codigo_status'];
+					$resultado['arquivo_avatar'] = $usuario['arquivo_avatar'];
 					array_push($res, $resultado);
 				endforeach;
 				// loga, cria session
@@ -48,6 +49,7 @@ class Auth_controller extends MY_Controller {
 		            'sobrenome'=>$resultado['sobrenome'],
 		            'codigo_perfil'=>$resultado['codigo_perfil'],
 		            'codigo_status'=>$resultado['codigo_status'],
+		            'arquivo_avatar'=>$resultado['arquivo_avatar'],
 		            'logado' => true
 		        ));
 		        echo json_encode($resultado);
