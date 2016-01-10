@@ -44,6 +44,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <![endif]-->
   </head>
   <body>
+    <?php if ($this->session->userdata('logado')==true) { ?>
+      <input type="hidden" id="usuario_codigo" value="<?php echo $this->session->userdata('codigo_usuario') ?>">
+      <input type="hidden" id="nome_usuario" value="<?php echo $this->session->userdata('nome') . $this->session->userdata('sobrenome'); ?>">
+      <input type="hidden" id="avatar_usuario" value="<?php echo $this->session->userdata('arquivo_avatar') ?>">
+    <?php } ?>
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
