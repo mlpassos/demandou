@@ -311,7 +311,7 @@
                 weekday[6] = "Sábado";
             // var n = month[d.getMonth()];
             function formataData(strData) {
-              return weekday[strData.getDay()] + ', ' + strData.getDate() + ' de ' + month[strData.getMonth()] + ' de ' + strData.getFullYear();
+                  return weekday[strData.getDay()] + ', ' + strData.getDate() + ' de ' + month[strData.getMonth()] + ' de ' + strData.getFullYear();
             }
             $('#myModalProjetoVer').on('hidden.bs.modal', function (event) {
                      var modal = $(this);
@@ -389,63 +389,45 @@
                       modal.find('.modal-body').find('.descricao').text(descricao);
                       modal.find('.modal-body').find('.data-inicio').text('Início: ' + formataData(data_inicio));
                       modal.find('.modal-body').find('.data-prazo').text('Prazo: ' + formataData(data_prazo));
-
-                      // $.ajax({
-                      //         method: 'post',
-                      //         url: 'http://localhost/demandou-git/tarefa/jsonusertasks',
-                      //         data: {
-                      //           'codigo_projeto' : codigo_projeto
-                      //         },
-                      //         dataType: 'json',
-                      //         success: function(data) {
-                      //               if (data.length == 0) {
-                      //                     $('#myModalProjetoVer .modal-tarefas-lista').append('<p>Relaxe, sem tarefas no projeto pra você ainda.</p>');
-                      //               } else {
-                      //                     data.forEach(function(item){
-                      //                           $('#myModalProjetoVer .modal-tarefas-lista').append('<p>Titulo:' +  item.titulo + '</p>'); 
-                      //                           $('#myModalProjetoVer .modal-tarefas-lista').append('<p>Início:' +  formataData(new Date(item.data_inicio)) + '</p>'); 
-                      //                           $('#myModalProjetoVer .modal-tarefas-lista').append('<p>Prazo:' +  formataData(new Date(item.data_prazo)) + '</p>'); 
-                      //                     });
-                      //               }
-                      //         },
-                      //         error: function(error) {
-                      //               alert('erro');
-                      //               console.log(error);
-                      //         },
-                      // });
             });
             $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                   var modal = $(this);
                   modal.find('.modal-tarefas-lista').html('');
             });
-            // function getTasksUsersInfo(codigo_tarefa) {
-            //   var res = "nada";
-            //   var ajax = $.ajax({
-            //             method: 'post',
-            //             url: 'http://localhost/demandou-git/tarefa/jsontasksuserinfo',
-            //             async: false,
-            //             data: {
-            //               'codigo_tarefa' : codigo_tarefa
-            //             },
-            //             dataType: 'json',
-            //             success: function(data) {
-            //               res = data;
-            //               return res;
-            //             },
-            //             error: function(error) {
-            //               alert('erro');
-            //               console.log(error);
-            //             },
-            //           }).done(function(data){
-            //           });
-            //           console.log(res);
-            //     // return res;
-            //     var result = new Array();
-            //     res.forEach(function(item){
-            //       result.push(item.papel, item.codigo_usuario);// + ',';
-            //     });
-            //     return result;
-            // }
+            
+            function getTasksUsersInfo() {
+              var res = [];
+              var ajax = $.ajax({
+                        method: 'post',
+                        url: 'http://localhost/demandou-git/tarefa/jsontarefas',
+                        dataType: 'json',
+                        success: function(data) {
+                           var teste = data.filter(function(item,index,arr){
+                              // console.log('teste ajax: ');
+                              if (item.data_fim === null) {
+                                    return true;
+                              } else {
+                                    return false;
+                              }
+                              // var prazo = new Date(item.data_prazo);
+                              // var hoje = new Date();
+                              // return Math.floor((prazo - hoje) / (1000*60*60*24))
+                              //return item.codigo_usuario == 5;
+
+                           });
+                           console.log(teste);
+                        },
+                        error: function(error) {
+                          alert('erro');
+                          console.log(error);
+                        },
+                      }).done(function(data){
+                      
+                      });
+            }
+
+            getTasksUsersInfo();
+
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
                   var data_inicio = new Date(data_inicio);
@@ -521,9 +503,10 @@
                         } else {
                               // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
                               if (encerrada===null) {
+                                   
                                     output += '<p class="alert alert-info">Tarefa finalizada, aguardando validação.</p>';
                                     output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
-                                    console.log('buscando respostas e aguardando validação...');
+                                    //console.log('buscando respostas e aguardando validação...');
                                     // exibir observações e respostas
                                     // caso seja negada a extensão de prazo e forçado encerramento mostrar obs e respostas
                                     // caso tenha sido aceito, irá pro data_fim===null
@@ -540,7 +523,11 @@
                                           //if (data.length>0) {
                                                 // alert('aqui');
                                                 data.forEach(function(item){
-                                                      console.log(item);
+                                                       if ((lider==1) && (item.codigo_tipo==3)) {
+                                                            UsuarioTarefaNome = $('#nome_usuario').val();
+                                                            UsuarioTarefaAvatar = $('#avatar_usuario').val();
+                                                      }
+                                                      // console.log(item);
                                                       $('.tarefa-observacoes-' + codigoTarefa).append(''
                                                        // observações
                                                     + '<div class="media">'
@@ -624,8 +611,7 @@
                   }     
                   return out;
             }
-
-          
+   
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_projeto = button.data('codigoprojeto');
@@ -789,7 +775,11 @@
                     var observacao = $('#tarefa_observacao').val();
                     var lider = $(this).parent().attr('data-lider');
                     var atrasado = $(this).parent().attr('data-atrasado');
-                    var codigo_usuario = $(this).parent().attr('data-codigousuario');
+                    if (lider==1) {
+                        var codigo_usuario = $('#usuario_codigo').val();
+                    } else {
+                        var codigo_usuario = $(this).parent().attr('data-codigousuario');
+                    }
                     var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
                     var url = 'http://localhost/demandou-git/tarefa/finalizar';
                     $.ajax({
