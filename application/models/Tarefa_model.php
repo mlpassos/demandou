@@ -100,7 +100,7 @@ class Tarefa_model extends CI_Model {
 
        public function listar() {
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.codigo_usuario as codigo_usuario');
+                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario');
                 $this->db->from('tarefa as t');
                 $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
@@ -117,7 +117,7 @@ class Tarefa_model extends CI_Model {
         public function jsonTarefasObservacoes($codigo_tarefa) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('ot.tipo, res.resposta, res.data_resposta, res.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
+                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, res.resposta, res.data_resposta, res.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
                 $this->db->from('tarefa as t');
                 $this->db->join('tarefa_observacoes as obs', 't.codigo = obs.codigo_tarefa');
                 $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
