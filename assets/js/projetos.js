@@ -396,37 +396,43 @@
             });
             
             function getTasksUsersInfo() {
-              var res = [];
+              var res = [],
+              atrasados = "", comecou = "";
               var ajax = $.ajax({
                         method: 'post',
+                        // async:false,
                         url: 'http://localhost/demandou-git/tarefa/jsontarefas',
                         dataType: 'json',
                         success: function(data) {
-                           var teste = data.filter(function(item,index,arr){
-                              // console.log('teste ajax: ');
-                              if (item.data_fim === null) {
-                                    return true;
-                              } else {
-                                    return false;
-                              }
-                              // var prazo = new Date(item.data_prazo);
-                              // var hoje = new Date();
-                              // return Math.floor((prazo - hoje) / (1000*60*60*24))
-                              //return item.codigo_usuario == 5;
-
+                           comecou = data.filter(function(item,index,arr){
+                              var inicio = new Date(item.data_inicio);
+                              var hoje = new Date();
+                              return Math.floor((inicio - hoje) / (1000*60*60*24))<=0;
+                           }).map(function(item,index,arr) {
+                              return item;
                            });
-                           console.log(teste);
+                           atrasados = data.filter(function(item,index,arr){
+                              var prazo = new Date(item.data_prazo);
+                              var hoje = new Date();
+                              return Math.floor((prazo - hoje) / (1000*60*60*24))<0;
+                           }).map(function(item,index,arr) {
+                              return item;
+                           });
+                           
                         },
                         error: function(error) {
                           alert('erro');
                           console.log(error);
                         },
                       }).done(function(data){
-                      
+                        console.log(comecou);
+                        console.log(atrasados);
                       });
+
             }
 
             getTasksUsersInfo();
+            
 
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
