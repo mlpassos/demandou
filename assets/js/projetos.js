@@ -395,44 +395,44 @@
                   modal.find('.modal-tarefas-lista').html('');
             });
             
-<<<<<<< HEAD
-            function getTasksUsersInfo() {
-              var res = [],
-              atrasados = "", comecou = "";
-              var ajax = $.ajax({
-                        method: 'post',
-                        // async:false,
-                        url: 'http://localhost/demandou-git/tarefa/jsontarefas',
-                        dataType: 'json',
-                        success: function(data) {
-                           comecou = data.filter(function(item,index,arr){
-                              var inicio = new Date(item.data_inicio);
-                              var hoje = new Date();
-                              return Math.floor((inicio - hoje) / (1000ß*60*60*24))<=0;
-                           }).map(function(item,index,arr) {
-                              return item;
-                           });
-                           atrasados = data.filter(function(item,index,arr){
-                              var prazo = new Date(item.data_prazo);
-                              var hoje = new Date();
-                              return Math.floor((prazo - hoje) / (1000*60*60*24))<0;
-                           }).map(function(item,index,arr) {
-                              return item;
-                           });
+
+            // function getTasksUsersInfo() {
+            //   var res = [],
+            //   atrasados = "", comecou = "";
+            //   var ajax = $.ajax({
+            //             method: 'post',
+            //             // async:false,
+            //             url: 'http://localhost/demandou-git/tarefa/jsontarefas',
+            //             dataType: 'json',
+            //             success: function(data) {
+            //                comecou = data.filter(function(item,index,arr){
+            //                   var inicio = new Date(item.data_inicio);
+            //                   var hoje = new Date();
+            //                   return Math.floor((inicio - hoje) / (1000*60*60*24))<=0;
+            //                }).map(function(item,index,arr) {
+            //                   return item;
+            //                });
+            //                atrasados = data.filter(function(item,index,arr){
+            //                   var prazo = new Date(item.data_prazo);
+            //                   var hoje = new Date();
+            //                   return Math.floor((prazo - hoje) / (1000*60*60*24))<0;
+            //                }).map(function(item,index,arr) {
+            //                   return item;
+            //                });
                            
-                        },
-                        error: function(error) {
-                          alert('erro');
-                          console.log(error);
-                        },
-                      }).done(function(data){
-                        console.log(comecou);
-                        console.log(atrasados);
-                      });
+            //             },
+            //             error: function(error) {
+            //               alert('erro');
+            //               console.log(error);
+            //             },
+            //           }).done(function(data){
+            //             console.log(comecou);
+            //             console.log(atrasados);
+            //           });
 
-            }
+            // }
 
-            getTasksUsersInfo();
+            // getTasksUsersInfo();
 
 
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
@@ -494,7 +494,8 @@
                         // console.log(typeof(data_fim));
                         if (data_fim===null) {
                               // console.log('igual');
-                              output += '<div class="form-group">'
+                              output += '<div>'
+                                    + '<div class="form-group">'
                                     + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
                                     + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
                                     + '</div>'
@@ -503,6 +504,7 @@
                                     + '<label for="tarefa_observacao">Observações</label>'
                                     + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
+                                    + '</div>'
                                     + '</div>'
                                     + '</div>';
                               // se existir respostas, exibir...
@@ -750,18 +752,27 @@
             });
             
             $('body').delegate('#tarefa_gravar','click', function(){
-                  var res = $('input#tarefa_encerrar.switch')[0].checked;
-                  console.log(res);
+                  var res = $(this).parent().parent().parent().find('input#tarefa_encerrar.switch')[0].checked;
+                  // // console.log(res);
+                  // var observacao = $(this).parent().find('#tarefa_observacao').val();
+                  // var lider = $(this).parent().attr('data-lider');
+                  // var atrasado = $(this).parent().attr('data-atrasado');
+                  // // se lider fecha tarefa, codigo usuario igual codigo lider
+                  // // if (lider==1) {
+                  //     // var codigo_usuario = $('#usuario_codigo').val();
+                  // // } else {
+                  // var codigo_usuario = $(this).parent().attr('data-codigousuario');
+                  // // }
+                  // var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
+                  // var url = 'http://localhost/demandou-git/tarefa/finalizar';
+                  // var resposta = {res, observacao,lider, atrasado, codigo_usuario, codigo_tarefa, url};
+                  // console.log(resposta);
                   if (res) {
                     // grava
-                    var observacao = $('#tarefa_observacao').val();
+                    var observacao = $(this).parent().find('#tarefa_observacao').val();
                     var lider = $(this).parent().attr('data-lider');
                     var atrasado = $(this).parent().attr('data-atrasado');
-                    if (lider==1) {
-                        var codigo_usuario = $('#usuario_codigo').val();
-                    } else {
-                        var codigo_usuario = $(this).parent().attr('data-codigousuario');
-                    }
+                    var codigo_usuario = $(this).parent().attr('data-codigousuario');
                     var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
                     var url = 'http://localhost/demandou-git/tarefa/finalizar';
                     $.ajax({
