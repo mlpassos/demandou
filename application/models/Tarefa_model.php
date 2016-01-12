@@ -75,7 +75,8 @@ class Tarefa_model extends CI_Model {
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
                     // 4 - Forçada
-                    "codigo_status_obs" => 4
+                    "codigo_status_obs" => 4,
+                    "inserido_por" =>  $codigo_usuario
                 );
             } else {
                  $dados['tarefa'] = array(
@@ -87,7 +88,8 @@ class Tarefa_model extends CI_Model {
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
                     // 4 - Forçada
-                    "codigo_status_obs" => 1
+                    "codigo_status_obs" => 1,
+                    "inserido_por" =>  $codigo_usuario
                 );
             }
             // onde colocar o fim
@@ -136,12 +138,12 @@ class Tarefa_model extends CI_Model {
         public function jsonTarefasObservacoes($codigo_tarefa) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, res.resposta, res.data_resposta, res.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
+                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, obs.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
                 $this->db->from('tarefa as t');
                 $this->db->join('tarefa_observacoes as obs', 't.codigo = obs.codigo_tarefa');
                 $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
-                $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
-                $this->db->join('usuario as u', 'res.inserido_por = u.codigo');
+                // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
+                $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
                 $this->db->where('t.codigo', $codigo_tarefa);
                 $this->db->order_by('obs.data_criada', 'DESC');
                 $query = $this->db->get();

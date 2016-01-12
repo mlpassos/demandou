@@ -434,6 +434,65 @@
 
             // getTasksUsersInfo();
 
+            function mostrarObs(codigoTarefa, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
+                  var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
+                  $.ajax({
+                        method: 'post',
+                        url: url,
+                        // async:false,
+                        data: {
+                          'codigo_tarefa' : codigoTarefa
+                        },
+                        dataType: 'json',
+                        success: function(data) {
+                        //if (data.length>0) {
+                              console.log(data);
+                              data.forEach(function(item){
+                                     if (item.codigo_tipo==3) {
+                                          UsuarioTarefaNome = item.nome + ' ' + item.sobrenome;
+                                          UsuarioTarefaAvatar = item.arquivo_avatar;
+                                    }
+                                    // console.log(item);
+                                    $('.tarefa-observacoes-' + codigoTarefa).append(''
+                                     // observações
+                                  + '<div class="media">'
+                                  + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
+                                   + '<div class="media-left">'
+                                    + '<a href="#">'
+                                    + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
+                                    + '<small>' + UsuarioTarefaNome + '</small>'
+                                    + '</a>'
+                                   + '</div>'
+                                   + '<div class="media-body">'
+                                    + '<h4 class="media-heading">' + item.tipo + '</h4>'
+                                    + '<p>' + item.observacao + '</p>'
+                                   + '</div>'
+                                   + '</div>'
+                                    // respostas
+                                  //  + '<div class="media">'
+                                  // + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
+                                  //  + '<div class="media-left">'
+                                  //   + '<a href="#">'
+                                  //   + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                                  //   + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
+                                  //   + '</a>'
+                                  //  + '</div>'
+                                  //  + '<div class="media-body">'
+                                  //   + '<h4 class="media-heading">Resposta</h4>'
+                                  //    + '<p>' + item.resposta + '</p>'
+                                  //  + '</div>'
+                                  //  + '</div>'
+                                     );
+                              });
+                              //}
+                            },
+                            error: function (error) {
+                              console.log('erro: ' + error);
+                            }
+                        }).done(function(data){
+                             // return output;
+                  });
+            }
 
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
@@ -445,50 +504,81 @@
                   var check_fim = Math.floor((data_prazo - hoje) / (1000*60*60*24));
                   var atrasado = 0;
                   var output = "";
-
-                  if (check_inicio>=0) {
-                      // nao começou
-                      var comecou = false;
-                      if (check_inicio==0) {
-                        output += '<p class="alert alert-info">Começou hoje</p>';
-                      } else {
-                        if (check_inicio == 1) {
-                          output += '<p class="alert alert-info">Começa amanhã</p>';
+                  // já finalizou a tarefa e não é dono dela ou líder...
+                  if (data_fim!==null) {
+                        // sim
+                        // 100% e mensagem
+                        // console.log(codigoUsuarioAtual);
+                        // console.log(codigoUsuarioTarefa);
+                        if (codigoUsuarioAtual == codigoUsuarioTarefa) {
+                              // se for igual faz nada
                         } else {
-                          output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
+                              // sendo diferente e não é líder
+                              if (lider !== 1) {
+                                    output += 'Tempo consumido (%)<div class="progress">'
+                                                  + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:100%;min-width: 2em;">'
+                                                  + '100%'
+                                                  + '</div>'
+                                                  + '</div>';
+                                    if (encerrada === null) {
+                                          output += '<p class="alert alert-info">Finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
+                                    } else {
+                                          output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
+                                    }
+                              }
                         }
-                      }
-                      // progress bar 0
-                      output += 'Tempo consumido (%)<div class="progress">'
-                                + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
-                                + '0%'
-                                + '</div>'
-                                + '</div>'
                   } else {
-                      var comecou = true;
-                      // começou
-                      if (check_fim<=0) {
-                        if (check_fim==0) { 
-                          var porcento = 100;
-                          output += '<p class="alert alert-info">Termina hoje!</p>';
+                        // ainda não finalizou
+                        if (check_inicio>=0) {
+                            // nao começou
+                            var comecou = false;
+                            if (check_inicio==0) {
+                              output += '<p class="alert alert-info">Começou hoje</p>';
+                            } else {
+                              if (check_inicio == 1) {
+                                output += '<p class="alert alert-info">Começa amanhã</p>';
+                              } else {
+                                output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
+                              }
+                            }
+                            // progress bar 0
+                            output += 'Tempo consumido (%)<div class="progress">'
+                                      + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
+                                      + '0%'
+                                      + '</div>'
+                                      + '</div>'
                         } else {
-                          // atrasado
-                          var porcento = 100;
-                          var atrasado = 1;
-                          output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia' : faltam*(-1) + ' dias') + ', finalize para negociar novo prazo.</p>';
-                        } 
-                      } else {
-                        var porcento = [(total-faltam) * 100] / total;
-                        output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
-                        
-                      }
-                      output += 'Tempo consumido (%)<div class="progress">'
-                                + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
-                                + porcento.toFixed(2) + '%'
-                                + '</div>'
-                                + '</div>'
+                            var comecou = true;
+                            // começou
+                            if (check_fim<=0) {
+                              if (check_fim==0) { 
+                                var porcento = 100;
+                                output += '<p class="alert alert-info">Termina hoje!</p>';
+                              } else {
+                                // atrasado
+                                var porcento = 100;
+                                var atrasado = 1;
+                                output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia.' : faltam*(-1) + ' dias.') 
+                                // se usuário atual é o dono da tarefa, mostra mensagem sobre negociar prazo.
+                                if (codigoUsuarioAtual == codigoUsuarioTarefa) {
+                                    output += ', finalize para negociar novo prazo.</p>';
+                                } else {
+                                    output += '</p>';
+                                }
+                              } 
+                            } else {
+                              var porcento = [(total-faltam) * 100] / total;
+                              output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
+                              
+                            }
+                            output += 'Tempo consumido (%)<div class="progress">'
+                                      + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
+                                      + porcento.toFixed(2) + '%'
+                                      + '</div>'
+                                      + '</div>'
+                        }
                   }
-
+                  // caso dono da tarefa e ela tenha começado ou seja líder, mostra controles de finalização
                   if ( (check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1) ) {
                         // já foi finalizada antes?
                         // console.log(typeof(data_fim));
@@ -513,74 +603,29 @@
                               // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
                               if (encerrada===null) {
                                    
-                                    output += '<p class="alert alert-info">Tarefa finalizada, aguardando validaçãoh.</p>';
-                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
-                                    //console.log('buscando respostas e aguardando validação...');
-                                    // exibir observações e respostas
-                                    // caso seja negada a extensão de prazo e forçado encerramento mostrar obs e respostas
-                                    // caso tenha sido aceito, irá pro data_fim===null
-                                    var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
-                                    $.ajax({
-                                        method: 'post',
-                                        url: url,
-                                        // async:false,
-                                        data: {
-                                          'codigo_tarefa' : codigoTarefa
-                                        },
-                                        dataType: 'json',
-                                        success: function(data) {
-                                          //if (data.length>0) {
-                                                console.log(data);
-                                                data.forEach(function(item){
-                                                       if ((lider==1) && (item.codigo_tipo==3)) {
-                                                            UsuarioTarefaNome = $('#nome_usuario').val();
-                                                            UsuarioTarefaAvatar = $('#avatar_usuario').val();
-                                                      }
-                                                      // console.log(item);
-                                                      $('.tarefa-observacoes-' + codigoTarefa).append(''
-                                                       // observações
-                                                    + '<div class="media">'
-                                                    + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
-                                                     + '<div class="media-left">'
-                                                      + '<a href="#">'
-                                                      + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
-                                                      + '<small>' + UsuarioTarefaNome + '</small>'
-                                                      + '</a>'
-                                                     + '</div>'
-                                                     + '<div class="media-body">'
-                                                      + '<h4 class="media-heading">' + item.tipo + '</h4>'
-                                                      + '<p>' + item.observacao + '</p>'
-                                                     + '</div>'
-                                                     + '</div>'
-                                                      // respostas
-                                                     + '<div class="media">'
-                                                    + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
-                                                     + '<div class="media-left">'
-                                                      + '<a href="#">'
-                                                      + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
-                                                      + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
-                                                      + '</a>'
-                                                     + '</div>'
-                                                     + '<div class="media-body">'
-                                                      + '<h4 class="media-heading">Resposta</h4>'
-                                                       + '<p>' + item.resposta + '</p>'
-                                                     + '</div>'
-                                                     + '</div>'
-                                                       );
-                                                });
-                                          //}
-                                        },
-                                        error: function (error) {
-                                          console.log('erro: ' + error);
-                                        }
-                                    }).done(function(data){
-                                         // return output;
-                                    });
-
+                                    output += '<p class="alert alert-info">Tarefa finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
+                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '">pro lider mostra form resposta</p>';
+                                    //console.log('buscando respostas e aguardando validação.');
+                                    mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               } else {
-                                    output += '<p class="alert alert-info">Tarefa finalizada e avaliada com sucesso.</p>';
-                                    // console.log('buscando respostas mas já avaliada com sucesso.');
+                                    output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
+                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '">Mostrar respostas tbm</p>';
+                                    mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
+                                    // console.log('buscando respostas mas já avaliada.');
+
                               }
+
+                              
+
+                              // exibir observações e respostas
+                              // caso seja negada a extensão de prazo e forçado encerramento mostrar obs e respostas
+                              // caso tenha sido aceito, irá pro data_fim===null
+                              // if (lider == 1) {
+                              //       output += '<p>Líder, listar obs</p>'
+                              // }
+
+
+                              
                         }
                   } 
                   // $(':checkbox').iphoneStyle();
