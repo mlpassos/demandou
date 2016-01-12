@@ -433,10 +433,7 @@
             }
 
             getTasksUsersInfo();
-            
-=======
-      
->>>>>>> 77bb4b5db297ae52d1bf94f6e4c0764ae6d919fd
+
 
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
