@@ -135,30 +135,25 @@ class Tarefa_controller extends MY_Controller {
     	$observacao = $this->input->post('observacao');
     	$lider = $this->input->post('lider');
     	$atrasado = $this->input->post('atrasado');
-    	// usuário dono da tarefa
-    	$usuario_tarefa = $this->input->post('codigo_usuario');
-    	// usuário atual
-    	$usuario = $this->session->userdata('codigo_usuario');
-
-    	if ($usuario_tarefa !== $usuario) {
-    		// a tarefa está sendo finalizada pelo admin ou pelo líder, ela é forçada
+    	if ($lider == 1) {
+    		// quem finaliza é o lider, tarefa forçada tipo 3
+    		$usuario = $this->session->userdata('codigo_usuario');	
     		$codigo_tipo = 3;
     	} else {
-    		// o próprio usuário está finalizando a tarefa
-    		// está atrasado?
+				// se não é o líder, só pode ser o usuário dono da tarefa
+    		$usuario = $this->input->post('codigo_usuario');
     		if ($atrasado==1) {
-    			// tarefa do tipo extensão de prazo
+    			// obs do tipo extensão de prazo, pois está atrasada
     			$codigo_tipo = 2;
     		} else {
-    			// tarefa do tipo finalização normal
+    			// obs do tipo finalização normal
     			$codigo_tipo = 1;
     		}
-
     	}
-    	
+    	   	
     	$this->load->model('tarefa_model');
     	
-    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo)) {
+    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo, $usuario)) {
     		echo json_encode(
     			array(
     				'status' => 'sucesso',
