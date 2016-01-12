@@ -26,6 +26,7 @@
 		        	}
 				?>
 				<div class="tarefas-box <?php echo $prioridadesClass; ?>">
+					<i class="pin animated fadeInDownBig"></i>
 					<div class="caption">
 				        <h3><?php echo $p['titulo'];?></h3>
 				        	<?php 
@@ -35,35 +36,37 @@
 								echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
 				        	}?>
 				        <hr>
-				        <p id="tarefas-descricao-1" class="teste">
-				        	<?php 
-				        	$this->load->helper('text');
-				        	echo word_limiter($p['descricao'],20);
-				        	//echo $p['descricao'];
-				        	?> 
-				        </p>
-				        <p id="tarefas-descricao-1" class="teste">
-				        	<?php 
-				        	$this->load->helper('date');
+				        <div class="body">
+					        <p id="tarefas-descricao-1" class="teste">
+					        	<?php 
+					        	$this->load->helper('text');
+					        	echo word_limiter($p['descricao'],20);
+					        	//echo $p['descricao'];
+					        	?> 
+					        </p>
+					        <p id="tarefas-descricao-1" class="teste">
+					        	<?php 
+					        	$this->load->helper('date');
 
-							// INíCIO
-				        	// $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
-							echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<span class="fa fa-play-circle"></span> ' : '<span class="fa fa-pause-circle"></span> ' ;
-							//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
-							// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
+								// INíCIO
+					        	// $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
+								echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<span class="fa fa-play-circle"></span> ' : '<span class="fa fa-pause-circle"></span> ' ;
+								//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
+								// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
 
-				   			// PRAZO
-				   			$timestamp = strtotime($p['data_prazo']);
-							$now = time();
-							if( strtotime($p['data_prazo']) < strtotime('now') ) {
-								echo '<br><span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
-							} 
-							// else {
-							// 	echo "<br><span class='glyphicon glyphicon-time'></span> ";
-							// 	echo timespan($now, $timestamp);
-							// }
-				        	?> 
-				        </p>
+					   			// PRAZO
+					   			$timestamp = strtotime($p['data_prazo']);
+								$now = time();
+								if( strtotime($p['data_prazo']) < strtotime('now') ) {
+									echo '<br><span class="glyphicon glyphicon-warning-sign"></span> ATRASADO ';
+								} 
+								// else {
+								// 	echo "<br><span class='glyphicon glyphicon-time'></span> ";
+								// 	echo timespan($now, $timestamp);
+								// }
+					        	?> 
+					        </p>
+					    </div>
 				    </div>
 			    	<!-- FOOTER  -->
 		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">

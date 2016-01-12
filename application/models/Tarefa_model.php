@@ -79,6 +79,11 @@ class Tarefa_model extends CI_Model {
                 );
                 // insere observação
                 if ( $this->db->insert('tarefa_observacoes', $dados['observacao']) ) {
+                    // insere resposta em branco
+                    $dados["resposta"] = array(
+                        "codigo_observacao" => $this->db->insert_id()
+                        );
+                    $this->db->insert('observacoes_resposta', $dados["resposta"]);
                     return true;
                 } else {
                     return false;

@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Reenie+Beanie);
 /*.tarefas-menu {
 	list-style:none;
 	width:100%;
@@ -35,7 +36,7 @@
     transition: border .2s ease-in-out;
 }
 .tarefas-box:after {     
-  opacity:1;
+  opacity:0;
   content: "";
   position:absolute;
   z-index:-1;
@@ -72,7 +73,7 @@
   /*background-color:blue !important;*/
   /*width:100%;*/
   /*padding:5px;*/
-  transform: translateY(100%);
+  /*transform: translateY(100%);*/
 	-webkit-transition: all .275s ease-in-out;
     -o-transition: all .275s ease-in-out;
     transition: all .275s ease-in-out;
@@ -83,11 +84,19 @@
 }
 .tarefas-box:hover .tarefas-acoes {
 	opacity:1;
-  transform: translateY(0%);
+  /*transform: translateY(0%);*/
 }
 .tarefas-box:hover:after  {
-	opacity:0;
+	opacity:1;
 }
+
+
+/*.tarefas-box .body {
+  font-family: 'Reenie Beanie';
+  font-size:22px;
+}*/
+
+
 #tarefa_gravar {
   margin-top:5px;
 }
@@ -152,8 +161,8 @@
   border:initial;
 }
 .panel:after {     
-  opacity:1;
   content: "";
+  opacity: 1;
   position:absolute;
   z-index:-1;
   right:1px;
@@ -171,6 +180,15 @@
   -o-transition: all .275s ease-in-out;
   transition: all .275s ease-in-out;
 }
+
+/*.tarefa-individual-box {
+  opacity:1;
+}*/
+
+/*.item:hover .tarefa-individual-box:after  {
+  opacity:1;
+}*/
+
 
 .panel-heading small {
   display:block;
@@ -201,11 +219,60 @@ padding:2px;
 border:initial;
 }
 
+/* PINO DOS BOXES DOS PROJETOS */
 
+.pin {
+  background-color: #aaa;
+  display: block;
+  height: 32px;
+  width: 2px;
+  position: absolute;
+  left: 50%;
+  top: -16px;
+  z-index: 1;
+}
+
+.pin:after {
+  background-color: #A31;
+  background-image: radial-gradient(25% 25%, circle, hsla(0,0%,100%,.3), hsla(0,0%,0%,.3));
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px hsla(0,0%,0%,.1),
+              inset 3px 3px 3px hsla(0,0%,100%,.2),
+              inset -3px -3px 3px hsla(0,0%,0%,.2),
+              23px 20px 3px hsla(0,0%,0%,.15);
+  content: '';
+  height: 12px;
+  left: -5px;
+  position: absolute;
+  top: -10px;
+  width: 12px;
+}
+
+.pin:before {
+  background-color: hsla(0,0%,0%,0.1);
+  box-shadow: 0 0 .25em hsla(0,0%,0%,.1);
+  content: '';
+  height: 24px;
+  width: 2px;
+  left: 0;
+  position: absolute;
+  top: 8px;
+  transform: rotate(57.5deg);
+  -moz-transform: rotate(57.5deg);
+  -webkit-transform: rotate(57.5deg);
+  -o-transform: rotate(57.5deg);
+  -ms-transform: rotate(57.5deg);
+  transform-origin: 50% 100%;
+  -moz-transform-origin: 50% 100%;
+  -webkit-transform-origin: 50% 100%;
+  -ms-transform-origin: 50% 100%;
+  -o-transform-origin: 50% 100%;
+}
 
 /* checkbox style */
 
 /* Container */
+
 span.switch {
   cursor: pointer;
   display: inline-block;
