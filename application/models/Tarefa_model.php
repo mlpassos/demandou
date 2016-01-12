@@ -60,42 +60,56 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function finalizar($codigo_tarefa,$observacao,$codigo_tipo) {
+        public function finalizar($codigo_tarefa,$observacao,$codigo_tipo, $codigo_usuario) {
             
-            $dados['tarefa'] = array(
-                "data_fim" => date("Y-m-d"),
-            );
-            // onde colocar o fim
-            $this->db->where('codigo', $codigo_tarefa);
-            // se finalizar tarefa corretamente
-            if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+            if ($codigo_tipo == 3) {  
+                // encerra tarefa de uma vez, forçada          
+                $dados['tarefa'] = array(
+                    "data_fim" => date("Y-m-d"),
+                    "encerrada" => 1,
+                    "encerrada_por" => $codigo_usuario,
+                );
                 $dados['observacao'] = array(
                     "codigo_tarefa" => $codigo_tarefa,
                     "observacao" => $observacao,
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
-                    // 1 - Em andamento
+                    // 4 - Forçada
+                    "codigo_status_obs" => 4
+                );
+            } else {
+                 $dados['tarefa'] = array(
+                    "data_fim" => date("Y-m-d"),
+                );
+                $dados['observacao'] = array(
+                    "codigo_tarefa" => $codigo_tarefa,
+                    "observacao" => $observacao,
+                    "data_criada" => date("Y-m-d"),
+                    "codigo_tipo" => $codigo_tipo,
+                    // 4 - Forçada
                     "codigo_status_obs" => 1
                 );
+            }
+            // onde colocar o fim
+            $this->db->where('codigo', $codigo_tarefa);
+            // se finalizar tarefa corretamente
+            if ( $this->db->update('tarefa', $dados['tarefa']) ) {
                 // insere observação
                 if ( $this->db->insert('tarefa_observacoes', $dados['observacao']) ) {
+                    // caso seja forçada, encerrar também a tarefa
                     // insere resposta em branco
-                    $dados["resposta"] = array(
-                        "codigo_observacao" => $this->db->insert_id()
-                        );
-                    $this->db->insert('observacoes_resposta', $dados["resposta"]);
+                    // $dados["resposta"] = array(
+                    //     "codigo_observacao" => $this->db->insert_id()
+                    //     );
+                    // $this->db->insert('observacoes_resposta', $dados["resposta"]);
                     return true;
                 } else {
                     return false;
                     //array("status"=>"falha");
                 }
-
             } else {
                 return false;
             }
-            
-            
-
         }
 
         public function excluir($codigo) {
