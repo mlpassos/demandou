@@ -62,8 +62,10 @@ $route['tarefa/jsonusertasks'] = 'tarefa_controller/json_usertasks';
 $route['tarefa/jsonprojecttasks'] = 'tarefa_controller/json_projecttasks';
 $route['tarefa/jsontasksuserinfo'] = 'tarefa_controller/json_tasksuserinfo';
 $route['tarefa/jsontasksobs'] = 'tarefa_controller/json_tasksobs';
+$route['tarefa/jsontasksrespostas'] = 'tarefa_controller/json_tasksrespostas';
 $route['tarefa/jsontarefas'] = 'tarefa_controller/json_tarefas';
 $route['tarefa/finalizar'] = 'tarefa_controller/finalizar';
+$route['tarefa/responder'] = 'tarefa_controller/responder';
 $route['usuarios'] = 'usuario_controller';
 $route['admin'] = 'admin_controller';
 

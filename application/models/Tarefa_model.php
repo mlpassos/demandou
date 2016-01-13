@@ -60,6 +60,53 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
+        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $usuario) {
+            $dados['resposta'] = array(
+                    "codigo_observacao" => $codigo_observacao,
+                    "resposta" => $resposta,
+                    "data_resposta" => date("Y-m-d"),
+                    "inserido_por" =>  $codigo_usuario
+                );
+            if ($codigo_tipo == 2) {
+                // extensão, grava resposta e redefinir data_fim em tarefa
+                if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
+                    // $dados['tarefa'] = array(
+                    //     "data_fim" => date("Y-m-d"),
+                    // );
+                    return true;
+                }
+            }
+            if ($codigo_tipo == 1) {
+                // finalizou normal, grava resposta e tarefa redefinir  encerrada e encerrada_por em tarefa
+                if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
+                    $dados['tarefa'] = array(
+                        "encerrada" => 1,
+                        "encerrada_por" => $usuario,
+                    );
+                    $this->db->where('codigo', $codigo_tarefa);
+                    if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            if ($codigo_tipo == 3) {
+                // forçada,  redefinir apenas tarefa data_fim para null e encerrada = 1 e encerrada_por session->userdata() em tarefa
+                $dados['tarefa'] = array(
+                        "data_fim" => null,
+                        "encerrada" => 1,
+                        "encerrada_por" => $usuario,
+                );
+                $this->db->where('codigo', $codigo_tarefa);
+                if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
         public function finalizar($codigo_tarefa,$observacao,$codigo_tipo, $codigo_usuario) {
             
             if ($codigo_tipo == 3) {  
@@ -138,13 +185,28 @@ class Tarefa_model extends CI_Model {
         public function jsonTarefasObservacoes($codigo_tarefa) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, obs.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
+                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, obs.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.codigo as codigo_observacao, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
                 $this->db->from('tarefa as t');
                 $this->db->join('tarefa_observacoes as obs', 't.codigo = obs.codigo_tarefa');
                 $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
                 // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
                 $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
                 $this->db->where('t.codigo', $codigo_tarefa);
+                $this->db->order_by('obs.data_criada', 'DESC');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+
+         public function jsonTarefasRespostas($codigo_observacao) {
+                //$res = array("response"=>"ok");
+                // $this->output->enable_profiler(TRUE);
+                $this->db->select('res.resposta, res.data_resposta, res.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.data_criada, ot.tipo as tipo');
+                $this->db->from('observacoes_resposta as res');
+                $this->db->join('tarefa_observacoes as obs', 'res.codigo_observacao = obs.codigo');
+                $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
+                // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
+                $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
+                $this->db->where('res.codigo_observacao', $codigo_observacao);
                 $this->db->order_by('obs.data_criada', 'DESC');
                 $query = $this->db->get();
                 return $query->result_array();

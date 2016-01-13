@@ -129,7 +129,40 @@ class Tarefa_controller extends MY_Controller {
     	echo json_encode($data['observacoes']);
     }
 
+    public function json_tasksrespostas() {
+    	$codigo_observacao = $this->input->post('codigo_observacao');
+    	$this->load->model('tarefa_model');
+    	$data['respostas'] = $this->tarefa_model->jsonTarefasRespostas($codigo_observacao);
+    	echo json_encode($data['respostas']);
+    }
 
+
+    public function responder() {
+    	$codigo_tarefa = $this->input->post('codigo_tarefa');
+    	$codigo_observacao = $this->input->post('codigo_observacao');
+    	$resposta = $this->input->post('resposta');
+    	$lider = $this->input->post('lider');
+    	$tipo = $this->input->post('tipo');
+    	$usuario = $this->session->userdata('codigo_usuario');	
+    	
+    	$this->load->model('tarefa_model');
+    	
+    	if ($data['resposta'] = $this->tarefa_model->responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $usuario)) {
+    		echo json_encode(
+    			array(
+    				'status' => 'sucesso',
+    				'mensagem' => 'Observação respondida com sucesso.'
+    				)
+    		);	
+    	} else {
+    		echo json_encode(
+    			array(
+    				'status'=>'falha',
+    				'mensagem' => 'Ooops, deu bug. De novo? =]'
+    			)
+    		);
+    	}
+    }
     public function finalizar() {
     	$codigo_tarefa = $this->input->post('codigo_tarefa');
     	$observacao = $this->input->post('observacao');

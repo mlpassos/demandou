@@ -79,7 +79,7 @@
     transition: all .275s ease-in-out;
 }
 
-.tarefa-observacao {
+.tarefa-observacao, .obs-resposta {
   display:none;
 }
 .tarefas-box:hover .tarefas-acoes {

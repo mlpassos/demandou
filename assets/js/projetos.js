@@ -433,9 +433,140 @@
             // }
 
             // getTasksUsersInfo();
+            function mostraResposta(codigo_tarefa, el, codigo_observacao, codigo_tipo, lider) {
+                  // se for forçada, mostra OBS pois é final, ou seja, já mostrou
+                  console.log('aqui');
+                  if (codigo_tipo == 3) {
+                        // return '<div class="media">'
+                        //     + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
+                        //     + '<div class="media-left">'
+                        //     + '<a href="#">'
+                        //     + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                        //     + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
+                        //     + '</a>'
+                        //     + '</div>'
+                        //     + '<div class="media-body">'
+                        //     + '<h4 class="media-heading">Resposta</h4>'
+                        //     + '<p>' + item.resposta + '</p>'
+                        //     + '</div>'
+                        //     + '</div>';
+                        return 'já mostrei, foi forçada, basta OBS. ' + codigo_observacao;
+                  } else {
+                        // buscar resposta passando codigo_obs
+                        // return 'buscando respostas (se nao form resposta se lider) para... ' + codigo_observacao;
+                        // var data_resposta = new Date(item.data_resposta);
+                        // data_resposta.setDate(data_resposta.getDate() + 1);
+                        var url = 'http://localhost/demandou-git/tarefa/jsontasksrespostas'
+                        $.ajax({
+                            method: 'post',
+                            url: url,
+                            data: {
+                              'codigo_observacao' : codigo_observacao
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                              console.log(data);
+                              
+                              if (data.length>0) {
+                                    alert('tem resposta');
+                                    data.forEach(function(item){
+                                          var data_resposta = new Date(item.data_resposta);
+                                          data_resposta.setDate(data_resposta.getDate() + 1);
+                                          el.append('<div class="media">'
+                                              + '<p>' + formataData(new Date(data_resposta)) + '</p>'
+                                              + '<div class="media-left">'
+                                              + '<a href="#">'
+                                              + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                                              + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
+                                              + '</a>'
+                                              + '</div>'
+                                              + '<div class="media-body">'
+                                              + '<h4 class="media-heading">Resposta</h4>'
+                                              + '<p>' + item.resposta + '</p>'
+                                              + '</div>'
+                                              + '</div>');
+                                    });
+                                    
+                              } else {
+                                     if (lider == 1) {
+                                          // mostra form
+                                          // alert('Sem resposta - FORM LÍDER');
+                                          el.append('<div>'
+                                                + '<div class="form-group">'
+                                                + '<label for="observacao_responder">Responder Observação</label><br>' 
+                                                + '<input type="checkbox" class="switch switch-resposta" id="observacao_responder" name="observacao_responder" data-codigoobservacao="' + codigo_observacao +'">'
+                                                + '</div>'
+                                                + '<div class="form-group">'
+                                                + '<div class="obs-resposta observacao-resposta-' + codigo_observacao +'" data-codigotarefa="' + codigo_tarefa + '" data-lider="' + lider + '" data-tipo="' + codigo_tipo + '">'
+                                                + '<label for="observacao_resposta">Observações</label>'
+                                                + '<textarea id="observacao_resposta" name="observacao_resposta" class="form-control" rows="3"></textarea>'
+                                                + '<button type="button" class="btn btn-primary btn-small" id="resposta_gravar"><i class="fa fa-disk"></i> Responder</button>'
+                                                + '</div>'
+                                                + '</div>'
+                                                + '</div>');
+                                          
+                                          
+                                          // return "FORM PRO LÍDER";//
+                                    } else {
+                                          // mostra mensagem ainda sem resposta
+                                          // alert('Sem resposta - AGUARDANDO RESPOSTA');
+                                          el.append('<p>Aguardando resposta.</p>');
+                                          // return "Aguardando resposta.";
+                                    }
+                              }
+                            },
+                            error: function(erro) {
+                              console.log(erro);
+                            }
+                        }).done(function(data){
+                              el.find("input[type=checkbox].switch-resposta").each(function() {
+                                  // Insert mark-up for switch
+                                  //console.log($(this));
+                                  $(this).before(
+                                    '<span class="switch switch-resposta">' +
+                                    '<span class="mask" /><span class="background" />' +
+                                    '</span>'
+                                  );
+                                  // Hide checkbox
+                                  $(this).hide();
+                                  // Set inital state
+                                  if (!$(this)[0].checked) {
+                                    //alert('nao marcado');
+                                    $(this).prev().find(".background").css({left: "-56px"});
+                                  }
+                              }); // End each()
+                              el.find("span.switch-resposta").click(function() {
+                                  // If on, slide switch off
+                                  console.log('estava ' + $(this).next()[0].checked);
+                                  var codigo_observacao = $(this).next()[0].attributes[4].value;
+                                  if ($(this).next()[0].checked) {
+                                    // console.log('Foi pra ' + $(this).next()[0].checked);
+                                    $(this).find(".background").animate({left: "-56px"}, 200);
+                                    $('.observacao-resposta-' + codigo_observacao).hide('slow');
+                                    // $('#myModalTarefaFinalizar').modal('hide');
+                                  // Otherwise, slide switch on
+                                  } else {
+                                    // console.log($(this).next()[0].attributes[4].value);
+                                    // console.log($(this).next()[0].codigotarefa);
+                                    // var codigo_tarefa = $(this).next()[0].attr('data-codigotarefa');
+                                    $('.observacao-resposta-' + codigo_observacao).show('slow');
+                                    // $('#myModalTarefaFinalizar').modal('show');
+                                    $(this).find(".background").animate({left: "0px"}, 200);
+                                    // console.log($(this).next()[0].checked);
+                                  }
+                                  // Toggle state of checkbox
+                                  $(this).next()[0].checked = !$(this).next()[0].checked;
+                                  console.log('está ' + $(this).next()[0].checked);
+                              });
+                        });
+                        // se não encontra respostas
+                       
+                  }   
+            }
 
             function mostrarObs(codigoTarefa, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
                   var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
+                  var resp = "";
                   $.ajax({
                         method: 'post',
                         url: url,
@@ -453,6 +584,7 @@
                                           UsuarioTarefaAvatar = item.arquivo_avatar;
                                     }
                                     // console.log(item);
+                                    var el = $('.tarefa-observacoes-' + codigoTarefa);
                                     $('.tarefa-observacoes-' + codigoTarefa).append(''
                                      // observações
                                   + '<div class="media">'
@@ -467,22 +599,9 @@
                                     + '<h4 class="media-heading">' + item.tipo + '</h4>'
                                     + '<p>' + item.observacao + '</p>'
                                    + '</div>'
-                                   + '</div>'
-                                    // respostas
-                                  //  + '<div class="media">'
-                                  // + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
-                                  //  + '<div class="media-left">'
-                                  //   + '<a href="#">'
-                                  //   + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
-                                  //   + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
-                                  //   + '</a>'
-                                  //  + '</div>'
-                                  //  + '<div class="media-body">'
-                                  //   + '<h4 class="media-heading">Resposta</h4>'
-                                  //    + '<p>' + item.resposta + '</p>'
-                                  //  + '</div>'
-                                  //  + '</div>'
-                                     );
+                                   + '</div>');
+                                     // respostas passando tipo, só mostra se 1 ou 2
+                                   + mostraResposta(codigoTarefa, el, item.codigo_observacao, item.codigo_tipo, lider);
                               });
                               //}
                             },
@@ -604,15 +723,18 @@
                               if (encerrada===null) {
                                    
                                     output += '<p class="alert alert-info">Tarefa finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
-                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '">pro lider mostra form resposta</p>';
-                                    //console.log('buscando respostas e aguardando validação.');
+                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
+                                    // mostrar APENAS obs pro dono da tarefa
                                     mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
+                                    // mostrar form resposta pro lider
+                                    // if (lider == 1) {
+                                    //       output += '<p>É LÍDER, FORM RESPOSTA</p>'
+                                    // }
                               } else {
                                     output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
-                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '">Mostrar respostas tbm</p>';
+                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
                                     mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
-                                    // console.log('buscando respostas mas já avaliada.');
-
+                                    // mostrar obs e respostas menos no caso finalização forçada, pois a obs inicial já é final
                               }
 
                               
@@ -698,7 +820,18 @@
                           output += '</ol><div class="carousel-inner" role="listbox">';
                           data.forEach(function(item){
                             // var usuarioEditavel = (codigo_usuario == item.codigo_usuario) ? true
+                            console.log(item.data_inicio);
                             if (aux!==item.codigo_tarefa) {
+                              var data_inicio = new Date(item.data_inicio);
+                              data_inicio.setDate(data_inicio.getDate() + 1);
+                              var data_prazo = new Date(item.data_prazo);
+                              data_prazo.setDate(data_prazo.getDate() + 1);
+                              if (item.data_fim === null) {
+                                    var data_fim = item.data_fim;
+                              } else {
+                                    var data_fim = new Date(item.data_fim);
+                                    data_fim.setDate(data_fim.getDate() + 1);
+                              }
                               // $('#myModalTarefaVer .modal-tarefas-lista').append(''
                                       // output += ''//
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
@@ -718,9 +851,9 @@
                                         + '</div>' 
                                         + '<div class="panel-body" style="background-color:' +  getTarefaPrioridade(item.prioridade).cor + ';">'
                                         + '<p>' +  item.descricao + '</p>' 
-                                        + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(new Date(item.data_inicio)) + '</p>' 
-                                        + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(new Date(item.data_prazo)) + '</p>'
-                                        + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, item.data_inicio, item.data_prazo, item.data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'
+                                        + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(data_inicio) + '</p>' 
+                                        + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(data_prazo) + '</p>'
+                                        + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, data_inicio, data_prazo, data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'
                                        + '</div>'
                                        + '</div>'
                                        + '</div>';//);
@@ -841,6 +974,57 @@
                     });
                   }
             });
+
+            $('body').delegate('#resposta_gravar','click', function(){
+                  var res = $(this).parent().parent().parent().find('input#observacao_responder.switch-resposta')[0].checked;
+                  console.log('grava resposta? ' + res);
+                  // var observacao = $(this).parent().find('#tarefa_observacao').val();
+                  // var lider = $(this).parent().attr('data-lider');
+                  // var atrasado = $(this).parent().attr('data-atrasado');
+                  // // se lider fecha tarefa, codigo usuario igual codigo lider
+                  // // if (lider==1) {
+                  //     // var codigo_usuario = $('#usuario_codigo').val();
+                  // // } else {
+                  // var codigo_usuario = $(this).parent().attr('data-codigousuario');
+                  // // }
+                  // var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
+                  // var url = 'http://localhost/demandou-git/tarefa/finalizar';
+                  // var resposta = {res, observacao,lider, atrasado, codigo_usuario, codigo_tarefa, url};
+                  // console.log(resposta);
+                  if (res) {
+                    // grava
+                    var resposta = $(this).parent().find('#observacao_resposta').val();
+                    var lider = $(this).parent().attr('data-lider');
+                    var tipo = $(this).parent().attr('data-tipo');
+                    var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
+                    var codigo_observacao = $(this).parent().attr('class').match(/\d+/)[0];
+                    var r = {resposta, lider, codigo_observacao, tipo};
+                    console.log(r);
+                    var url = 'http://localhost/demandou-git/tarefa/responder';
+                    $.ajax({
+                            method: 'post',
+                            url: url,
+                            data: {
+                              'codigo_observacao' : codigo_observacao,
+                              'resposta' : resposta,
+                              'lider': lider,
+                              'tipo' : tipo,
+                              'codigo_tarefa' : codigo_tarefa
+                              // não precisa pois é lider e pega no session->userdata()
+                              // 'codigo_usuario': codigo_usuario
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                              console.log(data);
+
+                            },
+                            error: function(error) {
+                              console.log(error);
+                            }
+                    });
+                  }
+            });
+
         }
 
     }
