@@ -78,6 +78,7 @@ class Tarefa_model extends CI_Model {
                     );
                     $this->db->where('codigo', $codigo_tarefa);
                     if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                        // manda email pra avisar da extensao? =) e retorna true
                         return true;
                     } else {
                         return false;
