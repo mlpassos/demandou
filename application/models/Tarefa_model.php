@@ -73,7 +73,8 @@ class Tarefa_model extends CI_Model {
                 // extensão, grava resposta e redefinir data_fim em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
                     $dados['tarefa'] = array(
-                        "data_fim" => date('Y-m-d', strtotime("+7 days")),
+                        "data_prazo" => date('Y-m-d', strtotime("+7 days")),
+                        "data_fim" => null
                     );
                     $this->db->where('codigo', $codigo_tarefa);
                     if ( $this->db->update('tarefa', $dados['tarefa']) ) {
