@@ -143,11 +143,11 @@ class Tarefa_controller extends MY_Controller {
     	$resposta = $this->input->post('resposta');
     	$lider = $this->input->post('lider');
     	$tipo = $this->input->post('tipo');
-    	$usuario = $this->session->userdata('codigo_usuario');	
+    	// $usuario = $this->session->userdata('codigo_usuario');	
     	
     	$this->load->model('tarefa_model');
     	
-    	if ($data['resposta'] = $this->tarefa_model->responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $usuario)) {
+    	if ($data['resposta'] = $this->tarefa_model->responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo)) {
     		echo json_encode(
     			array(
     				'status' => 'sucesso',

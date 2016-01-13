@@ -60,23 +60,30 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $usuario) {
+        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo) {
+            // pega usuário atual q responder, líder ou admin
+            $usuario = $this->session->userdata('codigo_usuario');
             $dados['resposta'] = array(
                     "codigo_observacao" => $codigo_observacao,
                     "resposta" => $resposta,
                     "data_resposta" => date("Y-m-d"),
-                    "inserido_por" =>  $codigo_usuario
+                    "inserido_por" =>  $usuario
                 );
-            if ($codigo_tipo == 2) {
+            if ($tipo == 2) {
                 // extensão, grava resposta e redefinir data_fim em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
-                    // $dados['tarefa'] = array(
-                    //     "data_fim" => date("Y-m-d"),
-                    // );
-                    return true;
+                    $dados['tarefa'] = array(
+                        "data_fim" => date('Y-m-d', strtotime("+7 days")),
+                    );
+                    $this->db->where('codigo', $codigo_tarefa);
+                    if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
-            if ($codigo_tipo == 1) {
+            if ($tipo == 1) {
                 // finalizou normal, grava resposta e tarefa redefinir  encerrada e encerrada_por em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
                     $dados['tarefa'] = array(
@@ -89,9 +96,11 @@ class Tarefa_model extends CI_Model {
                     } else {
                         return false;
                     }
+                } else {
+                    return false;
                 }
             }
-            if ($codigo_tipo == 3) {
+            if ($tipo == 3) {
                 // forçada,  redefinir apenas tarefa data_fim para null e encerrada = 1 e encerrada_por session->userdata() em tarefa
                 $dados['tarefa'] = array(
                         "data_fim" => null,
@@ -205,7 +214,7 @@ class Tarefa_model extends CI_Model {
                 $this->db->join('tarefa_observacoes as obs', 'res.codigo_observacao = obs.codigo');
                 $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
                 // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
-                $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
+                $this->db->join('usuario as u', 'res.inserido_por = u.codigo');
                 $this->db->where('res.codigo_observacao', $codigo_observacao);
                 $this->db->order_by('obs.data_criada', 'DESC');
                 $query = $this->db->get();

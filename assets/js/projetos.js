@@ -469,6 +469,7 @@
                               
                               if (data.length>0) {
                                     alert('tem resposta');
+                                    // só mostrar resposta se
                                     data.forEach(function(item){
                                           var data_resposta = new Date(item.data_resposta);
                                           data_resposta.setDate(data_resposta.getDate() + 1);
