@@ -94,10 +94,11 @@
 	  									$res['tarefa_completadas'] = 0;
 	  									$aux = "";
 	  									foreach($tasks as $t) {
+
 		  								 	if ($t['codigo_projeto']==$p['codigo']) {
 		  								 		if ($aux !== $t['codigo_tarefa']) {
 		  								 			// diferente
-		  								 			if ($t['data_fim']!==null) {
+		  								 			if ( ($t['data_fim']!==null) AND ($t['encerrada']==1) ) {
 		  								 				// $andamento = true;
 		  								 				$res['tarefa_completadas']++;
 		  								 			}
@@ -128,12 +129,13 @@
 		  										}
 		  										if ($aux !== $t['codigo_tarefa']) {
 			  										if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
-				  										if ($t['data_fim']!==null) {
+				  										if ( ($t['data_fim']!==null) AND ($t['encerrada']==1) )  {
 			  								 				// geral do projeto
 			  								 				$res['tarefa_completadas_usuario']++;
 			  								 			}
 			  								 		}
-			  								 		if ($t['data_fim']!==null) {
+
+			  								 		if ( ($t['data_fim']!==null) AND ($t['encerrada']==1) )  {
 		  								 				// geral do projeto
 		  								 				$res['tarefa_completadas']++;
 		  								 			}
