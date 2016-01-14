@@ -60,7 +60,7 @@ class Tarefa_model extends CI_Model {
                 $this->db->insert('entries', $this);
         }
 
-        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo) {
+        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender) {
             // pega usuário atual q responder, líder ou admin
             $usuario = $this->session->userdata('codigo_usuario');
             $dados['resposta'] = array(
@@ -70,31 +70,90 @@ class Tarefa_model extends CI_Model {
                     "inserido_por" =>  $usuario
                 );
             if ($tipo == 2) {
+                if ($extender == "true") {
+                    $dados['observacao'] = array(
+                        // aceita
+                        "codigo_status_obs" => 2
+                    );
+                } else {
+                    $dados['observacao'] = array(
+                        // nao aceita
+                        "codigo_status_obs" => 3
+                    );
+                }
                 // extensão, grava resposta e redefinir data_fim em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
-                    $dados['tarefa'] = array(
+                    if ($extender == "true") {
+                        $dados['tarefa'] = array(
                         "data_prazo" => date('Y-m-d', strtotime("+7 days")),
                         "data_fim" => null
-                    );
-                    $this->db->where('codigo', $codigo_tarefa);
-                    if ( $this->db->update('tarefa', $dados['tarefa']) ) {
-                        // manda email pra avisar da extensao? =) e retorna true
-                        return true;
+                        );
+                        $this->db->where('codigo', $codigo_tarefa);
+                        if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                            $this->db->where('codigo', $codigo_observacao);
+                            if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                            // manda email pra avisar da extensao? =) e retorna true
+                        } else {
+                            return false;
+                        }    
                     } else {
-                        return false;
+                        // faz nada, foi negada a extensão. aliás, encerra tarefa? zera data_fim
+                        $dados['tarefa'] = array(
+                            "data_fim" => null,
+                            "encerrada" => 1,
+                            "encerrada_por" => $usuario,
+                        );
+                        $this->db->where('codigo', $codigo_tarefa);
+                        if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+                            $this->db->where('codigo', $codigo_observacao);
+                            if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                            // manda email pra avisar da extensao? =) e retorna true
+                        } else {
+                            return false;
+                        }    
                     }
+                    
                 }
             }
             if ($tipo == 1) {
                 // finalizou normal, grava resposta e tarefa redefinir  encerrada e encerrada_por em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
-                    $dados['tarefa'] = array(
-                        "encerrada" => 1,
-                        "encerrada_por" => $usuario,
-                    );
+                    if ($extender == "true") {
+                        $dados['observacao'] = array(
+                            // aceita
+                            "codigo_status_obs" => 2
+                        );
+                        $dados['tarefa'] = array(
+                            "encerrada" => 1,
+                            "encerrada_por" => $usuario
+                        );
+
+                    } else {
+                        $dados['observacao'] = array(
+                            // nao aceita
+                            "codigo_status_obs" => 3
+                        );
+                        $dados['tarefa'] = array(
+                            "data_fim" => null
+                        );
+                    }
+
                     $this->db->where('codigo', $codigo_tarefa);
                     if ( $this->db->update('tarefa', $dados['tarefa']) ) {
-                        return true;
+                        $this->db->where('codigo', $codigo_observacao);
+                        if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
@@ -102,20 +161,21 @@ class Tarefa_model extends CI_Model {
                     return false;
                 }
             }
-            if ($tipo == 3) {
-                // forçada,  redefinir apenas tarefa data_fim para null e encerrada = 1 e encerrada_por session->userdata() em tarefa
-                $dados['tarefa'] = array(
-                        "data_fim" => null,
-                        "encerrada" => 1,
-                        "encerrada_por" => $usuario,
-                );
-                $this->db->where('codigo', $codigo_tarefa);
-                if ( $this->db->update('tarefa', $dados['tarefa']) ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            // não existe com código 3
+            // if ($tipo == 3) {
+            //     // forçada,  redefinir apenas tarefa data_fim para null e encerrada = 1 e encerrada_por session->userdata() em tarefa
+            //     $dados['tarefa'] = array(
+            //             "data_fim" => null,
+            //             "encerrada" => 1,
+            //             "encerrada_por" => $usuario,
+            //     );
+            //     $this->db->where('codigo', $codigo_tarefa);
+            //     if ( $this->db->update('tarefa', $dados['tarefa']) ) {
+            //         return true;
+            //     } else {
+            //         return false;
+            //     }
+            // }
         }
 
         public function finalizar($codigo_tarefa,$observacao,$codigo_tipo, $codigo_usuario) {
@@ -123,7 +183,7 @@ class Tarefa_model extends CI_Model {
             if ($codigo_tipo == 3) {  
                 // encerra tarefa de uma vez, forçada          
                 $dados['tarefa'] = array(
-                    "data_fim" => date("Y-m-d"),
+                    "data_fim" => null,
                     "encerrada" => 1,
                     "encerrada_por" => $codigo_usuario,
                 );
@@ -133,10 +193,11 @@ class Tarefa_model extends CI_Model {
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
                     // 4 - Forçada
-                    "codigo_status_obs" => 4,
+                    // "codigo_status_obs" => 4,
                     "inserido_por" =>  $codigo_usuario
                 );
             } else {
+                // finalização normal ou extensão de prazo
                  $dados['tarefa'] = array(
                     "data_fim" => date("Y-m-d"),
                 );
@@ -145,8 +206,8 @@ class Tarefa_model extends CI_Model {
                     "observacao" => $observacao,
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
-                    // 4 - Forçada
-                    "codigo_status_obs" => 1,
+                    // 1 - Em andamento
+                    // "codigo_status_obs" => 1,
                     "inserido_por" =>  $codigo_usuario
                 );
             }
@@ -203,7 +264,8 @@ class Tarefa_model extends CI_Model {
                 // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
                 $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
                 $this->db->where('t.codigo', $codigo_tarefa);
-                $this->db->order_by('obs.data_criada', 'DESC');
+                $this->db->order_by('obs.codigo', 'DESC');
+                $this->db->limit(1);
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -218,7 +280,8 @@ class Tarefa_model extends CI_Model {
                 // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
                 $this->db->join('usuario as u', 'res.inserido_por = u.codigo');
                 $this->db->where('res.codigo_observacao', $codigo_observacao);
-                $this->db->order_by('obs.data_criada', 'DESC');
+                $this->db->order_by('obs.codigo', 'DESC');
+                $this->db->limit(1);
                 $query = $this->db->get();
                 return $query->result_array();
         }
