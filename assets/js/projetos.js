@@ -433,6 +433,18 @@
             // }
 
             // getTasksUsersInfo();
+
+            function mostraOpcoes(codigo_tipo, codigo_observacao) {
+                  if (codigo_tipo !== 3) {
+                       return '<div class="form-group">'
+                        + 'Extender o prazo?<br>' 
+                        + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-sim" name="observacao_extender-' + codigo_observacao + '"> Sim</label>'
+                        + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-nao" name="observacao_extender-' + codigo_observacao + '"> Não</label>'
+                        + '</div>';      
+                  } else {
+                        return '';
+                  }
+            }
             function mostraResposta(codigo_tarefa, el, codigo_observacao, codigo_tipo, lider) {
                   // se for forçada, mostra OBS pois é final, ou seja, já mostrou
                   console.log('aqui');
@@ -498,7 +510,8 @@
                                                 + '<input type="checkbox" class="switch switch-resposta" id="observacao_responder" name="observacao_responder" data-codigoobservacao="' + codigo_observacao +'">'
                                                 + '</div>'
                                                 + '<div class="form-group">'
-                                                + '<div class="obs-resposta observacao-resposta-' + codigo_observacao +'" data-codigotarefa="' + codigo_tarefa + '" data-lider="' + lider + '" data-tipo="' + codigo_tipo + '">'
+                                                + '<div class="obs-resposta observacao-resposta-' + codigo_observacao + '" data-codigotarefa="' + codigo_tarefa + '" data-lider="' + lider + '" data-tipo="' + codigo_tipo + '">'
+                                                + mostraOpcoes(codigo_tipo, codigo_observacao)
                                                 + '<label for="observacao_resposta">Observações</label>'
                                                 + '<textarea id="observacao_resposta" name="observacao_resposta" class="form-control" rows="3"></textarea>'
                                                 + '<button type="button" class="btn btn-primary btn-small" id="resposta_gravar"><i class="fa fa-disk"></i> Responder</button>'
@@ -625,14 +638,8 @@
                   var atrasado = 0;
                   var output = "";
                   // já finalizou a tarefa e não é dono dela ou líder...
-                  if (data_fim!==null) {
-                        // sim
-                        // 100% e mensagem
-                        // console.log(codigoUsuarioAtual);
-                        // console.log(codigoUsuarioTarefa);
-                        if (codigoUsuarioAtual == codigoUsuarioTarefa) {
-                              // se for igual faz nada
-                        } else {
+                  if (codigoUsuarioAtual !== codigoUsuarioTarefa) {
+                        if (data_fim!==null) {
                               // sendo diferente e não é líder
                               if (lider !== 1) {
                                     output += 'Tempo consumido (%)<div class="progress">'
@@ -646,65 +653,72 @@
                                           output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
                                     }
                               }
-                        }
-                  } else {
-                        // ainda não finalizou
-                        if (check_inicio>=0) {
-                            // nao começou
-                            var comecou = false;
-                            if (check_inicio==0) {
-                              output += '<p class="alert alert-info">Começou hoje</p>';
-                            } else {
-                              if (check_inicio == 1) {
-                                output += '<p class="alert alert-info">Começa amanhã</p>';
-                              } else {
-                                output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
-                              }
-                            }
-                            // progress bar 0
-                            output += 'Tempo consumido (%)<div class="progress">'
-                                      + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
-                                      + '0%'
-                                      + '</div>'
-                                      + '</div>'
+
                         } else {
-                            var comecou = true;
-                            // começou
-                            if (check_fim<=0) {
-                              if (check_fim==0) { 
-                                var porcento = 100;
-                                output += '<p class="alert alert-info">Termina hoje!</p>';
+                              // ainda não finalizou
+                              if (encerrada===null) { 
+                                    if (check_inicio>=0) {
+                                              // nao começou
+                                              var comecou = false;
+                                              if (check_inicio==0) {
+                                                output += '<p class="alert alert-info">Começou hoje</p>';
+                                              } else {
+                                                if (check_inicio == 1) {
+                                                  output += '<p class="alert alert-info">Começa amanhã</p>';
+                                                } else {
+                                                  output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
+                                                }
+                                              }
+                                              // progress bar 0
+                                              output += 'Tempo consumido (%)<div class="progress">'
+                                                        + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
+                                                        + '0%'
+                                                        + '</div>'
+                                                        + '</div>'
+                                    } else {
+                                              var comecou = true;
+                                              // começou
+                                              if (check_fim<=0) {
+                                                if (check_fim==0) { 
+                                                  var porcento = 100;
+                                                  output += '<p class="alert alert-info">Termina hoje!</p>';
+                                                } else {
+                                                  // atrasado
+                                                  var porcento = 100;
+                                                  var atrasado = 1;
+                                                  output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia.' : faltam*(-1) + ' dias.') 
+                                                  // se usuário atual é o dono da tarefa, mostra mensagem sobre negociar prazo.
+                                                  if (codigoUsuarioAtual == codigoUsuarioTarefa) {
+                                                      output += ', finalize para negociar novo prazo.</p>';
+                                                  } else {
+                                                      output += '</p>';
+                                                  }
+                                                } 
+                                              } else {
+                                                var porcento = [(total-faltam) * 100] / total;
+                                                output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
+                                                
+                                              }
+                                              output += 'Tempo consumido (%)<div class="progress">'
+                                                        + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
+                                                        + porcento.toFixed(2) + '%'
+                                                        + '</div>'
+                                                        + '</div>'
+                                    }
                               } else {
-                                // atrasado
-                                var porcento = 100;
-                                var atrasado = 1;
-                                output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia.' : faltam*(-1) + ' dias.') 
-                                // se usuário atual é o dono da tarefa, mostra mensagem sobre negociar prazo.
-                                if (codigoUsuarioAtual == codigoUsuarioTarefa) {
-                                    output += ', finalize para negociar novo prazo.</p>';
-                                } else {
-                                    output += '</p>';
-                                }
-                              } 
-                            } else {
-                              var porcento = [(total-faltam) * 100] / total;
-                              output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
+                                    output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
+                              }
                               
-                            }
-                            output += 'Tempo consumido (%)<div class="progress">'
-                                      + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
-                                      + porcento.toFixed(2) + '%'
-                                      + '</div>'
-                                      + '</div>'
                         }
-                  }
+                  } 
                   // caso dono da tarefa e ela tenha começado ou seja líder, mostra controles de finalização
                   if ( (check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1) ) {
                         // já foi finalizada antes?
                         // console.log(typeof(data_fim));
                         if (data_fim===null) {
                               // console.log('igual');
-                              output += '<div>'
+                              if (encerrada===null) {
+                                    output += '<div>'
                                     + '<div class="form-group">'
                                     + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
                                     + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
@@ -717,6 +731,11 @@
                                     + '</div>'
                                     + '</div>'
                                     + '</div>';
+                              } else {
+                                    output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
+                                    // return
+                              }
+                              
                               // se existir respostas, exibir...
 
                         } else {
@@ -997,8 +1016,14 @@
                     var resposta = $(this).parent().find('#observacao_resposta').val();
                     var lider = $(this).parent().attr('data-lider');
                     var tipo = $(this).parent().attr('data-tipo');
-                    var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
+                    var tipo = $(this).parent().attr('data-tipo');
                     var codigo_observacao = $(this).parent().attr('class').match(/\d+/)[0];
+                    // if (tipo == "2" || tipo == "1") {
+                        var extender = $('#observacao_extender-' + codigo_observacao + '-sim')[0].checked;
+                        console.log(extender);
+                        // var nextende = $('#observacao_extender-' + codigo_observacao + '-nao')[0].checked;
+                    // }
+                    var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
                     var r = {resposta, lider, codigo_observacao, tipo};
                     console.log(r);
                     var url = 'http://localhost/demandou-git/tarefa/responder';
@@ -1010,7 +1035,8 @@
                               'resposta' : resposta,
                               'lider': lider,
                               'tipo' : tipo,
-                              'codigo_tarefa' : codigo_tarefa
+                              'codigo_tarefa' : codigo_tarefa,
+                              'extender' : extender
                               // não precisa pois é lider e pega no session->userdata()
                               // 'codigo_usuario': codigo_usuario
                             },
