@@ -556,11 +556,12 @@
                         });
                   }   
             }
-
+            $('body').delegate('.show-obs','click',function(){
+                  $(this).next().stop(true,true).slideToggle("slow");
+            });
+            
             function mostrarObs(codigoTarefa, dono, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
-                  $('body').delegate('.show-obs-' + codigoTarefa,'click',function(){
-                        $(this).next().stop(true,true).slideToggle("slow");
-                  });
+                 
                   var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
                   var resp = "";
                   $.ajax({
@@ -720,7 +721,7 @@
                               if (encerrada===null) {
                                     var andamento = showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por);
                                     output += andamento.out;
-                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
                                     output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                                     output += '<div>'
@@ -738,7 +739,7 @@
                                     + '</div>';
                               } else {
                                     output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
-                                     output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                     output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
                                     output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               }
@@ -746,13 +747,13 @@
                               // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
                               if (encerrada===null) {
                                     output += '<p class="alert alert-info">Tarefa finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
-                                    output += '<button type="button" class="btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '" style="display:none;">Mostrar histórico</button>'
+                                    output += '<button type="button" class="btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '" style="display:none;">Mostrar histórico</button>'
                                           +' <p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
                                           + '</p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               } else {
                                     output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
-                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>'
+                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>'
                                           + '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
                                           + '</p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
