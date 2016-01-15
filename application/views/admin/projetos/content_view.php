@@ -25,7 +25,7 @@
 		        			break;
 		        	}
 				?>
-				<div class="tarefas-box <?php echo $prioridadesClass; ?>">
+				<div class="animated flipInX tarefas-box <?php echo $prioridadesClass; ?>">
 					<i class="pin animated fadeInDownBig"></i>
 					<div class="caption">
 				        <h3><?php echo $p['titulo'];?></h3>

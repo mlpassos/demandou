@@ -257,15 +257,16 @@ class Tarefa_model extends CI_Model {
         public function jsonTarefasObservacoes($codigo_tarefa) {
                 //$res = array("response"=>"ok");
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('ot.codigo as codigo_tipo, ot.tipo, obs.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.codigo as codigo_observacao, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
+                $this->db->select('obs.codigo_status_obs, ot.codigo as codigo_tipo, ot.tipo, obs.inserido_por, u.nome, u.sobrenome, u.arquivo_avatar, obs.codigo as codigo_observacao, obs.observacao, obs.data_criada as obs_data_criada, t.codigo as codigo_tarefa, t.codigo_usuario');
                 $this->db->from('tarefa as t');
                 $this->db->join('tarefa_observacoes as obs', 't.codigo = obs.codigo_tarefa');
+                // $this->db->join('observacoes_resposta as res', 'res.codigo_observacao = obs.codigo');
                 $this->db->join('observacoes_tipo as ot', 'obs.codigo_tipo = ot.codigo');
                 // $this->db->join('observacoes_resposta as res', 'obs.codigo = res.codigo_observacao');
                 $this->db->join('usuario as u', 'obs.inserido_por = u.codigo');
                 $this->db->where('t.codigo', $codigo_tarefa);
                 $this->db->order_by('obs.codigo', 'DESC');
-                $this->db->limit(1);
+                // $this->db->limit(1);
                 $query = $this->db->get();
                 return $query->result_array();
         }
@@ -281,7 +282,7 @@ class Tarefa_model extends CI_Model {
                 $this->db->join('usuario as u', 'res.inserido_por = u.codigo');
                 $this->db->where('res.codigo_observacao', $codigo_observacao);
                 $this->db->order_by('obs.codigo', 'DESC');
-                $this->db->limit(1);
+                // $this->db->limit(1);
                 $query = $this->db->get();
                 return $query->result_array();
         }

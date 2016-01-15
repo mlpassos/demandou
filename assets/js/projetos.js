@@ -393,6 +393,10 @@
             $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                   var modal = $(this);
                   modal.find('.modal-tarefas-lista').html('');
+                  // FIX AQUI
+                  // if ($('.tarefa-observacoes').css('display')=='block') {
+                  //       $('.tarefa-observacoes').css('display', 'none');
+                  // }
             });
             
 
@@ -435,39 +439,28 @@
             // getTasksUsersInfo();
 
             function mostraOpcoes(codigo_tipo, codigo_observacao) {
-                  if (codigo_tipo !== 3) {
+                  if (codigo_tipo == 1) {
                        return '<div class="form-group">'
-                        + 'Extender o prazo?<br>' 
+                        + 'Aceitar entrega?<br>' 
                         + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-sim" name="observacao_extender-' + codigo_observacao + '"> Sim</label>'
                         + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-nao" name="observacao_extender-' + codigo_observacao + '"> Não</label>'
                         + '</div>';      
+                  } else if (codigo_tipo == 2) {
+                        return '<div class="form-group">'
+                        + 'Extender o prazo?<br>' 
+                        + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-sim" name="observacao_extender-' + codigo_observacao + '"> Sim</label>'
+                        + '<label class="radio-inline"><input type="radio" id="observacao_extender-' + codigo_observacao + '-nao" name="observacao_extender-' + codigo_observacao + '"> Não</label>'
+                        + '</div>';
                   } else {
                         return '';
                   }
             }
             function mostraResposta(codigo_tarefa, el, codigo_observacao, codigo_tipo, lider) {
                   // se for forçada, mostra OBS pois é final, ou seja, já mostrou
-                  console.log('aqui');
+                  // console.log('aqui');
                   if (codigo_tipo == 3) {
-                        // return '<div class="media">'
-                        //     + '<p>' + formataData(new Date(item.data_resposta)) + '</p>'
-                        //     + '<div class="media-left">'
-                        //     + '<a href="#">'
-                        //     + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
-                        //     + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
-                        //     + '</a>'
-                        //     + '</div>'
-                        //     + '<div class="media-body">'
-                        //     + '<h4 class="media-heading">Resposta</h4>'
-                        //     + '<p>' + item.resposta + '</p>'
-                        //     + '</div>'
-                        //     + '</div>';
-                        return 'já mostrei, foi forçada, basta OBS. ' + codigo_observacao;
+                        return 'Forçada, apenas OBS.';
                   } else {
-                        // buscar resposta passando codigo_obs
-                        // return 'buscando respostas (se nao form resposta se lider) para... ' + codigo_observacao;
-                        // var data_resposta = new Date(item.data_resposta);
-                        // data_resposta.setDate(data_resposta.getDate() + 1);
                         var url = 'http://localhost/demandou-git/tarefa/jsontasksrespostas'
                         $.ajax({
                             method: 'post',
@@ -478,10 +471,7 @@
                             dataType: 'json',
                             success: function(data) {
                               console.log(data);
-                              
                               if (data.length>0) {
-                                    alert('tem resposta');
-                                    // só mostrar resposta se
                                     data.forEach(function(item){
                                           var data_resposta = new Date(item.data_resposta);
                                           data_resposta.setDate(data_resposta.getDate() + 1);
@@ -499,11 +489,9 @@
                                               + '</div>'
                                               + '</div>');
                                     });
-                                    
                               } else {
                                      if (lider == 1) {
                                           // mostra form
-                                          // alert('Sem resposta - FORM LÍDER');
                                           el.append('<div>'
                                                 + '<div class="form-group">'
                                                 + '<label for="observacao_responder">Responder Observação</label><br>' 
@@ -518,14 +506,9 @@
                                                 + '</div>'
                                                 + '</div>'
                                                 + '</div>');
-                                          
-                                          
-                                          // return "FORM PRO LÍDER";//
                                     } else {
                                           // mostra mensagem ainda sem resposta
-                                          // alert('Sem resposta - AGUARDANDO RESPOSTA');
                                           el.append('<p>Aguardando resposta.</p>');
-                                          // return "Aguardando resposta.";
                                     }
                               }
                             },
@@ -534,8 +517,6 @@
                             }
                         }).done(function(data){
                               el.find("input[type=checkbox].switch-resposta").each(function() {
-                                  // Insert mark-up for switch
-                                  //console.log($(this));
                                   $(this).before(
                                     '<span class="switch switch-resposta">' +
                                     '<span class="mask" /><span class="background" />' +
@@ -573,12 +554,13 @@
                                   console.log('está ' + $(this).next()[0].checked);
                               });
                         });
-                        // se não encontra respostas
-                       
                   }   
             }
 
-            function mostrarObs(codigoTarefa, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
+            function mostrarObs(codigoTarefa, dono, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
+                  $('body').delegate('.show-obs-' + codigoTarefa,'click',function(){
+                        $(this).next().stop(true,true).slideToggle("slow");
+                  });
                   var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
                   var resp = "";
                   $.ajax({
@@ -592,39 +574,122 @@
                         success: function(data) {
                         //if (data.length>0) {
                               console.log(data);
+                              if (data.length>0) {
+                                   $('.tarefa-observacoes-' + codigoTarefa).css('display', 'none');
+                                   $('#showObs-' + codigoTarefa).removeClass("hidden").addClass("show");
+                              }
                               data.forEach(function(item){
-                                     if (item.codigo_tipo==3) {
-                                          UsuarioTarefaNome = item.nome + ' ' + item.sobrenome;
+                                    // checar se dono da tarefa
+                                     if (item.codigo_tipo==3 && dono==0) {
+                                          UsuarioTarefaNome = $('#nome_usuario').val();
+                                          UsuarioTarefaAvatar = $('#avatar_usuario').val();
+                                    } else {
+                                           UsuarioTarefaNome = item.nome + ' ' + item.sobrenome;
                                           UsuarioTarefaAvatar = item.arquivo_avatar;
                                     }
                                     // console.log(item);
                                     var el = $('.tarefa-observacoes-' + codigoTarefa);
                                     $('.tarefa-observacoes-' + codigoTarefa).append(''
                                      // observações
-                                  + '<div class="media">'
-                                  + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
-                                   + '<div class="media-left">'
+                                    + '<div class="media">'
+                                    + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
+                                    + '<div class="media-left">'
                                     + '<a href="#">'
                                     + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
                                     + '<small>' + UsuarioTarefaNome + '</small>'
                                     + '</a>'
-                                   + '</div>'
-                                   + '<div class="media-body">'
+                                    + '</div>'
+                                    + '<div class="media-body">'
                                     + '<h4 class="media-heading">' + item.tipo + '</h4>'
                                     + '<p>' + item.observacao + '</p>'
-                                   + '</div>'
-                                   + '</div>');
-                                     // respostas passando tipo, só mostra se 1 ou 2
-                                   + mostraResposta(codigoTarefa, el, item.codigo_observacao, item.codigo_tipo, lider);
+                                    + '</div>'
+                                    + '</div>');
+                                    // respostas passando tipo, só mostra se 1 ou 2
+                                    mostraResposta(codigoTarefa, el, item.codigo_observacao, item.codigo_tipo, lider);
                               });
-                              //}
                             },
                             error: function (error) {
                               console.log('erro: ' + error);
                             }
-                        }).done(function(data){
-                             // return output;
                   });
+            }
+
+            function showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
+                  var resposta = [], output="", atrasado=0;
+                  if (data_fim!==null) {
+                              // sendo diferente e não é líder
+                              if (lider !== 1) {
+                                   output += 'Tempo consumido (%)<div class="progress">'
+                                                  + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:100%;min-width: 2em;">'
+                                                  + '100%'
+                                                  + '</div>'
+                                                  + '</div>';
+                                    if (encerrada === null) {
+                                          output += '<p class="alert alert-info">Finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
+                                    } else {
+                                          output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
+                                    }
+                              }
+                  } else {
+                        // ainda não finalizou
+                        if (encerrada===null) { 
+                              if (check_inicio>=0) {
+                                        // nao começou
+                                        var comecou = false;
+                                        if (check_inicio==0) {
+                                          output += '<p class="alert alert-info">Começou hoje</p>';
+                                        } else {
+                                          if (check_inicio == 1) {
+                                            output += '<p class="alert alert-info">Começa amanhã</p>';
+                                          } else {
+                                            output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
+                                          }
+                                        }
+                                        // progress bar 0
+                                        output += 'Tempo consumido (%)<div class="progress">'
+                                                  + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
+                                                  + '0%'
+                                                  + '</div>'
+                                                  + '</div>'
+                              } else {
+                                        var comecou = true;
+                                        // começou
+                                        if (check_fim<=0) {
+                                          if (check_fim==0) { 
+                                            var porcento = 100;
+                                            output += '<p class="alert alert-info">Termina hoje!</p>';
+                                          } else {
+                                            // atrasado
+                                            var porcento = 100;
+                                            var atrasado = 1;
+                                            output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia.' : faltam*(-1) + ' dias.') 
+                                            // se usuário atual é o dono da tarefa, mostra mensagem sobre negociar prazo.
+                                            if (codigoUsuarioAtual == codigoUsuarioTarefa) {
+                                                output += ', finalize para negociar novo prazo.</p>';
+                                            } else {
+                                                output += '</p>';
+                                            }
+                                          } 
+                                        } else {
+                                          var porcento = [(total-faltam) * 100] / total;
+                                          output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
+                                          
+                                        }
+                                        output += 'Tempo consumido (%)<div class="progress">'
+                                                  + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
+                                                  + porcento.toFixed(2) + '%'
+                                                  + '</div>'
+                                                  + '</div>'
+                              }
+                        } else {
+                              output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
+                        }
+                  }
+                  resposta = {
+                        out: output,
+                        late: atrasado
+                  }
+                  return resposta;
             }
 
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
@@ -638,93 +703,33 @@
                   var atrasado = 0;
                   var output = "";
                   // já finalizou a tarefa e não é dono dela ou líder...
-                  if (codigoUsuarioAtual !== codigoUsuarioTarefa) {
-                        if (data_fim!==null) {
-                              // sendo diferente e não é líder
-                              if (lider !== 1) {
-                                    output += 'Tempo consumido (%)<div class="progress">'
-                                                  + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:100%;min-width: 2em;">'
-                                                  + '100%'
-                                                  + '</div>'
-                                                  + '</div>';
-                                    if (encerrada === null) {
-                                          output += '<p class="alert alert-info">Finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
-                                    } else {
-                                          output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
-                                    }
-                              }
-
-                        } else {
-                              // ainda não finalizou
-                              if (encerrada===null) { 
-                                    if (check_inicio>=0) {
-                                              // nao começou
-                                              var comecou = false;
-                                              if (check_inicio==0) {
-                                                output += '<p class="alert alert-info">Começou hoje</p>';
-                                              } else {
-                                                if (check_inicio == 1) {
-                                                  output += '<p class="alert alert-info">Começa amanhã</p>';
-                                                } else {
-                                                  output += '<p class="alert alert-info">' + 'Faltam ' + check_inicio + ' dias para começar.' + '</p>';
-                                                }
-                                              }
-                                              // progress bar 0
-                                              output += 'Tempo consumido (%)<div class="progress">'
-                                                        + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">'
-                                                        + '0%'
-                                                        + '</div>'
-                                                        + '</div>'
-                                    } else {
-                                              var comecou = true;
-                                              // começou
-                                              if (check_fim<=0) {
-                                                if (check_fim==0) { 
-                                                  var porcento = 100;
-                                                  output += '<p class="alert alert-info">Termina hoje!</p>';
-                                                } else {
-                                                  // atrasado
-                                                  var porcento = 100;
-                                                  var atrasado = 1;
-                                                  output += '<p class="alert alert-info">' + 'Atrasado ' + ((faltam*(-1)==1) ? faltam*(-1) + ' dia.' : faltam*(-1) + ' dias.') 
-                                                  // se usuário atual é o dono da tarefa, mostra mensagem sobre negociar prazo.
-                                                  if (codigoUsuarioAtual == codigoUsuarioTarefa) {
-                                                      output += ', finalize para negociar novo prazo.</p>';
-                                                  } else {
-                                                      output += '</p>';
-                                                  }
-                                                } 
-                                              } else {
-                                                var porcento = [(total-faltam) * 100] / total;
-                                                output += '<p class="alert alert-info">' + ((check_fim==1) ? 'Falta ' + check_fim + ' dia.' : 'Faltam ' + check_fim + ' dias.') + '</p>';
-                                                
-                                              }
-                                              output += 'Tempo consumido (%)<div class="progress">'
-                                                        + '<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="'+ porcento.toFixed(2) + '%' + '" aria-valuemin="0" aria-valuemax="100" style="width:' + porcento.toFixed(2) + '%' + ';min-width: 2em;">'
-                                                        + porcento.toFixed(2) + '%'
-                                                        + '</div>'
-                                                        + '</div>'
-                                    }
-                              } else {
-                                    output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
-                              }
-                              
+                  if (codigoUsuarioAtual == codigoUsuarioTarefa) {
+                        // já faz embaixo
+                        var dono = 1;
+                  } else {
+                        var dono = 0;
+                        if (lider == 0) {
+                              var andamento = showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por);
+                              output += andamento.out;
                         }
                   } 
                   // caso dono da tarefa e ela tenha começado ou seja líder, mostra controles de finalização
                   if ( (check_inicio <= 0 && codigoUsuarioAtual == codigoUsuarioTarefa ) || (lider==1) ) {
                         // já foi finalizada antes?
-                        // console.log(typeof(data_fim));
                         if (data_fim===null) {
-                              // console.log('igual');
                               if (encerrada===null) {
+                                    var andamento = showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por);
+                                    output += andamento.out;
+                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                    output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
+                                    mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                                     output += '<div>'
                                     + '<div class="form-group">'
                                     + '<label for="tarefa_encerrar">Finalizar tarefa</label><br>' 
                                     + '<input type="checkbox" class="switch" id="tarefa_encerrar" name="tarefa_encerrar" data-codigotarefa="' + codigoTarefa +'">'
                                     + '</div>'
                                     + '<div class="form-group">'
-                                    + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-atrasado="' + atrasado + '" data-lider="' + lider + '" data-codigousuario="' + codigoUsuarioTarefa + '">'
+                                    + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-atrasado="' + andamento.late + '" data-dono="' + dono + '" data-lider="' + lider + '" data-codigousuario="' + codigoUsuarioTarefa + '">'
                                     + '<label for="tarefa_observacao">Observações</label>'
                                     + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
@@ -733,45 +738,28 @@
                                     + '</div>';
                               } else {
                                     output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
-                                    // return
+                                     output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                    output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
+                                    mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               }
-                              
-                              // se existir respostas, exibir...
-
                         } else {
                               // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
                               if (encerrada===null) {
-                                   
                                     output += '<p class="alert alert-info">Tarefa finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
-                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
-                                    // mostrar APENAS obs pro dono da tarefa
-                                    mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
-                                    // mostrar form resposta pro lider
-                                    // if (lider == 1) {
-                                    //       output += '<p>É LÍDER, FORM RESPOSTA</p>'
-                                    // }
+                                    output += '<button type="button" class="btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '" style="display:none;">Mostrar histórico</button>'
+                                          +' <p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
+                                          + '</p>';
+                                    mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               } else {
                                     output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
-                                    output += '<p class="tarefa-observacoes-' + codigoTarefa + '"></p>';
-                                    mostrarObs(codigoTarefa, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
-                                    // mostrar obs e respostas menos no caso finalização forçada, pois a obs inicial já é final
+                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>'
+                                          + '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
+                                          + '</p>';
+                                    mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               }
-
-                              
-
-                              // exibir observações e respostas
-                              // caso seja negada a extensão de prazo e forçado encerramento mostrar obs e respostas
-                              // caso tenha sido aceito, irá pro data_fim===null
-                              // if (lider == 1) {
-                              //       output += '<p>Líder, listar obs</p>'
-                              // }
-
-
-                              
                         }
                   } 
-                  // $(':checkbox').iphoneStyle();
-                  return output
+                  return output;
             }
 
             function getTarefaPrioridade(codigo) {
@@ -808,6 +796,10 @@
                   return out;
             }
    
+            $('.tarefas-box').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                  $(this).removeClass('animated flipInX');
+            });
+
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_projeto = button.data('codigoprojeto');
@@ -840,7 +832,7 @@
                           output += '</ol><div class="carousel-inner" role="listbox">';
                           data.forEach(function(item){
                             // var usuarioEditavel = (codigo_usuario == item.codigo_usuario) ? true
-                            console.log(item.data_inicio);
+                            // console.log(item.data_inicio);
                             if (aux!==item.codigo_tarefa) {
                               var data_inicio = new Date(item.data_inicio);
                               data_inicio.setDate(data_inicio.getDate() + 1);
@@ -972,6 +964,8 @@
                     var atrasado = $(this).parent().attr('data-atrasado');
                     var codigo_usuario = $(this).parent().attr('data-codigousuario');
                     var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
+                    var resp = {observacao,lider,atrasado,codigo_usuario,codigo_tarefa};
+                    console.log(resp);
                     var url = 'http://localhost/demandou-git/tarefa/finalizar';
                     $.ajax({
                             method: 'post',
@@ -1016,11 +1010,12 @@
                     var resposta = $(this).parent().find('#observacao_resposta').val();
                     var lider = $(this).parent().attr('data-lider');
                     var tipo = $(this).parent().attr('data-tipo');
-                    var tipo = $(this).parent().attr('data-tipo');
+                    alert('tipo: ' + tipo);
+                    // var tipo = $(this).parent().attr('data-tipo');
                     var codigo_observacao = $(this).parent().attr('class').match(/\d+/)[0];
                     // if (tipo == "2" || tipo == "1") {
-                        var extender = $('#observacao_extender-' + codigo_observacao + '-sim')[0].checked;
-                        console.log(extender);
+                    var extender = $('#observacao_extender-' + codigo_observacao + '-sim')[0].checked;
+                    alert('extender: ' + extender);
                         // var nextende = $('#observacao_extender-' + codigo_observacao + '-nao')[0].checked;
                     // }
                     var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
