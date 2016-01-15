@@ -559,7 +559,7 @@
             $('body').delegate('.show-obs','click',function(){
                   $(this).next().stop(true,true).slideToggle("slow");
             });
-            
+
             function mostrarObs(codigoTarefa, dono, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
                  
                   var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
@@ -733,6 +733,11 @@
                                     + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-atrasado="' + andamento.late + '" data-dono="' + dono + '" data-lider="' + lider + '" data-codigousuario="' + codigoUsuarioTarefa + '">'
                                     + '<label for="tarefa_observacao">Observações</label>'
                                     + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
+                                    + '<div class="form-group">'
+                                    + '<label for="arquivo_obs">Anexo(s)</label>'
+                                    + '<input type="file" id="arquivo_obs">'
+                                    + '<p class="help-block">Conteúdo/Relatório produzido</p>'
+                                    + '</div>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
                                     + '</div>'
                                     + '</div>'
