@@ -30,22 +30,22 @@ class Tarefa_controller extends MY_Controller {
 
         if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
         	$this->header['menu'] = array(
-        		array(
-				"name" => "Projetos",
-				"link" => base_url() . 'projetos',
-				"class" => "active"
-				),
-				array(
-				"name" => "Usuários",
-				"link" => base_url() . 'usuarios',
-				"class" => ""
-				),
-				array(
-				"name" => "Relatórios",
-				"link" => base_url() . 'relatorios',
-				"class" => ""
-				)
-			);
+		        		array(
+						"name" => "Projetos",
+						"link" => base_url() . 'projetos',
+						"class" => "active"
+						),
+						array(
+						"name" => "Usuários",
+						"link" => base_url() . 'usuarios',
+						"class" => ""
+						),
+						array(
+						"name" => "Relatórios",
+						"link" => base_url() . 'relatorios',
+						"class" => ""
+						)
+					);
         } else {
 	        $this->header['menu'] = array(
 					array(
@@ -173,6 +173,7 @@ class Tarefa_controller extends MY_Controller {
     	$observacao = $this->input->post('observacao');
     	$lider = $this->input->post('lider');
     	$atrasado = $this->input->post('atrasado');
+    	// $arquivo_obs = $_FILES['file-0'];
     	if ($lider == 1) {
     		// quem finaliza é o lider, tarefa forçada tipo 3
     		$usuario = $this->session->userdata('codigo_usuario');	
@@ -188,7 +189,7 @@ class Tarefa_controller extends MY_Controller {
     			$codigo_tipo = 1;
     		}
     	}
-    	   	
+
     	$this->load->model('tarefa_model');
     	
     	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo, $usuario)) {
@@ -212,11 +213,18 @@ class Tarefa_controller extends MY_Controller {
 
 
 	public function adicionar() {
-		// echo $this->uri->segment(3);
+		$cp = $this->uri->segment(3);
 		// echo $codigo_projeto;
-		$dadosflash = $this->session->flashdata('adicionar_ao_projeto');
+		if ($this->session->flashdata('adicionar_ao_projeto') === NULL) {
+			// fechar essa session depois
+			$dadosflash = $this->session->userdata('gerenciar_tarefas-' . $cp);	
+		} else {
+			$dadosflash = $this->session->flashdata('adicionar_ao_projeto');	
+			$this->session->keep_flashdata('adicionar_ao_projeto');
+		}
+
 		$codigo_projeto = $dadosflash['codigo_projeto'];
-		$this->session->keep_flashdata('adicionar_ao_projeto');
+		
 		// META
 		$this->header['meta'] = array(
 			array(

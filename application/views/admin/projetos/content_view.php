@@ -25,7 +25,7 @@
 		        			break;
 		        	}
 				?>
-				<div class="animated flipInX tarefas-box <?php echo $prioridadesClass; ?>">
+				<div class="tarefas-box <?php echo $prioridadesClass; ?>">
 					<i class="pin animated fadeInDownBig"></i>
 					<div class="caption">
 				        <h3><?php echo $p['titulo'];?></h3>
@@ -73,9 +73,29 @@
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
 	  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
 			    		</a> 
-			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigotarefa="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaAdicionar">
-	  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn glyphicon glyphicon-edit" aria-hidden="true"></span>
-			    		</a>
+
+			    		<?php 
+			    		if ($lider) { 
+			    			$data_lider = array('codigo_projeto'=>$p['codigo']);
+								// i store data to flashdata
+							  $this->session->set_userdata('gerenciar_projeto-' . $p['codigo'], $data_lider);
+			    		?>
+			    			<a href="<?php echo base_url() . 'projeto/alterar/' . $p['codigo'];?>" class="btn btn-default btn-sm" role="button">
+		  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn glyphicon glyphicon-edit" aria-hidden="true"></span>
+				    		</a>
+			    		<? } ?>
+
+			    		<?php 
+			    		if ($lider) { 
+			    			$data = array('codigo_projeto'=>$p['codigo']);
+								// i store data to flashdata
+							  $this->session->set_userdata('gerenciar_tarefas-' . $p['codigo'],$data);
+			    		?>
+			    			<a href="<?php echo base_url() . 'tarefa/adicionar/' . $p['codigo'];?>" id="tarefasGerenciar" class="btn btn-default btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>">
+	  							<span data-toggle="tooltip" data-placement="top" title="Gerenciar tarefas"  class="projetos-acoes-btn glyphicon glyphicon-tasks" aria-hidden="true"></span>
+			    			</a>	
+			    		<? } ?>
+			    		
 			    		<a href="#" class="btn btn-default btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 	  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
 	  						<?php 

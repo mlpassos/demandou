@@ -129,4 +129,12 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        public function verPorCodigo($codigo_projeto) {
+                $this->db->from('projeto');
+                // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
+                // $this->db->join('usuario', 'usuario_projeto.codigo_usuario=usuario.codigo');
+                $this->db->where('projeto.codigo', $codigo_projeto);
+                $query = $this->db->get();
+                return $query->result_array();
+        }
 }

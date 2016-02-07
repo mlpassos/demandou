@@ -97,7 +97,7 @@ class Projeto_controller extends MY_Controller {
 		$data_footer['js']=array(
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
-			// array('file' =>  base_url() . 'assets/js/iphone-style-checkboxes.js'),
+			array('file' =>  base_url() . 'assets/js/jquery.ajaxfileupload.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
@@ -169,4 +169,71 @@ class Projeto_controller extends MY_Controller {
 		}
 		$this->load->view('footer_view',$data_footer);	
 	}
+
+	public function alterar() {
+		// META
+		$this->header['meta'] = array(
+			array(
+			"name" => "title",
+			"content" => "Adicionar Projeto"
+			),
+			array(
+			"name" => "description",
+			"content" => "Adicionar Projeto"
+			),
+			array(
+			"name" => "keywords",
+			"content" => "admin,demandou,demandas, html5, sistema"
+			)
+		);
+
+		// CSS
+		$this->header['css']=array(
+			array('file' => 'estilos-principal.css'),
+			array('file' => 'estilos-projetos-adicionar.css'),
+			array('file' => 'select2.min.css')
+			); 
+		
+		// CONTEUDO
+		// codigo projeto
+		$cp = $this->uri->segment(3);
+		$this->load->model('usuario_model');
+		$this->load->model('projeto_model');
+		$data_content['usuarios'] = $this->usuario_model->listarAux();
+		$data_content['projeto'] = $this->projeto_model->verPorCodigo($cp);
+
+		// JS
+		$data_footer['js']=array(
+			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
+			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
+			array('file' =>  base_url() . 'assets/js/global.js'),
+			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js')
+		);
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$this->load->view('header_view',$this->header);
+		
+		if ($this->form_validation->run() == FALSE) {
+			//echo "inválido";
+			$this->load->view('admin/projetos/content_edit_view', $data_content);
+		} else {
+			// echo "válido";
+			$projeto = $this->input->post();
+			// echo "<pre>";
+			// var_dump($projeto);
+			// echo "</pre>";
+			$this->load->model('projeto_model');
+			$data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
+			if ($data['codigo_projeto']!==false) {
+				$data['projeto'] = $projeto;
+				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
+			} else {
+				echo "Oops, deu bug. Tente novamente? =]";
+			}
+		}
+		$this->load->view('footer_view',$data_footer);	
+	}
+
 }

@@ -96,6 +96,13 @@
   font-size:22px;
 }*/
 
+.tarefas-single {
+  cursor:pointer;
+}
+
+.tarefas-single .btn-edit {
+  opacity:0;
+}
 
 #tarefa_gravar {
   margin-top:5px;

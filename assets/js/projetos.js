@@ -7,6 +7,16 @@
             // fn.TL();
         },
         App : function () {
+            jQuery.extend({
+                handleError: function( s, xhr, status, e ) {
+                    // If a local callback was specified, fire it
+                    if ( s.error )
+                        s.error( xhr, status, e );
+                    // If we have some XML response text (e.g. from an AJAX call) then log it in the console
+                    else if(xhr.responseText)
+                        console.log(xhr.responseText);
+                }
+            });
                   // var timelines = $('.cd-horizontal-timeline'),
                   // eventsMinDistance = 100;
                   // // console.log(initTimeline(timelines));
@@ -492,6 +502,7 @@
                               } else {
                                      if (lider == 1) {
                                           // mostra form
+                                          alert('aqui');
                                           el.append('<div>'
                                                 + '<div class="form-group">'
                                                 + '<label for="observacao_responder">Responder Observação</label><br>' 
@@ -516,43 +527,47 @@
                               console.log(erro);
                             }
                         }).done(function(data){
-                              el.find("input[type=checkbox].switch-resposta").each(function() {
-                                  $(this).before(
-                                    '<span class="switch switch-resposta">' +
-                                    '<span class="mask" /><span class="background" />' +
-                                    '</span>'
-                                  );
-                                  // Hide checkbox
-                                  $(this).hide();
-                                  // Set inital state
-                                  if (!$(this)[0].checked) {
-                                    //alert('nao marcado');
-                                    $(this).prev().find(".background").css({left: "-56px"});
-                                  }
-                              }); // End each()
-                              el.find("span.switch-resposta").click(function() {
-                                  // If on, slide switch off
-                                  console.log('estava ' + $(this).next()[0].checked);
-                                  var codigo_observacao = $(this).next()[0].attributes[4].value;
-                                  if ($(this).next()[0].checked) {
-                                    // console.log('Foi pra ' + $(this).next()[0].checked);
-                                    $(this).find(".background").animate({left: "-56px"}, 200);
-                                    $('.observacao-resposta-' + codigo_observacao).hide('slow');
-                                    // $('#myModalTarefaFinalizar').modal('hide');
-                                  // Otherwise, slide switch on
-                                  } else {
-                                    // console.log($(this).next()[0].attributes[4].value);
-                                    // console.log($(this).next()[0].codigotarefa);
-                                    // var codigo_tarefa = $(this).next()[0].attr('data-codigotarefa');
-                                    $('.observacao-resposta-' + codigo_observacao).show('slow');
-                                    // $('#myModalTarefaFinalizar').modal('show');
-                                    $(this).find(".background").animate({left: "0px"}, 200);
-                                    // console.log($(this).next()[0].checked);
-                                  }
-                                  // Toggle state of checkbox
-                                  $(this).next()[0].checked = !$(this).next()[0].checked;
-                                  console.log('está ' + $(this).next()[0].checked);
-                              });
+                              if (data.length>0) {
+                                    // nada, ja respondido
+                              } else {
+                                    el.find("input[type=checkbox].switch-resposta").each(function() {
+                                        $(this).before(
+                                          '<span class="switch switch-resposta">' +
+                                          '<span class="mask" /><span class="background" />' +
+                                          '</span>'
+                                        );
+                                        // Hide checkbox
+                                        $(this).hide();
+                                        // Set inital state
+                                        if (!$(this)[0].checked) {
+                                          //alert('nao marcado');
+                                          $(this).prev().find(".background").css({left: "-56px"});
+                                        }
+                                    }); // End each()
+                                    el.find("span.switch-resposta").click(function() {
+                                        // If on, slide switch off
+                                        console.log('estava ' + $(this).next()[0].checked);
+                                        var codigo_observacao = $(this).next()[0].attributes[4].value;
+                                        if ($(this).next()[0].checked) {
+                                          // console.log('Foi pra ' + $(this).next()[0].checked);
+                                          $(this).find(".background").animate({left: "-56px"}, 200);
+                                          $('.observacao-resposta-' + codigo_observacao).hide('slow');
+                                          // $('#myModalTarefaFinalizar').modal('hide');
+                                        // Otherwise, slide switch on
+                                        } else {
+                                          // console.log($(this).next()[0].attributes[4].value);
+                                          // console.log($(this).next()[0].codigotarefa);
+                                          // var codigo_tarefa = $(this).next()[0].attr('data-codigotarefa');
+                                          $('.observacao-resposta-' + codigo_observacao).show('slow');
+                                          // $('#myModalTarefaFinalizar').modal('show');
+                                          $(this).find(".background").animate({left: "0px"}, 200);
+                                          // console.log($(this).next()[0].checked);
+                                        }
+                                        // Toggle state of checkbox
+                                        $(this).next()[0].checked = !$(this).next()[0].checked;
+                                        console.log('está ' + $(this).next()[0].checked);
+                                    });
+                              }
                         });
                   }   
             }
@@ -733,11 +748,13 @@
                                     + '<div class="tarefa-observacao tarefa-obs-' + codigoTarefa +'" data-atrasado="' + andamento.late + '" data-dono="' + dono + '" data-lider="' + lider + '" data-codigousuario="' + codigoUsuarioTarefa + '">'
                                     + '<label for="tarefa_observacao">Observações</label>'
                                     + '<textarea id="tarefa_observacao" name="tarefa_observacao" class="form-control" rows="3"></textarea>'
-                                    + '<div class="form-group">'
-                                    + '<label for="arquivo_obs">Anexo(s)</label>'
-                                    + '<input type="file" id="arquivo_obs">'
-                                    + '<p class="help-block">Conteúdo/Relatório produzido</p>'
-                                    + '</div>'
+                                    // + '<form id="arqObsForm" name="arqObsForm" enctype="multipart/form-data">'
+                                    // + '<div class="form-group">'
+                                    // + '<label for="arquivo_obs">Anexo(s)</label>'
+                                    // + '<input type="file" id="arquivo_obs" name="arquivo_obs">'
+                                    // + '<p class="help-block">Conteúdo/Relatório produzido</p>'
+                                    // + '</div>'
+                                    // + '</form>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
                                     + '</div>'
                                     + '</div>'
@@ -802,9 +819,9 @@
                   return out;
             }
    
-            $('.tarefas-box').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                  $(this).removeClass('animated flipInX');
-            });
+            // $('.tarefas-box').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            //       $(this).removeClass('animated flipInX');
+            // });
 
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
@@ -855,9 +872,12 @@
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
                                       output += '<div class="tarefa-individual-box panel panel-' + getTarefaPrioridade(item.prioridade).classe + '">'
                                         // + '<i class="pin animated fadeInDown"></i>'
-                                        + '<div class="panel-heading">'
+                                        + '<div class="panel-heading tarefas-single">'
                                         + '<div class="pull-left">'
-                                        + '<h2 class="panel-title">'+item.titulo+'</h2>'
+                                        + '<h2 class="panel-title tarefas-titulo">'+item.titulo+'</h2>'
+                                        + '<button type="button" class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
+                                        + '<span class="fa fa-pencil" aria-hidden="true"></span>'
+                                        + '</button>'
                                         + '</div>'
                                         + '<div class="pull-right">'
                                         + '<img class="img-thumbnail tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
@@ -947,22 +967,42 @@
                     });
             });
             
+            // var files;
+            // $('body').delegate('#arquivo_obs', 'change', function(e){
+            //       // alert('po');
+            //       files = e.target.files;
+            // });
+
+            $('body').delegate('.tarefas-titulo', 'mouseenter', function() {
+                  var el = $(this).next('.btn-edit');
+                  if (el.hasClass('animated-alt fadeOutDown')) {
+                        el.removeClass('animated-alt fadeOutDown');
+                  }
+                  el.addClass('animated-alt fadeInUp');
+                  // alert('oi');
+            });
+            $('body').delegate('.tarefas-titulo', 'mouseleave', function() {
+                  var el = $(this).next('.btn-edit');
+                  el.removeClass('animated-alt fadeInUp').addClass('animated-alt fadeOutDown');
+                  // alert('sai');
+            });
+
+            $('body').delegate('.btn-edit', 'mouseenter', function() {
+                  var el = $(this);
+                  el.removeClass('animated-alt fadeOutDown').css('opacity',1);
+                  // alert('sai');
+            });
+            $('body').delegate('.btn-edit', 'mouseleave', function() {
+                  var el = $(this);
+                  el.addClass('animated-alt fadeOutDown');
+                  // alert('sai');
+            });
+
+
+
             $('body').delegate('#tarefa_gravar','click', function(){
                   var res = $(this).parent().parent().parent().find('input#tarefa_encerrar.switch')[0].checked;
                   // // console.log(res);
-                  // var observacao = $(this).parent().find('#tarefa_observacao').val();
-                  // var lider = $(this).parent().attr('data-lider');
-                  // var atrasado = $(this).parent().attr('data-atrasado');
-                  // // se lider fecha tarefa, codigo usuario igual codigo lider
-                  // // if (lider==1) {
-                  //     // var codigo_usuario = $('#usuario_codigo').val();
-                  // // } else {
-                  // var codigo_usuario = $(this).parent().attr('data-codigousuario');
-                  // // }
-                  // var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
-                  // var url = 'http://localhost/demandou-git/tarefa/finalizar';
-                  // var resposta = {res, observacao,lider, atrasado, codigo_usuario, codigo_tarefa, url};
-                  // console.log(resposta);
                   if (res) {
                     // grava
                     var observacao = $(this).parent().find('#tarefa_observacao').val();
@@ -998,19 +1038,6 @@
             $('body').delegate('#resposta_gravar','click', function(){
                   var res = $(this).parent().parent().parent().find('input#observacao_responder.switch-resposta')[0].checked;
                   console.log('grava resposta? ' + res);
-                  // var observacao = $(this).parent().find('#tarefa_observacao').val();
-                  // var lider = $(this).parent().attr('data-lider');
-                  // var atrasado = $(this).parent().attr('data-atrasado');
-                  // // se lider fecha tarefa, codigo usuario igual codigo lider
-                  // // if (lider==1) {
-                  //     // var codigo_usuario = $('#usuario_codigo').val();
-                  // // } else {
-                  // var codigo_usuario = $(this).parent().attr('data-codigousuario');
-                  // // }
-                  // var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
-                  // var url = 'http://localhost/demandou-git/tarefa/finalizar';
-                  // var resposta = {res, observacao,lider, atrasado, codigo_usuario, codigo_tarefa, url};
-                  // console.log(resposta);
                   if (res) {
                     // grava
                     var resposta = $(this).parent().find('#observacao_resposta').val();
