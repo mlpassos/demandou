@@ -209,9 +209,7 @@ class Tarefa_controller extends MY_Controller {
     	}
     	
     }
-
-
-
+	
 	public function adicionar() {
 		$cp = $this->uri->segment(3);
 		// echo $codigo_projeto;
@@ -288,5 +286,30 @@ class Tarefa_controller extends MY_Controller {
 			}
 		}
 		$this->load->view('footer_view',$data_footer);	
+	}
+	public function alterar() {
+		$codigo_projeto = $this->input->post('codigo_projeto');
+		// CONTEUDO
+		// $this->load->model('projeto_model');
+		// $data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
+		// $data_content['codigo_projeto'] = $codigo_projeto;
+		// $this->load->model('tarefa_model');
+		// $data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
+
+		$tarefa = $this->input->post('data');
+		$this->load->model('tarefa_model');
+		$result = $this->tarefa_model->alterar($tarefa);
+		echo json_encode($result);
+
+		// $this->load->helper('form');
+		// $this->load->library('form_validation');
+
+		// if ($this->form_validation->run() == FALSE) {
+		// 		$resp = array('msg' => 'deu bug');
+		// 		echo json_encode($resp);
+		// } else {
+		// 	$tarefa = $this->input->post();
+		// 	echo json_encode($tarefa);
+		// }
 	}
 }

@@ -53,11 +53,44 @@ class Tarefa_model extends CI_Model {
                   return false;      
                 }
         }
-        public function alterar($codigo) {
-                $this->title    = $_POST['title']; // please read the below note
-                $this->content  = $_POST['content'];
-                $this->date     = time();
-                $this->db->insert('entries', $this);
+        public function alterar($tarefa) {
+                   // hack pra converter data do input html5 no formato mysql
+            foreach ($tarefa as $t) {
+                # code...
+                $ano = date("Y",strtotime($t['data_inicio']));
+                $mes = date("m",strtotime($t['data_inicio']));
+                $dia = date("d",strtotime($t['data_inicio']));
+
+                $anop = date("Y",strtotime($t['data_prazo']));
+                $mesp = date("m",strtotime($t['data_prazo']));
+                $diap = date("d",strtotime($t['data_prazo']));
+                // instancia o objeto
+                $this->codigo = $t['codigo_tarefa'];
+                $this->titulo = $t['titulo'];
+                $this->descricao = $t['descricao'];
+                $this->prioridade = $t['prioridade'];
+   
+                $this->data_inicio = $ano . '-' . $mes . '-' . $dia;
+                $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
+                // $this->data_fim = NULL;
+
+                // $this->criado_por = $this->session->userdata('codigo_usuario');
+                $this->codigo_projeto = $t['codigo_projeto'];
+                $this->codigo_usuario = $t['lider'];
+            }
+                
+                // usuário ativo
+                $this->codigo_status = 1;
+                return $this;
+                // echo "<pre>";
+                //   var_dump($this);
+                // echo "</pre>";
+                // if ($this->db->insert('tarefa', $this)) {
+                //   $inserido = $this->db->insert_id();
+                //   return true;//<br>Código: " . $inserido;
+                // } else {
+                //   return false;      
+                // }
         }
 
         public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender) {

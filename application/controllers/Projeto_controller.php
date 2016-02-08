@@ -91,10 +91,12 @@ class Projeto_controller extends MY_Controller {
 			// array('file' => 'iphone-style.css'),
 			array('file' => 'animate.css'),
 			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
+			array('file' => 'select2.min.css'),
 			array('file' => 'estilos-projetos.css')
 		); 
 		// JS
 		$data_footer['js']=array(
+			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
 			array('file' =>  base_url() . 'assets/js/jquery.ajaxfileupload.js'),
@@ -200,6 +202,8 @@ class Projeto_controller extends MY_Controller {
 		$this->load->model('usuario_model');
 		$this->load->model('projeto_model');
 		$data_content['usuarios'] = $this->usuario_model->listarAux();
+		$data_content['lider'] = $this->projeto_model->listarLider($cp);
+		$data_content['participantes'] = $this->projeto_model->listarParticipantes($cp);
 		$data_content['projeto'] = $this->projeto_model->verPorCodigo($cp);
 
 		// JS
@@ -207,7 +211,7 @@ class Projeto_controller extends MY_Controller {
 			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js')
+			array('file' =>  base_url() . 'assets/js/projetos_alterar.js')
 		);
 
 		$this->load->helper('form');
@@ -225,15 +229,22 @@ class Projeto_controller extends MY_Controller {
 			// var_dump($projeto);
 			// echo "</pre>";
 			$this->load->model('projeto_model');
-			$data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
-			if ($data['codigo_projeto']!==false) {
+			// $data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
+			if ($this->projeto_model->alterar($projeto)) {
 				$data['projeto'] = $projeto;
-				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
+				$this->load->view('admin/projetos/alterar_sucesso_view.php', $data);
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}
 		}
 		$this->load->view('footer_view',$data_footer);	
 	}
+
+	public function json_projectusers() {
+  	$codigo_projeto = $this->input->post('codigo_projeto');
+  	$this->load->model('projeto_model');
+  	$data['participantes'] = $this->projeto_model->listarTodosParticipantes($codigo_projeto);
+  	echo json_encode($data['participantes']);
+  }
 
 }

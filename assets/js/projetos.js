@@ -301,12 +301,12 @@
             var month = new Array();
                 month[0] = "Janeiro";
                 month[1] = "Fevereiro";
-                month[2] = "Maio";
+                month[2] = "Março";
                 month[3] = "Abril";
                 month[4] = "Maio";
                 month[5] = "Junho";
                 month[6] = "Julho";
-                month[7] = "Ago";
+                month[7] = "Agosto";
                 month[8] = "Setembro";
                 month[9] = "Outubro";
                 month[10] = "Novembro";
@@ -875,7 +875,16 @@
                                         + '<div class="panel-heading tarefas-single">'
                                         + '<div class="pull-left">'
                                         + '<h2 class="panel-title tarefas-titulo">'+item.titulo+'</h2>'
-                                        + '<button type="button" class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
+                                        + '<button type="button" data-toggle="modal" data-target="#myModalTarefaAlterar"'
+                                        + ' data-codigo="' + item.codigo_tarefa + '"'
+                                        + ' data-titulo="' + item.titulo + '"'
+                                        + ' data-descricao="' + item.descricao + '"'
+                                        + ' data-prioridade="' + item.prioridade + '"'
+                                        + ' data-inicio="' + item.data_inicio + '"'
+                                        + ' data-prazo="' + item.data_prazo + '"'
+                                        + ' data-lider="' + item.codigo_usuario + '"'
+                                        + ' data-codigoprojeto="' + codigo_projeto + '"'
+                                        + ' class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
                                         + '<span class="fa fa-pencil" aria-hidden="true"></span>'
                                         + '</button>'
                                         + '</div>'
@@ -997,8 +1006,99 @@
                   el.addClass('animated-alt fadeOutDown');
                   // alert('sai');
             });
+            // $('body').delegate('.btn-edit', 'click', function() {
+            //       var el = $(this);
+            //       $("#myModalTarefaAlterar").modal('show');
+            // });
+            function formatState (state) {
+                  var $state = $(
+                    '<span><img src="http://placehold.it/20x20" class="img-circle" /> ' + state.text + '</span>'
+                    // '<span>' +  state.element.value.toLowerCase() + '</span>'
+                  );
+                  return $state;
+            }
+            $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget); // Button that triggered the modal
+                    var codigo_tarefa = button.data('codigo');
+                    var titulo = button.data('titulo');
+                    var descricao = button.data('descricao');
+                    var prioridade = button.data('prioridade');
+                    var data_inicio = button.data('inicio');
+                    var data_prazo = button.data('prazo');
+                    var lider = button.data('lider');
+                    var codigo_projeto = button.data('codigoprojeto');
+                    // console.log(button);
+                    var modal = $(this);
+                    modal.find('.modal-title').text('Alterar Tarefa: ' + codigo_tarefa);
+                    modal.find('#titulo').val(titulo);
+                    modal.find('#descricao').val(descricao);
+                    modal.find('#data_inicio').val(data_inicio);
+                    modal.find('#data_prazo').val(data_prazo);
+                    modal.find('input[type="radio"]').each(function(){
+                        if ($(this).attr('value') == prioridade) {
+                              $(this).attr('checked', true);      
+                        }
+                        console.log($(this).attr('value'));
+                    });
+                    modal.find('input[name="codigo_projeto"]').val(codigo_projeto);
+                    modal.find('input[name="codigo_tarefa"]').val(codigo_tarefa);
+                    // alert(codigo_projeto);
+                    $.ajax({
+                          url: "http://localhost/demandou-git/projeto/jsonprojectusers",
+                          type: "POST",
+                          data: {
+                              codigo_projeto:codigo_projeto 
+                          },
+                          dataType: 'json',
+                          success: function(data) {
+                              console.log(data);
+                              $("#lider").html('');
+                              data.forEach(function(item){
+                                    if (item.codigo == lider) {
+                                          $("#lider").append('<option value="' + item.codigo + '" selected>' + item.nome + ' ' + item.sobrenome  + '</option>');      
+                                    } else {
+                                          $("#lider").append('<option value="' + item.codigo + '">' + item.nome + ' ' + item.sobrenome  + '</option>');      
+                                    }
+                                    
+                              });
+                              
+                          },
+                          error: function(stc,error){
+                              console.log(error);
+                              console.log(stc)
+                          }
+                     }).done(function(data){
+                        console.log('fim participantes');
+                        $("#lider").select2({
+                           maximumSelectionLength: 1,
+                           templateResult: formatState
+                        });
+                     });
+                    
+            });
 
-
+            $('body').delegate('#frmTarefa-Alterar', 'submit', function(e) {
+                  e.preventDefault();
+                  var data = $(this).serialize();
+                  console.log(data);
+                  $.ajax({
+                          url: "http://localhost/demandou-git/tarefa/alterar",
+                          type: "POST",
+                          data: {
+                              data: data
+                          },
+                          dataType: 'json',
+                          success: function(data) {
+                              console.log(data);
+                          },
+                          error: function(stc,error){
+                              console.log(error);
+                              console.log(stc)
+                          }
+                     }).done(function(data){
+                        console.log('fim alteração');
+                     });
+            });
 
             $('body').delegate('#tarefa_gravar','click', function(){
                   var res = $(this).parent().parent().parent().find('input#tarefa_encerrar.switch')[0].checked;

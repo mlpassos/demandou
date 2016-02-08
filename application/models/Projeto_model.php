@@ -71,11 +71,39 @@ class Projeto_model extends CI_Model {
                   return false;      
                 }
         }
-        public function alterar($codigo) {
-                $this->title    = $_POST['title']; // please read the below note
-                $this->content  = $_POST['content'];
-                $this->date     = time();
-                $this->db->insert('entries', $this);
+        public function alterar($projeto) {
+                // hack pra converter data do input html5 no formato mysql
+                $ano = date("Y",strtotime($projeto['data_inicio']));
+                $mes = date("m",strtotime($projeto['data_inicio']));
+                $dia = date("d",strtotime($projeto['data_inicio']));
+
+                $anop = date("Y",strtotime($projeto['data_prazo']));
+                $mesp = date("m",strtotime($projeto['data_prazo']));
+                $diap = date("d",strtotime($projeto['data_prazo']));
+                // instancia o objeto
+                $this->codigo = $projeto['codigo'];
+                $this->titulo = $projeto['titulo'];
+                $this->descricao = $projeto['descricao'];
+                $this->prioridade = $projeto['prioridade'];
+   
+                $this->data_inicio = $ano . '-' . $mes . '-' . $dia;
+                $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
+                // $this->data_fim = NULL;
+
+                // $this->criado_por = $this->session->userdata('codigo_usuario');
+
+                // usuário ativo
+                $this->codigo_status = 1;
+                // echo "<pre>";
+                //   var_dump($this);
+                // echo "</pre>";
+                $this->db->where('codigo', $this->codigo);
+                
+                if ( $this->db->update('projeto', $this) ) {
+                    return true;
+                } else {
+                    return false;      
+                }
         }
         public function excluir($codigo) {
                 $this->db->where('codigo', $codigo);
@@ -93,6 +121,44 @@ class Projeto_model extends CI_Model {
         {
                 $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
                 $this->db->from('usuario');
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+        public function listarLider($codigo_projeto)
+        {
+                $this->db->select("pa.nome as papel, u.codigo, u.nome, u.sobrenome");
+                $this->db->from('projeto as p');
+                $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
+                $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
+                $this->db->where('p.codigo', $codigo_projeto);
+                // lider = 1
+                $this->db->where('pa.codigo', 1);
+                $query = $this->db->get();
+                return $query->result_array();
+
+        }
+        public function listarParticipantes($codigo_projeto)
+        {
+                $this->db->select("pa.nome as papel, u.codigo, u.nome, u.sobrenome");
+                $this->db->from('projeto as p');
+                $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
+                $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
+                $this->db->where('p.codigo', $codigo_projeto);
+                // lider = 1
+                $this->db->where('pa.codigo', 2);
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+        public function listarTodosParticipantes($codigo_projeto)
+        {
+                $this->db->select("pa.nome as papel, u.codigo, u.nome, u.sobrenome");
+                $this->db->from('projeto as p');
+                $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
+                $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
+                $this->db->where('p.codigo', $codigo_projeto);
                 $query = $this->db->get();
                 return $query->result_array();
         }
