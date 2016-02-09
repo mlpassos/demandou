@@ -288,7 +288,7 @@ class Tarefa_controller extends MY_Controller {
 		$this->load->view('footer_view',$data_footer);	
 	}
 	public function alterar() {
-		$codigo_projeto = $this->input->post('codigo_projeto');
+		// $codigo_projeto = $this->input->post('codigo_projeto');
 		// CONTEUDO
 		// $this->load->model('projeto_model');
 		// $data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
@@ -296,9 +296,14 @@ class Tarefa_controller extends MY_Controller {
 		// $this->load->model('tarefa_model');
 		// $data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
 
-		$tarefa = $this->input->post('data');
+		$tarefa = $this->input->post();
 		$this->load->model('tarefa_model');
-		$result = $this->tarefa_model->alterar($tarefa);
+		// $result = $this->tarefa_model->alterar($tarefa);
+		if ($this->tarefa_model->alterar($tarefa)) {
+			$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
+		} else {
+			$result = array("status" => "erro", "mensagem" => "Deu bug");
+		}
 		echo json_encode($result);
 
 		// $this->load->helper('form');

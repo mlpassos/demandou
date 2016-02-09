@@ -54,43 +54,39 @@ class Tarefa_model extends CI_Model {
                 }
         }
         public function alterar($tarefa) {
-                   // hack pra converter data do input html5 no formato mysql
-            foreach ($tarefa as $t) {
-                # code...
-                $ano = date("Y",strtotime($t['data_inicio']));
-                $mes = date("m",strtotime($t['data_inicio']));
-                $dia = date("d",strtotime($t['data_inicio']));
+                $ano = date("Y",strtotime($tarefa['data_inicio']));
+                $mes = date("m",strtotime($tarefa['data_inicio']));
+                $dia = date("d",strtotime($tarefa['data_inicio']));
 
-                $anop = date("Y",strtotime($t['data_prazo']));
-                $mesp = date("m",strtotime($t['data_prazo']));
-                $diap = date("d",strtotime($t['data_prazo']));
+                $anop = date("Y",strtotime($tarefa['data_prazo']));
+                $mesp = date("m",strtotime($tarefa['data_prazo']));
+                $diap = date("d",strtotime($tarefa['data_prazo']));
                 // instancia o objeto
-                $this->codigo = $t['codigo_tarefa'];
-                $this->titulo = $t['titulo'];
-                $this->descricao = $t['descricao'];
-                $this->prioridade = $t['prioridade'];
+                $this->codigo = $tarefa['codigo_tarefa'];
+                $this->titulo = $tarefa['titulo'];
+                $this->descricao = $tarefa['descricao'];
+                $this->prioridade = $tarefa['prioridade'];
    
                 $this->data_inicio = $ano . '-' . $mes . '-' . $dia;
                 $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
                 // $this->data_fim = NULL;
 
                 // $this->criado_por = $this->session->userdata('codigo_usuario');
-                $this->codigo_projeto = $t['codigo_projeto'];
-                $this->codigo_usuario = $t['lider'];
-            }
-                
+                $this->codigo_projeto = $tarefa['codigo_projeto'];
+                $this->codigo_usuario = $tarefa['lider'][0];
+                           
                 // usuário ativo
                 $this->codigo_status = 1;
-                return $this;
+                // return $this;
                 // echo "<pre>";
                 //   var_dump($this);
                 // echo "</pre>";
-                // if ($this->db->insert('tarefa', $this)) {
-                //   $inserido = $this->db->insert_id();
-                //   return true;//<br>Código: " . $inserido;
-                // } else {
-                //   return false;      
-                // }
+                $this->db->where('codigo', $this->codigo);
+                if ( $this->db->update('tarefa', $this) ) {
+                    return true;
+                } else {
+                    return false;      
+                }
         }
 
         public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender) {
