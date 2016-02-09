@@ -104,6 +104,14 @@ class Projeto_model extends CI_Model {
                     // update participante
                     $participantes = $this->input->post('participantes');
                     // sempre líder neneto
+
+                    // criar array atuais
+                    // colocar participantes atusi
+                    // para cada atual, verificar se é igual a um dos novos participantes
+                    // sendo igual, nada faz
+                    // sendo diferente, exclui tarefas daquele usuario no projeto
+                    // exclui usuário do projeto
+                    // insere novo usuário no projeto
                     $obj_l = array(
                             "codigo_usuario" => 6,
                             "codigo_projeto" => $this->codigo,
@@ -129,7 +137,7 @@ class Projeto_model extends CI_Model {
         }
         public function excluirUsuariosProjeto($codigo_projeto) {
                 $this->db->where('codigo_projeto', $codigo_projeto);
-                return $this->db->delete('tb_livro');
+                return $this->db->delete('projeto');
         }
         public function listar()
         {
