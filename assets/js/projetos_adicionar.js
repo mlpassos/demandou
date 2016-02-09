@@ -33,8 +33,9 @@
           
           $("#lider").select2({
             maximumSelectionLength: 1,
-            templateResult: formatState
-          });
+            templateResult: formatState//,
+            // disabled: true
+          });//.val(["6"]).trigger("change");
           $("#participantes").select2();
 
 

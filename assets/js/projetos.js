@@ -883,6 +883,7 @@
                                         + ' data-inicio="' + item.data_inicio + '"'
                                         + ' data-prazo="' + item.data_prazo + '"'
                                         + ' data-lider="' + item.codigo_usuario + '"'
+                                        + ' data-dono="' + lider + '"'
                                         + ' data-codigoprojeto="' + codigo_projeto + '"'
                                         + ' class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
                                         + '<span class="fa fa-pencil" aria-hidden="true"></span>'
@@ -984,26 +985,42 @@
 
             $('body').delegate('.tarefas-titulo', 'mouseenter', function() {
                   var el = $(this).next('.btn-edit');
-                  if (el.hasClass('animated-alt fadeOutDown')) {
-                        el.removeClass('animated-alt fadeOutDown');
+                  // console.log($('#usuario_codigo').val());
+                  // só dono altera tarefa
+                  if (el.attr('data-dono')=="1") {
+                        // alert('é');
+                        if (el.hasClass('animated-alt fadeOutDown')) {
+                              el.removeClass('animated-alt fadeOutDown');
+                        }
+                        el.addClass('animated-alt fadeInUp');
+                  } else {
+                        el.css('opacity',0);
                   }
-                  el.addClass('animated-alt fadeInUp');
+                  
                   // alert('oi');
             });
             $('body').delegate('.tarefas-titulo', 'mouseleave', function() {
                   var el = $(this).next('.btn-edit');
-                  el.removeClass('animated-alt fadeInUp').addClass('animated-alt fadeOutDown');
+                  if (el.attr('data-dono')=="1") {
+                        el.removeClass('animated-alt fadeInUp').addClass('animated-alt fadeOutDown').css('opacity',0);
+                  } else {
+                        el.css('opacity',0);
+                  }
                   // alert('sai');
             });
 
             $('body').delegate('.btn-edit', 'mouseenter', function() {
                   var el = $(this);
-                  el.removeClass('animated-alt fadeOutDown').css('opacity',1);
+                  if (el.attr('data-dono')=="1") {
+                        el.removeClass('animated-alt fadeOutDown').css('opacity',1);
+                  }
                   // alert('sai');
             });
             $('body').delegate('.btn-edit', 'mouseleave', function() {
                   var el = $(this);
-                  el.addClass('animated-alt fadeOutDown');
+                  if (el.attr('data-dono')=="1") {
+                        el.addClass('animated-alt fadeOutDown').css('opacity',0);;
+                  }
                   // alert('sai');
             });
             // $('body').delegate('.btn-edit', 'click', function() {
@@ -1018,6 +1035,7 @@
                   return $state;
             }
             $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
+                   $('#myModalTarefaVer').modal('hide');
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_tarefa = button.data('codigo');
                     var titulo = button.data('titulo');
@@ -1077,19 +1095,52 @@
                     
             });
 
+            $('#myModalTarefaAlterar').on('hidden.bs.modal', function (event) {
+                $('.form-message').removeClass('alert alert-success alert-danger').text('');  
+            });
+
             $('body').delegate('#frmTarefa-Alterar', 'submit', function(e) {
                   e.preventDefault();
-                  var data = $(this).serialize();
-                  console.log(data);
+                  // var data = $(this).serialize();
+                  var form = $(this);
+                  var codigo_projeto = form.find("input[name='codigo_projeto']").val();
+                  var codigo_tarefa = form.find("input[name='codigo_tarefa']").val();
+                  var titulo = form.find("#titulo").val();
+                  var descricao = form.find("#descricao").val();
+                  var prioridade = null;
+                  form.find("input[name='prioridade']").each(function(){
+                        if ($(this).is(':checked')) {
+                              prioridade = $(this).val();
+                        }
+                  });
+                  var data_inicio = form.find("#data_inicio").val();
+                  var data_prazo = form.find("#data_prazo").val();
+                  var lider = form.find('#lider').val();
+                  var data = {codigo_projeto,codigo_tarefa,titulo,descricao,prioridade,data_inicio,data_prazo,lider};
+                  //alert(data_inicio);
+                  //console.log(data);
                   $.ajax({
                           url: "http://localhost/demandou-git/tarefa/alterar",
                           type: "POST",
                           data: {
-                              data: data
+                              codigo_projeto : codigo_projeto,
+                              codigo_tarefa : codigo_tarefa,
+                              titulo : titulo,
+                              descricao : descricao,
+                              prioridade : prioridade,
+                              data_inicio : data_inicio,
+                              data_prazo : data_prazo,
+                              lider : lider
                           },
                           dataType: 'json',
                           success: function(data) {
-                              console.log(data);
+                              var el = form.find('.form-message');
+                              var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                              console.log('classe: ' + classe);
+                              el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                    $(this).removeClass('animated fadeInUp');
+                              });
+                              $('.fechar').focus();
                           },
                           error: function(stc,error){
                               console.log(error);

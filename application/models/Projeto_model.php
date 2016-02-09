@@ -98,15 +98,37 @@ class Projeto_model extends CI_Model {
                 //   var_dump($this);
                 // echo "</pre>";
                 $this->db->where('codigo', $this->codigo);
-                
+                // falta atualizar participantes e líder
                 if ( $this->db->update('projeto', $this) ) {
-                    return true;
+                    // lider não muda
+                    // update participante
+                    $participantes = $this->input->post('participantes');
+                    // sempre líder neneto
+                    $obj_l = array(
+                            "codigo_usuario" => 6,
+                            "codigo_projeto" => $this->codigo,
+                            "codigo_papel" => 1
+                        );
+                    // exclui usuários do projeto e insere novamente
+                    $this->db->delete('usuario_projeto', array('codigo_projeto' => $this->codigo));
+                    foreach($participantes as $p) {
+                        $obj_p = array(
+                            "codigo_usuario" => $p,
+                            "codigo_projeto" => $this->codigo,
+                            "codigo_papel" => 2
+                        );
+                        $this->db->insert('usuario_projeto', $obj_p);
+                    }
+                    $this->db->insert('usuario_projeto', $obj_l);
+                    return true;    
+                    
+                    
                 } else {
                     return false;      
                 }
         }
-        public function excluir($codigo) {
-                $this->db->where('codigo', $codigo);
+        public function excluirUsuariosProjeto($codigo_projeto) {
+                $this->db->where('codigo_projeto', $codigo_projeto);
                 return $this->db->delete('tb_livro');
         }
         public function listar()
