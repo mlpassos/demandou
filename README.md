@@ -24,17 +24,17 @@ Authentication
 Users
 - [OK] - List
 - [OK] - Add
-- [  ] - Edit
+- [OK] - Edit
 - [  ] - Delete
 
 Projects
 - [OK] - List
 - [OK] - Add
-- [  ] - Edit
+- [OK] - Edit
 - [  ] - Delete
 
 Tasks
 - [OK] - List
 - [OK] - Add
-- [  ] - Edit
+- [OK] - Edit
 - [  ] - Delete
