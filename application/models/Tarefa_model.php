@@ -267,6 +267,7 @@ class Tarefa_model extends CI_Model {
                 return $this->db->delete('tb_livro');
         }
 
+
        public function listar() {
                 // $this->output->enable_profiler(TRUE);
                 $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario');
