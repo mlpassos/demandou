@@ -225,14 +225,18 @@ class Projeto_controller extends MY_Controller {
 		} else {
 			// echo "válido";
 			$projeto = $this->input->post();
-			// echo "<pre>";
+			
 			// var_dump($projeto);
-			// echo "</pre>";
+			
 			$this->load->model('projeto_model');
+			// echo "<pre>";
+			// var_dump($this->projeto_model->alterar($projeto));
+			// echo "</pre>";
 			// $data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
 			if ($this->projeto_model->alterar($projeto)) {
 				$data['projeto'] = $projeto;
 				$this->load->view('admin/projetos/alterar_sucesso_view.php', $data);
+
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}

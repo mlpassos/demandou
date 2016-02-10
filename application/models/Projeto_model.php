@@ -103,42 +103,98 @@ class Projeto_model extends CI_Model {
                     // lider não muda
                     // update participante
                     $participantes = $this->input->post('participantes');
+                    $resp = array();
                     // sempre líder neneto
-
-                    // criar array atuais
-                    // colocar participantes atusi
-                    // para cada atual, verificar se é igual a um dos novos participantes
-                    // sendo igual, nada faz
-                    // sendo diferente, exclui tarefas daquele usuario no projeto
-                    // exclui usuário do projeto
-                    // insere novo usuário no projeto
-                    $obj_l = array(
-                            "codigo_usuario" => 6,
-                            "codigo_projeto" => $this->codigo,
-                            "codigo_papel" => 1
-                        );
-                    // exclui usuários do projeto e insere novamente
-                    $this->db->delete('usuario_projeto', array('codigo_projeto' => $this->codigo));
-                    foreach($participantes as $p) {
-                        $obj_p = array(
-                            "codigo_usuario" => $p,
-                            "codigo_projeto" => $this->codigo,
-                            "codigo_papel" => 2
-                        );
-                        $this->db->insert('usuario_projeto', $obj_p);
+                    // $this->load->model('tarefa_model');
+                    $atuais = $this->listarParticipantes($this->codigo);
+                    $resa = array();
+                    // $res = array_merge($participantes,$atuais);
+                    
+                    
+                    foreach($atuais as $a) {
+                        echo $a['codigo'];
+                        array_push($resa, $a['codigo']);
                     }
-                    $this->db->insert('usuario_projeto', $obj_l);
-                    return true;    
+
+                    foreach($participantes as $p) {
+                        echo $p;
+                        array_push($resp, $p);
+                    }
+
+
+                    $resExcluir = array();
+                    $resExcluir = array_diff($resa,$resp);
+                    $json = array();
+                    $temp = array();
+                    foreach($resExcluir as $excluir) {
+                        // echo "<br>exclui: " . $excluir;
+                        // excluir usuário do projeto
+                        $this->excluirUsuariosProjeto($this->codigo, $excluir, 2);
+                        // excluir tarefas do usuário no projeto
+                        $this->excluirUsuariosProjetoTarefas($this->codigo, $excluir);
+                    }
+                    $resIgual = array();
+                    $resIgual = array_intersect($resp,$resa);
+
+                    $resAdd = array();
+                    $resAdd = array_diff($resp,$resIgual);
+                    foreach($resAdd as $add) {
+                        // echo "<br>adiciona: " . $add;
+                        $this->adicionarUsuariosProjeto($this->codigo, $add, 2);
+                        // adicionar usuário ao projeto
+                    }
+
+                    return true;
+                    // return json_encode($json);
+                    // $obj_l = array(
+                    //         "codigo_usuario" => 6,
+                    //         "codigo_projeto" => $this->codigo,
+                    //         "codigo_papel" => 1
+                    //     );
+                    // // exclui usuários do projeto e insere novamente
+                    // $this->db->delete('usuario_projeto', array('codigo_projeto' => $this->codigo));
+                    // foreach($participantes as $p) {
+                    //     $obj_p = array(
+                    //         "codigo_usuario" => $p,
+                    //         "codigo_projeto" => $this->codigo,
+                    //         "codigo_papel" => 2
+                    //     );
+                    //     $this->db->insert('usuario_projeto', $obj_p);
+                    // }
+                    // $this->db->insert('usuario_projeto', $obj_l);
+                    // return true;    
                     
                     
                 } else {
                     return false;      
                 }
         }
-        public function excluirUsuariosProjeto($codigo_projeto) {
-                $this->db->where('codigo_projeto', $codigo_projeto);
-                return $this->db->delete('projeto');
+        public function excluirUsuariosProjeto($codigo_projeto, $codigo_usuario) {
+                $this->db->where(array(
+                    'codigo_projeto' => $codigo_projeto,
+                    'codigo_usuario' => $codigo_usuario
+                    )
+                );
+                return $this->db->delete('usuario_projeto');
         }
+        public function adicionarUsuariosProjeto($codigo_projeto, $codigo_usuario, $codigo_papel) {
+                $obj = array(
+                    'codigo_projeto' => $codigo_projeto,
+                    'codigo_usuario' => $codigo_usuario,
+                    'codigo_papel' => $codigo_papel
+                );
+                return $this->db->insert('usuario_projeto', $obj);
+        }
+
+        public function excluirUsuariosProjetoTarefas($codigo_projeto,$codigo_usuario) {
+            $obj = array(
+                'codigo_projeto' => $codigo_projeto,
+                'codigo_usuario' => $codigo_usuario
+            );
+            $this->db->where($obj);
+            return $this->db->delete('tarefa');
+        }
+
         public function listar()
         {
                 $this->db->select('*');
