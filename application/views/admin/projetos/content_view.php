@@ -33,8 +33,22 @@
 				        	$lider = false;
 				        	if ($p['papel']=="Líder") {
 				        		$lider = true;
-								echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
+										echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
+										echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do participante do projeto">';
 				        	}?>
+				        	<!-- <hr> -->
+				        	<ul class="participantes-lista">
+				        		<?php
+				        			$usuariosProjeto = $projetos_usuarios;
+				        			foreach($usuariosProjeto as $t) {
+		  								 	if ($t['codigo_projeto']==$p['codigo']) {
+		  								 		echo "<li>";
+		  								 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
+		  								 		echo "</li>";
+		  								 	}
+		  								}
+				        		?>
+				        	</ul>
 				        <hr>
 				        <div class="body">
 					        <p id="tarefas-descricao-1" class="teste">

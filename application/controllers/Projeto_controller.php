@@ -66,6 +66,7 @@ class Projeto_controller extends MY_Controller {
 		if( $this->session->userdata('logado') ) {
 			$this->load->model('projeto_model');
         	$conteudo['projetos'] = $this->projeto_model->listarPorUsuario($this->session->userdata('codigo_usuario'));
+        	$conteudo['projetos_usuarios'] = $this->projeto_model->listarParticipantesGerais();
         	$this->load->model('tarefa_model');
         	// envia tarefas por projeto, para os líderes, exibe todas as tarefas do usuário
         	$conteudo['tarefas_projeto'] = $this->tarefa_model->listar();

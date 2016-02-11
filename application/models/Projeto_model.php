@@ -203,6 +203,7 @@ class Projeto_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+
         public function listarAux()
         {
                 $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
@@ -232,6 +233,19 @@ class Projeto_model extends CI_Model {
                 $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
                 $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
                 $this->db->where('p.codigo', $codigo_projeto);
+                // lider = 1
+                $this->db->where('pa.codigo', 2);
+                $query = $this->db->get();
+                return $query->result_array();
+        }
+        public function listarParticipantesGerais()
+        {
+                $this->db->select("u.arquivo_avatar, p.codigo as codigo_projeto, pa.nome as papel, u.codigo, u.nome, u.sobrenome");
+                $this->db->from('projeto as p');
+                $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
+                $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
+                $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
+                // $this->db->where('p.codigo', $codigo_projeto);
                 // lider = 1
                 $this->db->where('pa.codigo', 2);
                 $query = $this->db->get();

@@ -56,7 +56,7 @@
   transition: all .275s ease-in-out;
 }
 .tarefas-box img {
-	max-width:60%;
+	/*max-width:60%;*/
 }
 
 .prioridades {
@@ -118,6 +118,28 @@
 }
 .projetos-box .tarefas-box:hover {
   transform: translateY(-50px);
+}
+
+.participantes-lista {
+  margin-top:10px;
+  padding-left:0;
+  display:block;
+  list-style-type: none;
+}
+.participantes-lista > li {
+  margin-right:5px;
+  display:inline-block;
+}
+
+.participantes-thumbs { 
+  width:30px;
+  height:30px;
+}
+
+.lider-thumbs {
+  width:30px;
+  height:30px;
+  margin-left:5px;
 }
 
 .carousel-control.right, .carousel-control.left {
