@@ -270,8 +270,14 @@ class Tarefa_model extends CI_Model {
 
        public function listar() {
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario');
+                // SELECT  `t`.`codigo` AS  `codigo_tarefa` ,  `t`.`codigo_projeto` ,  `t`.`titulo` ,  `t`.`descricao` ,  `t`.`data_inicio` ,  `t`.`data_prazo` ,  `t`.`data_fim` ,  `t`.`encerrada` ,  `t`.`encerrada_por` ,  `t`.`codigo_usuario` AS `codigo_usuario`,
+                // u.nome as nome, u.sobrenome as sobrenome
+                // FROM  `tarefa` AS  `t` 
+                // join usuario as u on t.codigo_usuario = u.codigo
+                // ORDER BY  `t`.`codigo` ASC 
+                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
                 $this->db->from('tarefa as t');
+                $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
                 $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
