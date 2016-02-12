@@ -92,13 +92,29 @@
 		</div>
 		<?php echo form_close(); ?>
 	</div>
-	<div class="tarefas-added-box bg-info col-lg-3 col-md-3">
+	<div class="tarefas-added-box col-lg-3 col-md-3">
 		<h3>Tarefas do Projeto</h3>
 		<?php 
 		if ( sizeof($tarefas) !== 0) {
      		foreach ($tarefas as $t) {?>
-			<hr>
-			<div class="media">
+			<!-- <hr> -->
+			<?php 
+				switch ($t['prioridade']) {
+	    		case '3':
+	    			$prioridadesClass = 'bg-danger';
+	    			break;
+	    		case '2':
+	    			$prioridadesClass = 'bg-warning';
+	    			break;
+	    		case '1':
+	    			$prioridadesClass = 'bg-success';
+	    			break;
+	    		default:
+	    			$prioridadesClass = 'bg-info';
+	    			break;
+	    	}
+		  ?>
+			<div style="padding:5px;" class="media <?php echo $prioridadesClass; ?>">
 			  <div class="media-left">
 			    <p class="tarefa-dia">
 			    	<?php 
@@ -123,7 +139,7 @@
 			    </p>
 			  </div>
 			  <div class="media-right">
-			  	<img class="lider-thumbs img-circle" src="<?php echo base_url() . 'uploads/' . $t['arquivo_avatar'] ?>" alt="imagem do avatar do líder da tarefa">
+			  	<img class="lider-thumbs img-square" src="<?php echo base_url() . 'uploads/' . $t['arquivo_avatar'] ?>" alt="imagem do avatar do líder da tarefa">
 			  	<small><?php echo $t['nome']; ?></small>
 			  </div>
 			</div>
