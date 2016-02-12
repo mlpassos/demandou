@@ -26,38 +26,56 @@
 		        	}
 				?>
 				<div class="tarefas-box <?php echo $prioridadesClass; ?>">
-					<i class="pin animated fadeInDownBig"></i>
+					<!-- <i class="pin animated fadeInDownBig"></i> -->
+					<div class="tarefas-box-menu">
+						<ul class="tarefas-menu">
+							<li class="tarefas-menu-item view"><i class="item-icone fa fa-eye"></i></li>
+							<li class="tarefas-menu-item edit"><i class="item-icone fa fa-pencil"></i></li>
+							<li class="tarefas-menu-item tasks"><i class="item-icone fa fa-tasks"></i></li>
+							<li class="tarefas-menu-item item-badge">
+								<span class="item-icone badge">3</span>
+							</li>
+						</ul>
+					</div>
 					<div class="caption">
 				        <h3><?php echo $p['titulo'];?></h3>
 				        	<?php 
 				        	$lider = false;
+				        	$usuariosProjeto = $projetos_usuarios;
 				        	if ($p['papel']=="Líder") {
 				        		$lider = true;
 										echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
-										echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do participante do projeto">';
+									} else {
+										foreach($usuariosProjeto as $t) {
+	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
+	  								 			echo '<div class="tarefas-box-lider">';
+	  								 			  echo '<img class="img-square lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
+	  								 			  echo '<small> '. $t['nome'] . '</small>';
+	  								 			echo '</div>';
+	  								 	}
+	  								}
 				        	}?>
-				        	<!-- <hr> -->
-				        	<ul class="participantes-lista">
-				        		<?php
-				        			$usuariosProjeto = $projetos_usuarios;
-				        			foreach($usuariosProjeto as $t) {
-		  								 	if ($t['codigo_projeto']==$p['codigo']) {
-		  								 		echo "<li>";
-		  								 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
-		  								 		echo "</li>";
-		  								 	}
-		  								}
-				        		?>
-				        	</ul>
-				        <hr>
+				        <!-- <div class="clearfix"></div> -->
 				        <div class="body">
-					        <p id="tarefas-descricao-1" class="teste">
+					        <p id="tarefas-descricao-1" class="tarefas-box-descricao">
 					        	<?php 
 					        	$this->load->helper('text');
 					        	echo word_limiter($p['descricao'],20);
 					        	//echo $p['descricao'];
 					        	?> 
 					        </p>
+					        <ul class="participantes-lista">
+				        		<?php
+				        			foreach($usuariosProjeto as $t) {
+		  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==2) {
+		  								 		echo "<li class='participantes-lista-item'>";
+		  								 			echo '<a class="participantes-lista-link" href="#"><img class="img-square participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
+		  								 			echo '<small class="participantes-lista-nome">'. $t['nome'] . '</small></a>';
+		  								 		echo "</li>";
+		  								 	}
+		  								}
+				        		?>
+				        	</ul>
 					        <p id="tarefas-descricao-1" class="teste">
 					        	<?php 
 					        	$this->load->helper('date');

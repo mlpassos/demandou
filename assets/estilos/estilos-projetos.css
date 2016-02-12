@@ -28,13 +28,55 @@
 .tarefas-box {
 	position:relative;
 	display: block;
-    padding: 10px;
-    margin-bottom: 20px;
-    line-height: 1.42857143;
-    -webkit-transition: border .2s ease-in-out;
-    -o-transition: border .2s ease-in-out;
-    transition: border .2s ease-in-out;
+  padding: 10px;
+  margin-bottom: 20px;
+  line-height: 1.42857143;
+  -webkit-transition: border .2s ease-in-out;
+  -o-transition: border .2s ease-in-out;
+  transition: border .2s ease-in-out;
 }
+.tarefas-box-menu {
+  position:absolute;
+  top:-5px;
+  right:-27px;
+  /*background-color:#f0f0f0;*/
+  opacity:0;
+  transition: all .3s ease-in-out;
+}
+
+.tarefas-box:hover .tarefas-box-menu {
+  opacity:1;
+  /*right:-30px;*/
+}
+.tarefas-menu {
+  list-style: none;
+  padding-left:0;
+}
+.tarefas-menu-item {
+  list-style: none;
+  padding:2px;
+  margin:5px 0 5px 0;
+  text-align:center;
+  /*background-color:#f0f0f0;*/
+  /*border-radius:50%;*/
+}
+.tarefas-menu-item.view {
+  background-color:#0044CC;
+}
+.edit {
+  background-color:#0088CC;
+}
+.tasks {
+  background-color:#F89406;
+}
+.item-badge {
+  background-color:#BD362F;
+}
+.item-icone {
+  color:white;
+}
+
+
 .tarefas-box:after {     
   opacity:0;
   content: "";
@@ -55,6 +97,26 @@
   -o-transition: all .275s ease-in-out;
   transition: all .275s ease-in-out;
 }
+/*.tarefas-box:before {     
+  opacity:0;
+  content: "\f040";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-size: 25px;
+  text-align:center;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position:absolute;
+  z-index:-1;
+  right:-35px;
+  top:0px;
+  width:40px;
+  height: 40px;
+  -webkit-transition: all .275s ease-in-out;
+  -o-transition: all .275s ease-in-out;
+  transition: all .275s ease-in-out;
+}*/
 .tarefas-box img {
 	/*max-width:60%;*/
 }
@@ -70,10 +132,11 @@
 }
 .tarefas-acoes {
 	opacity:0;
+  margin-bottom:5px;
   /*background-color:blue !important;*/
   /*width:100%;*/
   /*padding:5px;*/
-  /*transform: translateY(100%);*/
+  /*transform: translateY(-5px);*/
 	-webkit-transition: all .275s ease-in-out;
     -o-transition: all .275s ease-in-out;
     transition: all .275s ease-in-out;
@@ -83,13 +146,21 @@
   display:none;
 }
 .tarefas-box:hover .tarefas-acoes {
-	opacity:1;
-  /*transform: translateY(0%);*/
+	 /*-webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp; 
+   -webkit-animation-duration: .3s;
+  animation-duration: .3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;*/
+  opacity:1;
+  transform: translateY(-5px);
 }
 .tarefas-box:hover:after  {
 	opacity:1;
 }
-
+/*.tarefas-box:hover:before  {
+  opacity:1;
+}*/
 
 /*.tarefas-box .body {
   font-family: 'Reenie Beanie';
@@ -121,26 +192,63 @@
 }
 
 .participantes-lista {
-  margin-top:10px;
+  margin:10px 0 15px 0;
   padding-left:0;
-  display:block;
+  display:inline-block;
   list-style-type: none;
 }
-.participantes-lista > li {
+.participantes-lista-item {
+  position:relative;
   margin-right:5px;
   display:inline-block;
+  transition:transform .3s ease-in-out;
+}
+
+.tarefas-box-descricao {
+  margin-top:10px;
+}
+
+/*.participantes-lista-item:hover  {
+  transform: translateY(2px);
+}*/
+
+/*.participantes-lista-link img {
+  transition: transform .3s ease-in-out;
+}
+
+.participantes-lista-link:hover img  {
+  transform: scale3d(1.1,1.1,1.1);
+}*/
+
+.participantes-lista-link:hover .participantes-lista-nome {
+  opacity:1;
+  /*transform: translateY(20px);*/
+}
+.participantes-lista-nome {
+  position:absolute;
+  bottom:-20px;
+  left:0;
+  opacity:0;
+  transition:opacity .3s ease-in-out;
 }
 
 .participantes-thumbs { 
-  width:30px;
-  height:30px;
+  width:38px;
+  height:38px;
 }
 
 .lider-thumbs {
-  width:30px;
-  height:30px;
-  margin-left:5px;
+  width:38px;
+  height:38px;
+/*  -webkit-box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);
+  box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);*/
 }
+
+.tarefas-box-lider {
+  margin-bottom:10px;
+}
+
 
 .carousel-control.right, .carousel-control.left {
   background-image:none;
