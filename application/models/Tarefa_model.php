@@ -361,12 +361,12 @@ class Tarefa_model extends CI_Model {
         // }
         
         public function listarPorCodigo($codigo_projeto) {
+                // $this->output->enable_profiler(TRUE);
                 // $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
-                $this->db->from('tarefa');
-                // $this->db->join('usuario_projeto', 'projeto.codigo=usuario_projeto.codigo_projeto');
-                // $this->db->join('projeto', 'tarefa.codigo_projeto=projeto.codigo');
-                $this->db->where('codigo_projeto', $codigo_projeto);
-                $this->db->order_by('data_prazo', 'ASC');
+                $this->db->from('tarefa as t');
+                $this->db->join('usuario as u', 't.codigo_usuario=u.codigo');
+                $this->db->where('t.codigo_projeto', $codigo_projeto);
+                $this->db->order_by('t.data_prazo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
         }

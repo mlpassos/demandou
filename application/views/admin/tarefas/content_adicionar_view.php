@@ -122,6 +122,10 @@
 			    ?>
 			    </p>
 			  </div>
+			  <div class="media-right">
+			  	<img class="lider-thumbs img-circle" src="<?php echo base_url() . 'uploads/' . $t['arquivo_avatar'] ?>" alt="imagem do avatar do líder da tarefa">
+			  	<small><?php echo $t['nome']; ?></small>
+			  </div>
 			</div>
 		<?php 
 			}
