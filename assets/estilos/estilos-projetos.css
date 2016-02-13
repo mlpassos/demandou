@@ -28,25 +28,33 @@
 .tarefas-box {
 	position:relative;
 	display: block;
-  padding: 10px;
+  /*padding: 10px;*/
+  padding-top:10px;
+  padding-bottom:5px;
   margin-bottom: 20px;
   line-height: 1.42857143;
   -webkit-transition: border .2s ease-in-out;
   -o-transition: border .2s ease-in-out;
   transition: border .2s ease-in-out;
 }
-.tarefas-box-menu {
+/*.tarefas-box-menu {
   position:absolute;
   top:-5px;
   right:-27px;
-  /*background-color:#f0f0f0;*/
+  background-color:#f0f0f0;
   opacity:0;
   transition: all .3s ease-in-out;
+}*/
+.tarefas-box-header {
+  padding:5px;
+}
+.tarefas-box-lider-img, .tarefas-box-lider {
+  float:right;
+  transform:translateY(-20px);
 }
 
-.tarefas-box:hover .tarefas-box-menu {
+/*.tarefas-box:hover .tarefas-box-menu {
   opacity:1;
-  /*right:-30px;*/
 }
 .tarefas-menu {
   list-style: none;
@@ -57,8 +65,6 @@
   padding:2px;
   margin:5px 0 5px 0;
   text-align:center;
-  /*background-color:#f0f0f0;*/
-  /*border-radius:50%;*/
 }
 .tarefas-menu-item.view {
   background-color:#0044CC;
@@ -74,7 +80,7 @@
 }
 .item-icone {
   color:white;
-}
+}*/
 
 
 .tarefas-box:after {     
@@ -153,7 +159,7 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;*/
   opacity:1;
-  transform: translateY(-5px);
+  /*transform: translateY(-5px);*/
 }
 .tarefas-box:hover:after  {
 	opacity:1;
@@ -192,20 +198,25 @@
 }
 
 .participantes-lista {
-  margin:10px 0 15px 0;
-  padding-left:0;
+  margin:0px 0 15px 0;
+  padding:5px;
   display:inline-block;
   list-style-type: none;
 }
 .participantes-lista-item {
   position:relative;
   margin-right:5px;
+  margin-bottom:5px;
   display:inline-block;
   transition:transform .3s ease-in-out;
 }
 
 .tarefas-box-descricao {
-  margin-top:10px;
+  /*margin-top:10px;*/
+  padding:5px;
+}
+.tarefas-box-datas {
+  padding:5px;
 }
 
 /*.participantes-lista-item:hover  {
@@ -220,26 +231,53 @@
   transform: scale3d(1.1,1.1,1.1);
 }*/
 
+.sem-andamento {
+  padding:5px 0 5px 0;
+  text-align:center;
+}
+
 .participantes-lista-link:hover .participantes-lista-nome {
-  opacity:1;
-  /*transform: translateY(20px);*/
+  /*opacity:1;*/
 }
 .participantes-lista-nome {
   position:absolute;
-  bottom:-20px;
-  left:0;
-  opacity:0;
+  bottom:-5px;
+  right:-5px;
+  opacity:1;
+  /*padding: 2px 5px;*/
+  font-size: 10px;
+  background-color: #dc0d17;
+  background-image: linear-gradient(#fa3c45, #dc0d17);
+  color: #fff;
+  padding: 2px 5px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
   transition:opacity .3s ease-in-out;
 }
-
+.participantes-lista-nome-alt {
+  position:absolute;
+  bottom:-5px;
+  right:-5px;
+  opacity:1;
+  /*padding: 2px 5px;*/
+  font-size: 10px;
+  color: #fff;
+  padding: 2px 5px;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, .4);
+  transition:opacity .3s ease-in-out;
+}
+.destaque-user {
+ /* -webkit-box-shadow: 0px 2px 5px 7px rgba(231,166,26,0.94);
+  -moz-box-shadow: 0px 2px 5px 7px rgba(231,166,26,0.94);
+  box-shadow: 0px 2px 5px 7px rgba(231,166,26,0.94);*/
+}
 .participantes-thumbs { 
   width:38px;
   height:38px;
 }
 
 .lider-thumbs {
-  width:38px;
-  height:38px;
+  width:50px;
+  height:50px;
 /*  -webkit-box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);
   -moz-box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);
   box-shadow: 0px 0px 3px 3px rgba(0,0,0,0.25);*/
@@ -358,6 +396,10 @@ border:initial;
 
 .icone-thumbs {
   color:#337ab7;
+}
+
+.projeto-andamento {
+ padding:5px;
 }
 
 /* PINO DOS BOXES DOS PROJETOS */

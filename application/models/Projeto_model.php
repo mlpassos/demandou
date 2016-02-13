@@ -240,7 +240,7 @@ class Projeto_model extends CI_Model {
         }
         public function listarParticipantesGerais()
         {
-                $this->db->select("u.arquivo_avatar, p.codigo as codigo_projeto, pa.nome as papel, pa.codigo as codigo_papel, u.codigo, u.nome, u.sobrenome");
+                $this->db->select("u.arquivo_avatar, p.codigo as codigo_projeto, pa.nome as papel, pa.codigo as codigo_papel, u.codigo as codigo_usuario, u.codigo, u.nome, u.sobrenome");
                 $this->db->from('projeto as p');
                 $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
                 $this->db->join('usuario as u', 'up.codigo_usuario=u.codigo');
