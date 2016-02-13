@@ -206,11 +206,13 @@
 				  							if ($ta['codigo_usuario']!==$auxi) {
 				  								$ut['codigo_usuario']=$ta['codigo_usuario'];
 				  								if ($ta['data_fim']===NULL) {
-				  									// faz nada
-				  									$ut['num_tarefas_completas'] = 0;
+					  									// faz nada
+					  									$ut['num_tarefas_completas'] = 0;
 				  								} else {
-				  									$ut['num_tarefas_completas'] =1;
-				  									$tc=$tc+1;
+				  									if ($ta['encerrada']==1) {
+					  									$ut['num_tarefas_completas'] = 1;
+					  									$tc=$tc+1;
+					  								} 
 				  								}
 				  								$ut['num_tarefas']=1;
 				  								
@@ -223,9 +225,12 @@
 				  								$utres[$k-1]['num_tarefas']+=1;//$conti;
 				  								if ($ta['data_fim']===NULL) {
 				  									// faz nada
-				  									//$utres[$k-1]['num_tarefas_completas'] = 0;
+				  									// $utres[$k-1]['num_tarefas_completas'] = 0;
 				  								} else {
-				  									$utres[$k-1]['num_tarefas_completas'] +=1;
+				  									if ($ta['encerrada']==1) {
+				  										$utres[$k-1]['num_tarefas_completas'] +=1;	
+				  									}
+				  									
 				  									// $tc=$tc+1;
 				  								}
 				  							}
@@ -245,12 +250,12 @@
 										 						} else {
 										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small></a>';	
 										 						}
-										 						
-										 						// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
-										 					}
-										 					
-										 				}
+										 					}	
+										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
 										 			}
+										 					
+										 				// }
+										 			// }
 										 		echo "</li>";
 									 		// }
 				  					// } else {
