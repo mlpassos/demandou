@@ -36,7 +36,7 @@ class Usuario_controller extends MY_Controller {
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
-			"content" => "Demandou - User List"
+			"content" => "Administrar Usuários"
 			),
 			array(
 			"name" => "description",
@@ -88,7 +88,7 @@ class Usuario_controller extends MY_Controller {
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
-			"content" => "Demandou - Adicionar Usuário"
+			"content" => "Adicionar Usuário"
 			),
 			array(
 			"name" => "description",

@@ -32,7 +32,7 @@ class Home_controller extends MY_Controller {
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
-			"content" => "Demandou"
+			"content" => "Home"
 			),
 			array(
 			"name" => "description",

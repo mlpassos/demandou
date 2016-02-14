@@ -298,6 +298,9 @@
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
+
+            var location = 'http://' + window.location.hostname + "/demandou-git";
+
             var month = new Array();
                 month[0] = "Janeiro";
                 month[1] = "Fevereiro";
@@ -403,6 +406,9 @@
             $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                   var modal = $(this);
                   modal.find('.modal-tarefas-lista').html('');
+                  // if (moda==null) {
+                  //       window.location = location + '/projetos';//?update';
+                  // }
                   // FIX AQUI
                   // if ($('.tarefa-observacoes').css('display')=='block') {
                   //       $('.tarefa-observacoes').css('display', 'none');
@@ -416,7 +422,7 @@
             //   var ajax = $.ajax({
             //             method: 'post',
             //             // async:false,
-            //             url: 'http://localhost/demandou-git/tarefa/jsontarefas',
+            //             url:  window.location.href + "/tarefa/jsontarefas',
             //             dataType: 'json',
             //             success: function(data) {
             //                comecou = data.filter(function(item,index,arr){
@@ -471,7 +477,7 @@
                   if (codigo_tipo == 3) {
                         return 'Forçada, apenas OBS.';
                   } else {
-                        var url = 'http://localhost/demandou-git/tarefa/jsontasksrespostas'
+                        var url =  location + '/tarefa/jsontasksrespostas'
                         $.ajax({
                             method: 'post',
                             url: url,
@@ -489,7 +495,7 @@
                                               + '<p>' + formataData(new Date(data_resposta)) + '</p>'
                                               + '<div class="media-left">'
                                               + '<a href="#">'
-                                              + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                                              + '<img class=" tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
                                               + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
                                               + '</a>'
                                               + '</div>'
@@ -577,7 +583,7 @@
 
             function mostrarObs(codigoTarefa, dono, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
                  
-                  var url = 'http://localhost/demandou-git/tarefa/jsontasksobs'
+                  var url =  location + '/tarefa/jsontasksobs';
                   var resp = "";
                   $.ajax({
                         method: 'post',
@@ -611,7 +617,7 @@
                                     + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
                                     + '<div class="media-left">'
                                     + '<a href="#">'
-                                    + '<img class=" tarefa-avatar" src="http://localhost/demandou-git/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
+                                    + '<img class=" tarefa-avatar" src="' + location + '/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
                                     + '<small>' + UsuarioTarefaNome + '</small>'
                                     + '</a>'
                                     + '</div>'
@@ -822,16 +828,21 @@
             // $('.tarefas-box').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
             //       $(this).removeClass('animated flipInX');
             // });
-
+            var elmodal = null;
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
+                    
                     var button = $(event.relatedTarget); // Button that triggered the modal
+                    elmodal = button;
+
                     var codigo_projeto = button.data('codigoprojeto');
-                    var modal = $(this);
+                   
+                    var modal = $(this);    
+                   
                     var titulo = button.data('titulo');
                     var lider = button.data('lider');
                     var codigo_usuario = button.data('codigousuario');
                     // console.log("a: " + codigo_usuario);
-                    var url = 'http://localhost/demandou-git/tarefa/jsonprojecttasks';
+                    var url =  location + '/tarefa/jsonprojecttasks';
                     modal.find('.modal-title').text(titulo);
                     $.ajax({
                       method: 'post',
@@ -890,7 +901,7 @@
                                         + '</button>'
                                         + '</div>'
                                         + '<div class="pull-right">'
-                                        + '<img class="img-thumbnail tarefa-avatar" src="http://localhost/demandou-git/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
+                                        + '<img class="img-thumbnail tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
                                         + '<div class="pull-right">'
                                         + '<small> ' + item.nome + ' ' + item.sobrenome + '</small>'
                                         + '<em><small> ' + item.usuario_funcao + '</small></em>'
@@ -1034,8 +1045,10 @@
                   );
                   return $state;
             }
+            var moda = null;
             $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
-                   $('#myModalTarefaVer').modal('hide');
+                    moda = $('#myModalTarefaVer');
+                    $('#myModalTarefaVer').modal('hide');
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_tarefa = button.data('codigo');
                     var titulo = button.data('titulo');
@@ -1045,6 +1058,7 @@
                     var data_prazo = button.data('prazo');
                     var lider = button.data('lider');
                     var codigo_projeto = button.data('codigoprojeto');
+                    //modalflag = codigo_projeto;
                     // console.log(button);
                     var modal = $(this);
                     modal.find('.modal-title').text('Alterar Tarefa: ' + codigo_tarefa);
@@ -1062,7 +1076,7 @@
                     modal.find('input[name="codigo_tarefa"]').val(codigo_tarefa);
                     // alert(codigo_projeto);
                     $.ajax({
-                          url: "http://localhost/demandou-git/projeto/jsonprojectusers",
+                          url: location + "/projeto/jsonprojectusers",
                           type: "POST",
                           data: {
                               codigo_projeto:codigo_projeto 
@@ -1095,6 +1109,20 @@
                     
             });
 
+            $('#myModalTarefaAlterar').on('hide.bs.modal', function (event) {
+                if (elmodal==null) {
+
+                } else {
+                  moda.modal('hide');
+                  // 
+                }
+                // window.location = location + '/projetos';
+                // $('a[data-target=#myModalTarefaVer]').remove();
+                setTimeout(function(){
+                        elmodal.trigger('click');
+                  },2000);
+            });
+
             $('#myModalTarefaAlterar').on('hidden.bs.modal', function (event) {
                 $('.form-message').removeClass('alert alert-success alert-danger').text('');  
             });
@@ -1120,7 +1148,7 @@
                   //alert(data_inicio);
                   //console.log(data);
                   $.ajax({
-                          url: "http://localhost/demandou-git/tarefa/alterar",
+                          url: location + "/tarefa/alterar",
                           type: "POST",
                           data: {
                               codigo_projeto : codigo_projeto,
@@ -1138,7 +1166,13 @@
                               var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
                               console.log('classe: ' + classe);
                               el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    $(this).removeClass('animated fadeInUp');
+                                    var isso = $(this);
+                                    setTimeout(function(){
+                                          isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                                isso.removeClass('animated fadeOutDown ' + classe).text('');
+                                          });
+                                    },800);
+                                    
                               });
                               $('.fechar').focus();
                           },
@@ -1163,7 +1197,7 @@
                     var codigo_tarefa = $(this).parent().attr('class').match(/\d+/)[0];
                     var resp = {observacao,lider,atrasado,codigo_usuario,codigo_tarefa};
                     console.log(resp);
-                    var url = 'http://localhost/demandou-git/tarefa/finalizar';
+                    var url =  location + '/tarefa/finalizar';
                     $.ajax({
                             method: 'post',
                             url: url,
@@ -1205,7 +1239,7 @@
                     var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
                     var r = {resposta, lider, codigo_observacao, tipo};
                     console.log(r);
-                    var url = 'http://localhost/demandou-git/tarefa/responder';
+                    var url =  location + '/tarefa/responder';
                     $.ajax({
                             method: 'post',
                             url: url,

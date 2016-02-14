@@ -31,7 +31,7 @@ class Admin_controller extends MY_Controller {
 		$data_header['meta']=array(
 			array(
 			"name" => "title",
-			"content" => "Página do Administrador off"
+			"content" => "Página do Administrador"
 			),
 			array(
 			"name" => "description",

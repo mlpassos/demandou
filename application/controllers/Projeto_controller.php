@@ -75,7 +75,7 @@ class Projeto_controller extends MY_Controller {
 		$this->header['meta'] = array(
 			array(
 			"name" => "title",
-			"content" => "Página do Administrador - PROJETOS"
+			"content" => "Projetos"
 			),
 			array(
 			"name" => "description",
@@ -178,7 +178,7 @@ class Projeto_controller extends MY_Controller {
 		$this->header['meta'] = array(
 			array(
 			"name" => "title",
-			"content" => "Adicionar Projeto"
+			"content" => "Alterar Projeto"
 			),
 			array(
 			"name" => "description",

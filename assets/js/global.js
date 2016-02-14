@@ -6,12 +6,14 @@
         	fn.App();
         },
         App : function () {
+            var location = 'http://' + window.location.hostname + "/demandou-git";
+            // alert(location);
         	$('#formLogin').submit(function(e){
         		e.preventDefault();
         		var strUsuario = $("#usuario").val();
                 var strSenha   = $("#senha").val();
                 $.ajax({
-                    url: "http://localhost/demandou-git/usuario/autenticar",
+                    url: location + "/usuario/autenticar",
                     type: "POST",
                     data: {
                         usuario:strUsuario, 
@@ -25,10 +27,10 @@
                             console.log(data);
                             if (data.codigo_perfil == 1) {
                                 // user
-                                window.location = "http://localhost/demandou-git/";    
+                                window.location = location;    
                             } else {
                                 // admin
-                                window.location = "http://localhost/demandou-git/admin";    
+                                window.location = location + "/admin";    
                             }
                         }
                     },
@@ -42,7 +44,7 @@
             $('#logout').click(function(){
                 var strUsuario = $("#session-usuario").val();
                 $.ajax({
-                    url: "http://localhost/demandou-git/usuario/logout",
+                    url: location + "/usuario/logout",
                     type: "POST",
                     dataType: 'text',
                     // ajaxSend: function(){$("body").css("background-color","blue");},
@@ -55,7 +57,7 @@
                 }).done(function(response, status){
                     if (status == "success") {
                         //alert(response);
-                        window.location = "http://localhost/demandou-git/";
+                        window.location = location;//"http://localhost/demandou-git/";
                     } else {
                         alert('Erro ao sair. Tente novamente. =]');
                     }

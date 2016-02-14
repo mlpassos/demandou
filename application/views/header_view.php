@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="author" content="Márcio Passos">
     <link rel="icon" href="<?php echo base_url(); ?>/assets/favicon.ico">
 
-    <title>Demandou 1.0</title>
+    <title>Demandou v1.0a - <?php echo $meta[0]['content']; ?></title>
 
     <?php 
 
@@ -44,6 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <![endif]-->
   </head>
   <body>
+    <?php  //var_dump($meta); ?>
     <?php if ($this->session->userdata('logado')==true) { ?>
       <input type="hidden" id="usuario_codigo" value="<?php echo $this->session->userdata('codigo_usuario') ?>">
       <input type="hidden" id="nome_usuario" value="<?php echo $this->session->userdata('nome') . $this->session->userdata('sobrenome'); ?>">
