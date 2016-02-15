@@ -25,11 +25,30 @@
 	top:2px;
 	right:2px;
 }*/
+
+/* 
+amarelo #ffbe1c
+vermelho #ff4332
+verde #77b50e
+*/
+
+.prioridade-alta {
+  background-color: #ff4332;
+}
+.prioridade-media {
+  background-color: #ffbe1c;
+}
+
+.prioridade-baixa {
+  background-color: #77b50e;
+}
+
 .tarefas-box {
 	position:relative;
 	display: block;
   /*padding: 10px;*/
-  padding-top:10px;
+  background-color:white;
+  /*padding-top:10px;*/
   padding-bottom:5px;
   margin-bottom: 20px;
   line-height: 1.42857143;
@@ -81,6 +100,8 @@
 .item-icone {
   color:white;
 }*/
+
+
 
 
 .tarefas-box:after {     
@@ -137,12 +158,7 @@
   background-color:transparent;
 }
 .tarefas-acoes {
-	opacity:0;
   margin-bottom:5px;
-  /*background-color:blue !important;*/
-  /*width:100%;*/
-  /*padding:5px;*/
-  /*transform: translateY(-5px);*/
 	-webkit-transition: all .275s ease-in-out;
     -o-transition: all .275s ease-in-out;
     transition: all .275s ease-in-out;
@@ -181,11 +197,16 @@
   opacity:0;
 }
 
+
 #tarefa_gravar {
   margin-top:5px;
 }
 .projetos-acoes-btn {
   /*font-size:22px;*/
+  color:#b2b2b2;
+}
+.projetos-acoes-btn:not(.last):hover {
+  color:#337ab7;
 }
 .projetos-box {
   overflow:hidden;

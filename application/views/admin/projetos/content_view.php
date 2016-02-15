@@ -12,13 +12,13 @@
 				<?php 
 					switch ($p['prioridade']) {
 		        		case '3':
-		        			$prioridadesClass = 'bg-danger';
+		        			$prioridadesClass = 'prioridade-alta';
 		        			break;
 		        		case '2':
-		        			$prioridadesClass = 'bg-warning';
+		        			$prioridadesClass = 'prioridade-media';
 		        			break;
 		        		case '1':
-		        			$prioridadesClass = 'bg-success';
+		        			$prioridadesClass = 'prioridade-baixa';
 		        			break;
 		        		default:
 		        			$prioridadesClass = 'bg-info';
@@ -83,7 +83,7 @@
 			  						// 	echo "Suas Tarefas ";
 			  						// } 
 			  					?>
-			  						<span class="projetos-acoes-btn badge">
+			  						<span class="badge">
 		  								<?php 
 			  								$res = array();
 			  								$achou = false;
@@ -239,7 +239,7 @@
 				  					// if ($lider) {
 				  						// if ($t['codigo_papel']==2) {
 										 		echo "<li class='participantes-lista-item'>";
-										 			echo '<a class="participantes-lista-link" href="#"><img class="img-square participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
+										 			echo '<a class="participantes-lista-link" href="#"><img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
