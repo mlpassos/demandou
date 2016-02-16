@@ -88,6 +88,17 @@
 			  </div>
 		</div>
 		<div class="col-lg-12 col-md-12">
+			<div class="form-group">
+				<label for="codigo_status">Status</label><br>
+				<label class="radio-inline">
+					<input type="radio" name="codigo_status" id="codigo_status" value="1" checked="checked"> Ativado
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
+				</label>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
 			<button type="submit" class="btn btn-default">Adicionar</button>
 		</div>
 		<?php echo form_close(); ?>

@@ -4,7 +4,7 @@
 	<!-- <div class="col-lg-4"></div> -->
 	<div class="col-lg-12 col-md-12">
 		<div class="well">
-			<p class="projetos-sucesso bg-success">
+			<p class="projetos-sucesso">
 				O projeto <strong><?php echo $projeto['titulo']; ?></strong> foi alterado com sucesso.
 			</p>
 		</div>

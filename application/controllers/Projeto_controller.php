@@ -199,7 +199,14 @@ class Projeto_controller extends MY_Controller {
 		
 		// CONTEUDO
 		// codigo projeto
-		$cp = $this->uri->segment(3);
+		// if ($this->uri->segment(3,$this->input->post('codigo'))) {
+		// 	$cp = $this->uri->segment(3);
+		// } else {
+		// 	$cp = $this->input->post('codigo');
+		// }
+		$cp = $this->uri->segment(3,$this->input->post('codigo'));
+		// echo 'cp: ' . $cp;
+
 		$this->load->model('usuario_model');
 		$this->load->model('projeto_model');
 		$data_content['usuarios'] = $this->usuario_model->listarAux();
@@ -218,31 +225,31 @@ class Projeto_controller extends MY_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$this->load->view('header_view',$this->header);
+		// $this->load->view('header_view',$this->header);
 		
 		if ($this->form_validation->run() == FALSE) {
 			//echo "inválido";
+			$this->load->view('header_view',$this->header);
 			$this->load->view('admin/projetos/content_edit_view', $data_content);
+			$this->load->view('footer_view',$data_footer);	
 		} else {
 			// echo "válido";
 			$projeto = $this->input->post();
 			
-			// var_dump($projeto);
+			//var_dump($projeto);
 			
 			$this->load->model('projeto_model');
-			// echo "<pre>";
-			// var_dump($this->projeto_model->alterar($projeto));
-			// echo "</pre>";
-			// $data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
+
 			if ($this->projeto_model->alterar($projeto)) {
-				$data['projeto'] = $projeto;
-				$this->load->view('admin/projetos/alterar_sucesso_view.php', $data);
+				// $data['projeto'] = $projeto;
+				// $this->load->view('admin/projetos/alterar_sucesso_view.php', $data);
+				redirect(base_url('/projetos'),'refresh');
 
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}
 		}
-		$this->load->view('footer_view',$data_footer);	
+		// $this->load->view('footer_view',$data_footer);	
 	}
 
 	public function json_projectusers() {

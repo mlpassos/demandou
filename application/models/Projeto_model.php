@@ -92,8 +92,8 @@ class Projeto_model extends CI_Model {
 
                 // $this->criado_por = $this->session->userdata('codigo_usuario');
 
-                // usuário ativo
-                $this->codigo_status = 1;
+                // status
+                $this->codigo_status = $projeto['codigo_status'];
                 // echo "<pre>";
                 //   var_dump($this);
                 // echo "</pre>";
@@ -112,12 +112,12 @@ class Projeto_model extends CI_Model {
                     
                     
                     foreach($atuais as $a) {
-                        echo $a['codigo'];
+                        //echo $a['codigo'];
                         array_push($resa, $a['codigo']);
                     }
 
                     foreach($participantes as $p) {
-                        echo $p;
+                        //echo $p;
                         array_push($resp, $p);
                     }
 
@@ -268,6 +268,8 @@ class Projeto_model extends CI_Model {
                 $this->db->from('projeto as p');
                 $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
                 $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
+                // projeto ativo
+                $this->db->where('p.codigo_status', 1);
                 $this->db->where('up.codigo_usuario', $codigo_usuario);
                 $this->db->order_by('p.data_prazo', 'ASC');
                 $query = $this->db->get();

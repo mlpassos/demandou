@@ -344,13 +344,13 @@
                     var prioridade = button.data('prioridade');
                     switch(prioridade) {
                         case 3:
-                            var pclass = "#F2DEDE";
+                            var pclass = "#ff4332";
                             break;
                         case 2:
-                            var pclass = "#FCF8E3";
+                            var pclass = "#ffbe1c";
                             break;
                         case 1:
-                            var pclass = "#DFF0D8";
+                            var pclass = "#77b50e";
                             break;
                         default:
                             // nothing
@@ -364,7 +364,7 @@
                     var total = Math.floor((data_prazo - data_inicio) / (1000*60*60*24));
                     var check_inicio = Math.floor((data_inicio - hoje) / (1000*60*60*24));
                     var check_fim = Math.floor((data_prazo - hoje) / (1000*60*60*24));
-                    modal.find('.modal-content').css('background-color',pclass);
+                    modal.find('.modal-header').css('background-color',pclass);
 
                     if (check_inicio>=0) {
                             // nao começou
@@ -508,7 +508,7 @@
                               } else {
                                      if (lider == 1) {
                                           // mostra form
-                                          alert('aqui');
+                                          // alert('aqui');
                                           el.append('<div>'
                                                 + '<div class="form-group">'
                                                 + '<label for="observacao_responder">Responder Observação</label><br>' 
@@ -520,6 +520,7 @@
                                                 + '<label for="observacao_resposta">Observações</label>'
                                                 + '<textarea id="observacao_resposta" name="observacao_resposta" class="form-control" rows="3"></textarea>'
                                                 + '<button type="button" class="btn btn-primary btn-small" id="resposta_gravar"><i class="fa fa-disk"></i> Responder</button>'
+                                                + '<p class="tarefa-resposta-mensagem"></p>'
                                                 + '</div>'
                                                 + '</div>'
                                                 + '</div>');
@@ -762,6 +763,7 @@
                                     // + '</div>'
                                     // + '</form>'
                                     + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
+                                    + '<p class="tarefa-observacao-mensagem"></p>'
                                     + '</div>'
                                     + '</div>'
                                     + '</div>';
@@ -797,25 +799,25 @@
                   switch(code) {
                        case 3:
                             var out = {
-                                'classe': "danger",
+                                'classe': "prioridade-alta",
                                 'texto': 'ALTA',
-                                'cor': '#F2DEDE'
+                                'cor': '#ff4332'
                             }
                             break;
                         case 2:
                             // var out = "#FCF8E3";
                             var out = {
-                                'classe': "warning",
+                                'classe': "prioridade-media",
                                 'texto': 'MÉDIA',
-                                'cor': '#FCF8E3'
+                                'cor': '#ffbe1c'
                             }
                             break;
                         case 1:
                             // var out = "#DFF0D8";
                             var out = {
-                                'classe': "success",
+                                'classe': "prioridade-baixa",
                                 'texto': 'BAIXA',
-                                'cor': '#DFF0D8'
+                                'cor': '#77b50e'
                             }
                             break;
                         default:
@@ -880,12 +882,17 @@
                               }
                               // $('#myModalTarefaVer .modal-tarefas-lista').append(''
                                       // output += ''//
+                                      if (item.codigo_status==1) {
+                                          var status = '<i class="fa fa-toggle-on"></i>';
+                                      } else {
+                                          var status = '<i class="fa fa-toggle-off"></i>';
+                                      }
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
-                                      output += '<div class="tarefa-individual-box panel panel-' + getTarefaPrioridade(item.prioridade).classe + '">'
+                                      output += '<div class="tarefa-individual-box panel">'
                                         // + '<i class="pin animated fadeInDown"></i>'
-                                        + '<div class="panel-heading tarefas-single">'
-                                        + '<div class="pull-left">'
-                                        + '<h2 class="panel-title tarefas-titulo">'+item.titulo+'</h2>'
+                                        + '<div class="panel-heading tarefas-single ' + getTarefaPrioridade(item.prioridade).classe + '">'
+                                        // + '<div class="pull-left">'
+                                        + '<h2 class="panel-title tarefas-titulo">'+item.titulo + ' ' + status + '</h2>'
                                         + '<button type="button" data-toggle="modal" data-target="#myModalTarefaAlterar"'
                                         + ' data-codigo="' + item.codigo_tarefa + '"'
                                         + ' data-titulo="' + item.titulo + '"'
@@ -896,19 +903,19 @@
                                         + ' data-lider="' + item.codigo_usuario + '"'
                                         + ' data-dono="' + lider + '"'
                                         + ' data-codigoprojeto="' + codigo_projeto + '"'
+                                        + ' data-codigostatus="' + item.codigo_status + '"'
                                         + ' class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
                                         + '<span class="fa fa-pencil" aria-hidden="true"></span>'
                                         + '</button>'
-                                        + '</div>'
+                                        // + '</div>'
                                         + '<div class="pull-right">'
-                                        + '<img class="img-thumbnail tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
-                                        + '<div class="pull-right">'
+                                        + '<img class="img-circle tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
                                         + '<small> ' + item.nome + ' ' + item.sobrenome + '</small>'
                                         + '<em><small> ' + item.usuario_funcao + '</small></em>'
                                         + '</div>'      
-                                        + '</div>'
+                                        // + '</div>'
                                         + '</div>' 
-                                        + '<div class="panel-body" style="background-color:' +  getTarefaPrioridade(item.prioridade).cor + ';">'
+                                        + '<div class="panel-body">'
                                         + '<p>' +  item.descricao + '</p>' 
                                         + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(data_inicio) + '</p>' 
                                         + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(data_prazo) + '</p>'
@@ -1058,6 +1065,7 @@
                     var data_prazo = button.data('prazo');
                     var lider = button.data('lider');
                     var codigo_projeto = button.data('codigoprojeto');
+                    var codigo_status = button.data('codigostatus');
                     //modalflag = codigo_projeto;
                     // console.log(button);
                     var modal = $(this);
@@ -1074,6 +1082,19 @@
                     });
                     modal.find('input[name="codigo_projeto"]').val(codigo_projeto);
                     modal.find('input[name="codigo_tarefa"]').val(codigo_tarefa);
+                    modal.find('input[name="codigo_status"]').each(function(){
+                        // alert(typeof codigo_status);
+                        if ($(this).attr('value')=="1") {
+                              if (codigo_status==1) {
+                                    // alert('here');
+                                    $(this).attr('checked', 'checked');
+                              }
+                        } else {
+                              if (codigo_status==0) {
+                                    $(this).attr('checked', 'checked');
+                              }
+                        }
+                    });
                     // alert(codigo_projeto);
                     $.ajax({
                           url: location + "/projeto/jsonprojectusers",
@@ -1144,9 +1165,17 @@
                   var data_inicio = form.find("#data_inicio").val();
                   var data_prazo = form.find("#data_prazo").val();
                   var lider = form.find('#lider').val();
-                  var data = {codigo_projeto,codigo_tarefa,titulo,descricao,prioridade,data_inicio,data_prazo,lider};
+                  var codigo_status = "";
+                  form.find('#codigo_status').each(function(){
+                        if ($(this).is(':checked')) {
+                              codigo_status = $(this).val();
+                        } else {
+                              codigo_status = '0';
+                        }
+                  });
+                  var data = {codigo_projeto,codigo_tarefa,titulo,descricao,prioridade,data_inicio,data_prazo,lider,codigo_status};
                   //alert(data_inicio);
-                  //console.log(data);
+                  console.log(data);
                   $.ajax({
                           url: location + "/tarefa/alterar",
                           type: "POST",
@@ -1158,7 +1187,8 @@
                               prioridade : prioridade,
                               data_inicio : data_inicio,
                               data_prazo : data_prazo,
-                              lider : lider
+                              lider : lider,
+                              codigo_status
                           },
                           dataType: 'json',
                           success: function(data) {
@@ -1190,6 +1220,8 @@
                   // // console.log(res);
                   if (res) {
                     // grava
+                    var el = $(this).parent().find('.tarefa-observacao-mensagem');
+                    var elbox = $(this).parent();
                     var observacao = $(this).parent().find('#tarefa_observacao').val();
                     var lider = $(this).parent().attr('data-lider');
                     var atrasado = $(this).parent().attr('data-atrasado');
@@ -1211,7 +1243,18 @@
                             dataType: 'json',
                             success: function(data) {
                               console.log(data);
-
+                              showMensagem(el, data, elbox);
+                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                              // console.log('classe: ' + classe);
+                              // el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //       var isso = $(this);
+                              //       setTimeout(function(){
+                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //                   isso.removeClass('animated fadeOutDown ' + classe).text('');
+                              //             });
+                              //       },800);
+                                    
+                              // });
                             },
                             error: function(error) {
                               console.log(error);
@@ -1220,20 +1263,41 @@
                   }
             });
 
+            function showMensagem(el, data, elbox) {
+                  var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                  console.log('classe: ' + classe);
+                  el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                        var isso = $(this);
+                        setTimeout(function(){
+                              isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                    isso.removeClass('animated fadeOutDown ' + classe).text('');
+                              });
+                              if (elbox!=="") {
+                                    setTimeout(function(){
+                                          elbox.hide('slow');
+                                    },1000);
+                              }
+                        },800);
+                        
+                  });
+            }
+
             $('body').delegate('#resposta_gravar','click', function(){
                   var res = $(this).parent().parent().parent().find('input#observacao_responder.switch-resposta')[0].checked;
                   console.log('grava resposta? ' + res);
                   if (res) {
                     // grava
+                    var el = $(this).parent().find('.tarefa-resposta-mensagem');
+                    var elbox = $(this).parent();
                     var resposta = $(this).parent().find('#observacao_resposta').val();
                     var lider = $(this).parent().attr('data-lider');
                     var tipo = $(this).parent().attr('data-tipo');
-                    alert('tipo: ' + tipo);
+                    // alert('tipo: ' + tipo);
                     // var tipo = $(this).parent().attr('data-tipo');
                     var codigo_observacao = $(this).parent().attr('class').match(/\d+/)[0];
                     // if (tipo == "2" || tipo == "1") {
                     var extender = $('#observacao_extender-' + codigo_observacao + '-sim')[0].checked;
-                    alert('extender: ' + extender);
+                    // alert('extender: ' + extender);
                         // var nextende = $('#observacao_extender-' + codigo_observacao + '-nao')[0].checked;
                     // }
                     var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
@@ -1256,7 +1320,18 @@
                             dataType: 'json',
                             success: function(data) {
                               console.log(data);
-
+                              showMensagem(el,data, elbox);
+                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                              // console.log('classe: ' + classe);
+                              // el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //       var isso = $(this);
+                              //       setTimeout(function(){
+                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //                   isso.removeClass('animated fadeOutDown ' + classe).text('');
+                              //             });
+                              //       },800);
+                                    
+                              // });
                             },
                             error: function(error) {
                               console.log(error);

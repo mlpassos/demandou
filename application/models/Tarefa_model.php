@@ -42,7 +42,7 @@ class Tarefa_model extends CI_Model {
                 $this->codigo_projeto = $tarefa['codigo_projeto'];
                 $this->codigo_usuario = $tarefa['lider'];
                 // usuário ativo
-                $this->codigo_status = 1;
+                $this->codigo_status = $tarefa['codigo_status'];
                 // echo "<pre>";
                 //   var_dump($this);
                 // echo "</pre>";
@@ -76,7 +76,7 @@ class Tarefa_model extends CI_Model {
                 $this->codigo_usuario = $tarefa['lider'][0];
                            
                 // usuário ativo
-                $this->codigo_status = 1;
+                $this->codigo_status = $tarefa['codigo_status'];
                 // return $this;
                 // echo "<pre>";
                 //   var_dump($this);
@@ -275,9 +275,11 @@ class Tarefa_model extends CI_Model {
                 // FROM  `tarefa` AS  `t` 
                 // join usuario as u on t.codigo_usuario = u.codigo
                 // ORDER BY  `t`.`codigo` ASC 
-                $this->db->select('t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
+                // $this->output->enable_profiler(TRUE);
+                $this->db->select('t.codigo_status as codigo_status, t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+                $this->db->where('t.codigo_status', 1);
                 $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
@@ -338,12 +340,13 @@ class Tarefa_model extends CI_Model {
         }
 
         public function jsonTarefasPorProjeto($codigo_projeto) {
-                $this->db->select('t.encerrada, t.encerrada_por, t.prioridade, u.nome, u.sobrenome, u.arquivo_avatar, uf.titulo as usuario_funcao, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto =' . $codigo_projeto . ') AS total, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto = ' . $codigo_projeto . ' AND data_fim IS NOT NULL ) AS completas, t.codigo_usuario, t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim');
+                $this->db->select('t.codigo_status, t.encerrada, t.encerrada_por, t.prioridade, u.nome, u.sobrenome, u.arquivo_avatar, uf.titulo as usuario_funcao, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto =' . $codigo_projeto . ') AS total, (SELECT COUNT( * ) FROM tarefa WHERE codigo_projeto = ' . $codigo_projeto . ' AND data_fim IS NOT NULL ) AS completas, t.codigo_usuario, t.codigo as codigo_tarefa, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario as u', 't.codigo_usuario=u.codigo');
                 $this->db->join('usuario_funcao as uf', 'u.codigo_funcao=uf.codigo');
+                // $this->db->where('t.codigo_status', 1);
                 $this->db->where('t.codigo_projeto', $codigo_projeto);
-                $this->db->order_by('t.codigo', 'ASC');
+                $this->db->order_by('t.data_fim', 'DESC');
                 $query = $this->db->get();
                 return $query->result_array();
         }

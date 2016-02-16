@@ -25,7 +25,7 @@
 		        			break;
 		        	}
 				?>
-				<div class="tarefas-box bg-info<?php // echo $prioridadesClass; ?>">
+				<div class="tarefas-box">
 					<!-- <i class="pin animated fadeInDownBig"></i> -->
 					<!-- tarefas -->
 					<div class="caption">
@@ -43,7 +43,7 @@
 	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
 	  								 			echo '<div class="tarefas-box-lider">';
 	  								 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
-	  								 			  echo '<small> '. $t['nome'] . '</small>';
+	  								 			  // echo '<small> '. $t['nome'] . '</small>';
 	  								 			echo '</div>';
 	  								 	}
 	  								}
@@ -73,7 +73,7 @@
 				    			<a href="<?php echo base_url() . 'tarefa/adicionar/' . $p['codigo'];?>" id="tarefasGerenciar" class="btn btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>">
 		  							<span data-toggle="tooltip" data-placement="top" title="Gerenciar tarefas"  class="projetos-acoes-btn fa fa-tasks" aria-hidden="true"></span>
 				    			</a>	
-				    		<? } ?>
+				    		<?php } ?>
 				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 		  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
 	  							<?php 
@@ -156,6 +156,7 @@
 			  							;?>
 	  								</span>
 			    			</a>
+			    			
 			    </div> 
 	        <div class="body">
 		        <p class="tarefas-box-descricao">
@@ -172,8 +173,8 @@
 
 								// INíCIO
 					        	// $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
-								//echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<span class="fa fa-play-circle"></span> ' : '<span class="fa fa-pause-circle"></span> ' ;
-								echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou ' : 'Aguardando ' ;
+								echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou' : 'Aguardando' ;
+								//echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Desativar"  class="projetos-acoes-btn fa fa-toggle-on" aria-hidden="true"></span></a>' : '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Ativar"  class="projetos-acoes-btn fa fa-toggle-off" aria-hidden="true"></span></a>' ;
 								//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
 								// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
 
@@ -225,7 +226,7 @@
 				  								$utres[$k-1]['num_tarefas']+=1;//$conti;
 				  								if ($ta['data_fim']===NULL) {
 				  									// faz nada
-				  									// $utres[$k-1]['num_tarefas_completas'] = 0;
+				  									//$utres[$k-1]['num_tarefas_completas'] = 0;
 				  								} else {
 				  									if ($ta['encerrada']==1) {
 				  										$utres[$k-1]['num_tarefas_completas'] +=1;	
@@ -239,16 +240,16 @@
 				  					// if ($lider) {
 				  						// if ($t['codigo_papel']==2) {
 										 		echo "<li class='participantes-lista-item'>";
-										 			echo '<a class="participantes-lista-link" href="#"><img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
+										 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
-										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small></a>';	
+										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small>';	
 										 					} else {
 										 						if ($t['codigo_usuario']!==$this->session->userdata('codigo_usuario')) {
-										 							echo '<small class="participantes-lista-nome badge">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small></a>';		
+										 							echo '<small class="participantes-lista-nome badge">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 						} else {
-										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small></a>';	
+										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';	
 										 						}
 										 					}	
 										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
@@ -392,7 +393,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Gravar</button>
+        <!-- <button type="button" class="btn btn-primary">Gravar</button> -->
       </div>
     </div>
   </div>
@@ -487,6 +488,17 @@
 									  ?>
 									</select>
 								  </div>
+							</div>
+							<div class="col-lg-12 col-md-12">
+								<div class="form-group">
+									<label for="codigo_status">Status</label><br>
+									<label class="radio-inline">
+										<input type="radio" name="codigo_status" id="codigo_status" value="1"> Ativado
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
+									</label>
+								</div>
 							</div>
 							<div class="col-lg-12 col-md-12">
 								<!-- <button type="submit" class="btn btn-default">Gravar</button> -->
