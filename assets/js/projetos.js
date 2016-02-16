@@ -405,7 +405,12 @@
             });
             $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                   var modal = $(this);
+                  modal.modal('hide');
                   modal.find('.modal-tarefas-lista').html('');
+                  // $('.ajaxload').empty().load(location + '/projetos', '',function(){
+                  //       console.log('loaded');
+                  // });
+                  window.location = location + '/projetos';
                   // if (moda==null) {
                   //       window.location = location + '/projetos';//?update';
                   // }
@@ -414,45 +419,6 @@
                   //       $('.tarefa-observacoes').css('display', 'none');
                   // }
             });
-            
-
-            // function getTasksUsersInfo() {
-            //   var res = [],
-            //   atrasados = "", comecou = "";
-            //   var ajax = $.ajax({
-            //             method: 'post',
-            //             // async:false,
-            //             url:  window.location.href + "/tarefa/jsontarefas',
-            //             dataType: 'json',
-            //             success: function(data) {
-            //                comecou = data.filter(function(item,index,arr){
-            //                   var inicio = new Date(item.data_inicio);
-            //                   var hoje = new Date();
-            //                   return Math.floor((inicio - hoje) / (1000*60*60*24))<=0;
-            //                }).map(function(item,index,arr) {
-            //                   return item;
-            //                });
-            //                atrasados = data.filter(function(item,index,arr){
-            //                   var prazo = new Date(item.data_prazo);
-            //                   var hoje = new Date();
-            //                   return Math.floor((prazo - hoje) / (1000*60*60*24))<0;
-            //                }).map(function(item,index,arr) {
-            //                   return item;
-            //                });
-                           
-            //             },
-            //             error: function(error) {
-            //               alert('erro');
-            //               console.log(error);
-            //             },
-            //           }).done(function(data){
-            //             console.log(comecou);
-            //             console.log(atrasados);
-            //           });
-
-            // }
-
-            // getTasksUsersInfo();
 
             function mostraOpcoes(codigo_tipo, codigo_observacao) {
                   if (codigo_tipo == 1) {
@@ -1055,7 +1021,7 @@
             var moda = null;
             $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
                     moda = $('#myModalTarefaVer');
-                    $('#myModalTarefaVer').modal('hide');
+                    //$('#myModalTarefaVer').modal('hide');
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_tarefa = button.data('codigo');
                     var titulo = button.data('titulo');
@@ -1131,12 +1097,12 @@
             });
 
             $('#myModalTarefaAlterar').on('hide.bs.modal', function (event) {
-                if (elmodal==null) {
+                // if (elmodal==null) {
 
-                } else {
+                // } else {
                   moda.modal('hide');
                   // 
-                }
+                // }
                 // window.location = location + '/projetos';
                 // $('a[data-target=#myModalTarefaVer]').remove();
                 setTimeout(function(){
@@ -1193,17 +1159,20 @@
                           dataType: 'json',
                           success: function(data) {
                               var el = form.find('.form-message');
-                              var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                              console.log('classe: ' + classe);
-                              el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    var isso = $(this);
-                                    setTimeout(function(){
-                                          isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                                isso.removeClass('animated fadeOutDown ' + classe).text('');
-                                          });
-                                    },800);
+                              showMensagem(el, data);
+                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                              // var mensagemHTML = $.parseHTML(data.mensagem);
+                              // console.log('classe: ' + classe);
+
+                              // el.addClass('alert ' + classe + ' animated fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //       var isso = $(this);
+                              //       setTimeout(function(){
+                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                              //                   isso.removeClass('animated fadeOutDown ' + classe).html('');
+                              //             });
+                              //       },800);
                                     
-                              });
+                              //  });
                               $('.fechar').focus();
                           },
                           error: function(stc,error){
@@ -1265,12 +1234,12 @@
 
             function showMensagem(el, data, elbox) {
                   var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                  console.log('classe: ' + classe);
-                  el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                  var mensagemHTML = $.parseHTML(data.mensagem);
+                  el.addClass('alert ' + classe +  ' animated fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
                         var isso = $(this);
                         setTimeout(function(){
                               isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    isso.removeClass('animated fadeOutDown ' + classe).text('');
+                                    isso.removeClass('animated fadeOutDown ' + classe).html('');
                               });
                               if (elbox!=="") {
                                     setTimeout(function(){

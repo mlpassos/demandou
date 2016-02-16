@@ -238,59 +238,58 @@ $config = array(
                                 "required" => "O campo %s é necessário."
                         )
                 )
+        ),
+        'tarefa_controller/alterar' => array(
+                array(  
+                        'field' => 'titulo',
+                        'label' => 'Titulo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'descricao',
+                        'label' => 'Descrição',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'prioridade',
+                        'label' => 'Prioridade',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                array(  
+                        'field' => 'data_inicio',
+                        'label' => 'Início',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                 array(  
+                        'field' => 'data_prazo',
+                        'label' => 'Prazo',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                ),
+                  array(  
+                        'field' => 'lider',
+                        'label' => 'Líder',
+                        'rules' => 'required', 
+                        'errors' => array(
+                                "required" => "O campo %s é necessário."
+                        )
+                )
         )
-        // ,
-        // 'tarefa_controller/alterar' => array(
-        //         array(  
-        //                 'field' => 'titulo',
-        //                 'label' => 'Titulo',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         ),
-        //         array(  
-        //                 'field' => 'descricao',
-        //                 'label' => 'Descrição',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         ),
-        //         array(  
-        //                 'field' => 'prioridade',
-        //                 'label' => 'Prioridade',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         ),
-        //         array(  
-        //                 'field' => 'data_inicio',
-        //                 'label' => 'Início',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         ),
-        //          array(  
-        //                 'field' => 'data_prazo',
-        //                 'label' => 'Prazo',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         ),
-        //           array(  
-        //                 'field' => 'lider',
-        //                 'label' => 'Líder',
-        //                 'rules' => 'required', 
-        //                 'errors' => array(
-        //                         "required" => "O campo %s é necessário."
-        //                 )
-        //         )
-        // )
 );
 
-$config['error_prefix'] = '<div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;<span class="sr-only">Error:</span>';
+$config['error_prefix'] = '<div><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;<span class="sr-only">Error:</span>';
 $config['error_suffix'] = '</div>';

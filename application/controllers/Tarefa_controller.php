@@ -296,25 +296,33 @@ class Tarefa_controller extends MY_Controller {
 		// $this->load->model('tarefa_model');
 		// $data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
 
-		$tarefa = $this->input->post();
-		$this->load->model('tarefa_model');
-		// $result = $this->tarefa_model->alterar($tarefa);
-		if ($this->tarefa_model->alterar($tarefa)) {
-			$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
-		} else {
-			$result = array("status" => "erro", "mensagem" => "Deu bug");
-		}
-		echo json_encode($result);
-
-		// $this->load->helper('form');
-		// $this->load->library('form_validation');
-
-		// if ($this->form_validation->run() == FALSE) {
-		// 		$resp = array('msg' => 'deu bug');
-		// 		echo json_encode($resp);
+		// $tarefa = $this->input->post();
+		// $this->load->model('tarefa_model');
+		// // $result = $this->tarefa_model->alterar($tarefa);
+		// if ($this->tarefa_model->alterar($tarefa)) {
+		// 	$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
 		// } else {
-		// 	$tarefa = $this->input->post();
-		// 	echo json_encode($tarefa);
+		// 	$result = array("status" => "erro", "mensagem" => "Deu bug");
 		// }
+		// echo json_encode($result);
+
+		
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		if ($this->form_validation->run() == FALSE) {
+			$result = array("status" => "erro", "mensagem" => validation_errors());
+			echo json_encode($result);
+		} else {
+			$tarefa = $this->input->post();
+			$this->load->model('tarefa_model');
+			if ($this->tarefa_model->alterar($tarefa)) {
+				$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
+			} else {
+				$result = array("status" => "erro", "mensagem" => "Deu bug");
+			}
+			echo json_encode($result);
+		}
 	}
 }
