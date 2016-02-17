@@ -4,422 +4,10 @@
         // Funcionalidades
         Iniciar: function () {
             fn.App();
-            // fn.TL();
         },
         App : function () {
-            jQuery.extend({
-                handleError: function( s, xhr, status, e ) {
-                    // If a local callback was specified, fire it
-                    if ( s.error )
-                        s.error( xhr, status, e );
-                    // If we have some XML response text (e.g. from an AJAX call) then log it in the console
-                    else if(xhr.responseText)
-                        console.log(xhr.responseText);
-                }
-            });
-                  // var timelines = $('.cd-horizontal-timeline'),
-                  // eventsMinDistance = 100;
-                  // // console.log(initTimeline(timelines));
-                  // (timelines.length > 0) && initTimeline(timelines);
-
-                  // function initTimeline(timelines) {
-                  //   timelines.each(function(){
-                  //     var timeline = $(this),
-                  //       timelineComponents = {};
-                  //     //cache timeline components 
-                  //     timelineComponents['timelineWrapper'] = timeline.find('.events-wrapper');
-                  //     timelineComponents['eventsWrapper'] = timelineComponents['timelineWrapper'].children('.events');
-                  //     timelineComponents['fillingLine'] = timelineComponents['eventsWrapper'].children('.filling-line');
-                  //     timelineComponents['timelineEvents'] = timelineComponents['eventsWrapper'].find('a');
-                  //     timelineComponents['timelineDates'] = parseDate(timelineComponents['timelineEvents']);
-                  //     timelineComponents['eventsMinLapse'] = minLapse(timelineComponents['timelineDates']);
-                  //     timelineComponents['timelineNavigation'] = timeline.find('.cd-timeline-navigation');
-                  //     timelineComponents['eventsContent'] = timeline.children('.events-content');
-
-                  //     //assign a left postion to the single events along the timeline
-                  //     setDatePosition(timelineComponents, eventsMinDistance);
-                  //     //assign a width to the timeline
-                  //     var timelineTotWidth = setTimelineWidth(timelineComponents, eventsMinDistance);
-                  //     //the timeline has been initialize - show it
-                  //     timeline.addClass('loaded');
-
-                  //     //detect click on the next arrow
-                  //     timelineComponents['timelineNavigation'].on('click', '.next', function(event){
-                  //       event.preventDefault();
-                  //       updateSlide(timelineComponents, timelineTotWidth, 'next');
-                  //     });
-                  //     //detect click on the prev arrow
-                  //     timelineComponents['timelineNavigation'].on('click', '.prev', function(event){
-                  //       event.preventDefault();
-                  //       updateSlide(timelineComponents, timelineTotWidth, 'prev');
-                  //     });
-                  //     //detect click on the a single event - show new event content
-                  //     timelineComponents['eventsWrapper'].on('click', 'a', function(event){
-                  //       event.preventDefault();
-                  //       timelineComponents['timelineEvents'].removeClass('selected');
-                  //       $(this).addClass('selected');
-                  //       updateOlderEvents($(this));
-                  //       updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
-                  //       updateVisibleContent($(this), timelineComponents['eventsContent']);
-                  //     });
-
-                  //     //on swipe, show next/prev event content
-                  //     timelineComponents['eventsContent'].on('swipeleft', function(){
-                  //       var mq = checkMQ();
-                  //       ( mq == 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'next');
-                  //     });
-                  //     timelineComponents['eventsContent'].on('swiperight', function(){
-                  //       var mq = checkMQ();
-                  //       ( mq == 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'prev');
-                  //     });
-
-                  //     //keyboard navigation
-                  //     $(document).keyup(function(event){
-                  //       if(event.which=='37' && elementInViewport(timeline.get(0)) ) {
-                  //         showNewContent(timelineComponents, timelineTotWidth, 'prev');
-                  //       } else if( event.which=='39' && elementInViewport(timeline.get(0))) {
-                  //         showNewContent(timelineComponents, timelineTotWidth, 'next');
-                  //       }
-                  //     });
-                  //   });
-                  // }
-
-                  // function updateSlide(timelineComponents, timelineTotWidth, string) {
-                  //   //retrieve translateX value of timelineComponents['eventsWrapper']
-                  //   var translateValue = getTranslateValue(timelineComponents['eventsWrapper']),
-                  //     wrapperWidth = Number(timelineComponents['timelineWrapper'].css('width').replace('px', ''));
-                  //   //translate the timeline to the left('next')/right('prev') 
-                  //   (string == 'next') 
-                  //     ? translateTimeline(timelineComponents, translateValue - wrapperWidth + eventsMinDistance, wrapperWidth - timelineTotWidth)
-                  //     : translateTimeline(timelineComponents, translateValue + wrapperWidth - eventsMinDistance);
-                  // }
-
-                  // function showNewContent(timelineComponents, timelineTotWidth, string) {
-                  //   //go from one event to the next/previous one
-                  //   var visibleContent =  timelineComponents['eventsContent'].find('.selected'),
-                  //     newContent = ( string == 'next' ) ? visibleContent.next() : visibleContent.prev();
-
-                  //   if ( newContent.length > 0 ) { //if there's a next/prev event - show it
-                  //     var selectedDate = timelineComponents['eventsWrapper'].find('.selected'),
-                  //       newEvent = ( string == 'next' ) ? selectedDate.parent('li').next('li').children('a') : selectedDate.parent('li').prev('li').children('a');
-                      
-                  //     updateFilling(newEvent, timelineComponents['fillingLine'], timelineTotWidth);
-                  //     updateVisibleContent(newEvent, timelineComponents['eventsContent']);
-                  //     newEvent.addClass('selected');
-                  //     selectedDate.removeClass('selected');
-                  //     updateOlderEvents(newEvent);
-                  //     updateTimelinePosition(string, newEvent, timelineComponents, timelineTotWidth);
-                  //   }
-                  // }
-
-                  // function updateTimelinePosition(string, event, timelineComponents, timelineTotWidth) {
-                  //   //translate timeline to the left/right according to the position of the selected event
-                  //   var eventStyle = window.getComputedStyle(event.get(0), null),
-                  //     eventLeft = Number(eventStyle.getPropertyValue("left").replace('px', '')),
-                  //     timelineWidth = Number(timelineComponents['timelineWrapper'].css('width').replace('px', '')),
-                  //     timelineTotWidth = Number(timelineComponents['eventsWrapper'].css('width').replace('px', ''));
-                  //   var timelineTranslate = getTranslateValue(timelineComponents['eventsWrapper']);
-
-                  //       if( (string == 'next' && eventLeft > timelineWidth - timelineTranslate) || (string == 'prev' && eventLeft < - timelineTranslate) ) {
-                  //         translateTimeline(timelineComponents, - eventLeft + timelineWidth/2, timelineWidth - timelineTotWidth);
-                  //       }
-                  // }
-
-                  // function translateTimeline(timelineComponents, value, totWidth) {
-                  //   var eventsWrapper = timelineComponents['eventsWrapper'].get(0);
-                  //   value = (value > 0) ? 0 : value; //only negative translate value
-                  //   value = ( !(typeof totWidth === 'undefined') &&  value < totWidth ) ? totWidth : value; //do not translate more than timeline width
-                  //   setTransformValue(eventsWrapper, 'translateX', value+'px');
-                  //   //update navigation arrows visibility
-                  //   (value == 0 ) ? timelineComponents['timelineNavigation'].find('.prev').addClass('inactive') : timelineComponents['timelineNavigation'].find('.prev').removeClass('inactive');
-                  //   (value == totWidth ) ? timelineComponents['timelineNavigation'].find('.next').addClass('inactive') : timelineComponents['timelineNavigation'].find('.next').removeClass('inactive');
-                  // }
-
-                  // function updateFilling(selectedEvent, filling, totWidth) {
-                  //   //change .filling-line length according to the selected event
-                  //   var eventStyle = window.getComputedStyle(selectedEvent.get(0), null),
-                  //     eventLeft = eventStyle.getPropertyValue("left"),
-                  //     eventWidth = eventStyle.getPropertyValue("width");
-                  //   eventLeft = Number(eventLeft.replace('px', '')) + Number(eventWidth.replace('px', ''))/2;
-                  //   var scaleValue = eventLeft/totWidth;
-                  //   setTransformValue(filling.get(0), 'scaleX', scaleValue);
-                  // }
-
-                  // function setDatePosition(timelineComponents, min) {
-                  //   for (var i = 0; i < timelineComponents['timelineDates'].length; i++) { 
-                  //       var distance = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][i]),
-                  //         distanceNorm = Math.round(distance/timelineComponents['eventsMinLapse']) + 2;
-                  //       timelineComponents['timelineEvents'].eq(i).css('left', distanceNorm*min+'px');
-                  //   }
-                  // }
-
-                  // function setTimelineWidth(timelineComponents, width) {
-                  //   var timeSpan = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][timelineComponents['timelineDates'].length-1]),
-                  //     timeSpanNorm = timeSpan/timelineComponents['eventsMinLapse'],
-                  //     timeSpanNorm = Math.round(timeSpanNorm) + 4,
-                  //     totalWidth = timeSpanNorm*width;
-                  //   timelineComponents['eventsWrapper'].css('width', totalWidth+'px');
-                  //   updateFilling(timelineComponents['timelineEvents'].eq(0), timelineComponents['fillingLine'], totalWidth);
-                  
-                  //   return totalWidth;
-                  // }
-
-                  // function updateVisibleContent(event, eventsContent) {
-                  //   var eventDate = event.data('date'),
-                  //     visibleContent = eventsContent.find('.selected'),
-                  //     selectedContent = eventsContent.find('[data-date="'+ eventDate +'"]'),
-                  //     selectedContentHeight = selectedContent.height();
-
-                  //   if (selectedContent.index() > visibleContent.index()) {
-                  //     var classEnetering = 'selected enter-right',
-                  //       classLeaving = 'leave-left';
-                  //   } else {
-                  //     var classEnetering = 'selected enter-left',
-                  //       classLeaving = 'leave-right';
-                  //   }
-
-                  //   selectedContent.attr('class', classEnetering);
-                  //   visibleContent.attr('class', classLeaving).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                  //     visibleContent.removeClass('leave-right leave-left');
-                  //     selectedContent.removeClass('enter-left enter-right');
-                  //   });
-                  //   eventsContent.css('height', selectedContentHeight+'px');
-                  // }
-
-                  // function updateOlderEvents(event) {
-                  //   event.parent('li').prevAll('li').children('a').addClass('older-event').end().end().nextAll('li').children('a').removeClass('older-event');
-                  // }
-
-                  // function getTranslateValue(timeline) {
-                  //   var timelineStyle = window.getComputedStyle(timeline.get(0), null),
-                  //     timelineTranslate = timelineStyle.getPropertyValue("-webkit-transform") ||
-                  //           timelineStyle.getPropertyValue("-moz-transform") ||
-                  //           timelineStyle.getPropertyValue("-ms-transform") ||
-                  //           timelineStyle.getPropertyValue("-o-transform") ||
-                  //           timelineStyle.getPropertyValue("transform");
-
-                  //       if( timelineTranslate.indexOf('(') >=0 ) {
-                  //         var timelineTranslate = timelineTranslate.split('(')[1];
-                  //       timelineTranslate = timelineTranslate.split(')')[0];
-                  //       timelineTranslate = timelineTranslate.split(',');
-                  //       var translateValue = timelineTranslate[4];
-                  //       } else {
-                  //         var translateValue = 0;
-                  //       }
-
-                  //       return Number(translateValue);
-                  // }
-
-                  // function setTransformValue(element, property, value) {
-                  //   element.style["-webkit-transform"] = property+"("+value+")";
-                  //   element.style["-moz-transform"] = property+"("+value+")";
-                  //   element.style["-ms-transform"] = property+"("+value+")";
-                  //   element.style["-o-transform"] = property+"("+value+")";
-                  //   element.style["transform"] = property+"("+value+")";
-                  // }
-
-                  // //based on http://stackoverflow.com/questions/542938/how-do-i-get-the-number-of-days-between-two-dates-in-javascript
-                  // function parseDate(events) {
-                  //   var dateArrays = [];
-                  //   events.each(function(){
-                  //     var dateComp = $(this).data('date').split('/'),
-                  //       newDate = new Date(dateComp[2], dateComp[1]-1, dateComp[0]);
-                  //     dateArrays.push(newDate);
-                  //   });
-                  //     return dateArrays;
-                  // }
-
-                  // function parseDate2(events) {
-                  //   var dateArrays = [];
-                  //   events.each(function(){
-                  //     var singleDate = $(this),
-                  //       dateComp = singleDate.data('date').split('T');
-                  //     if( dateComp.length > 1 ) { //both DD/MM/YEAR and time are provided
-                  //       var dayComp = dateComp[0].split('/'),
-                  //         timeComp = dateComp[1].split(':');
-                  //     } else if( dateComp[0].indexOf(':') >=0 ) { //only time is provide
-                  //       var dayComp = ["2000", "0", "0"],
-                  //         timeComp = dateComp[0].split(':');
-                  //     } else { //only DD/MM/YEAR
-                  //       var dayComp = dateComp[0].split('/'),
-                  //         timeComp = ["0", "0"];
-                  //     }
-                  //     var newDate = new Date(dayComp[2], dayComp[1]-1, dayComp[0], timeComp[0], timeComp[1]);
-                  //     dateArrays.push(newDate);
-                  //   });
-                  //     return dateArrays;
-                  // }
-
-                  // function daydiff(first, second) {
-                  //     return Math.round((second-first));
-                  // }
-
-                  // function minLapse(dates) {
-                  //   //determine the minimum distance among events
-                  //   var dateDistances = [];
-                  //   for (var i = 1; i < dates.length; i++) { 
-                  //       var distance = daydiff(dates[i-1], dates[i]);
-                  //       dateDistances.push(distance);
-                  //   }
-                  //   return Math.min.apply(null, dateDistances);
-                  // }
-
-                  // /*
-                  //   How to tell if a DOM element is visible in the current viewport?
-                  //   http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
-                  // */
-                  // function elementInViewport(el) {
-                  //   var top = el.offsetTop;
-                  //   var left = el.offsetLeft;
-                  //   var width = el.offsetWidth;
-                  //   var height = el.offsetHeight;
-
-                  //   while(el.offsetParent) {
-                  //       el = el.offsetParent;
-                  //       top += el.offsetTop;
-                  //       left += el.offsetLeft;
-                  //   }
-
-                  //   return (
-                  //       top < (window.pageYOffset + window.innerHeight) &&
-                  //       left < (window.pageXOffset + window.innerWidth) &&
-                  //       (top + height) > window.pageYOffset &&
-                  //       (left + width) > window.pageXOffset
-                  //   );
-                  // }
-
-                  // function checkMQ() {
-                  //   //check if mobile or desktop device
-                  //   return window.getComputedStyle(document.querySelector('.cd-horizontal-timeline'), '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
-                  // }
-            $('.tarefas-grid').masonry({
-                itemSelector: '.cor-coluna',
-            });
-            $('.projetos-acoes-btn').tooltip({
-              'delay': { "show": 500, "hide": 100 }
-            });
-
-            var location = 'http://' + window.location.hostname + "/demandou-git";
-
-            var month = new Array();
-                month[0] = "Janeiro";
-                month[1] = "Fevereiro";
-                month[2] = "Março";
-                month[3] = "Abril";
-                month[4] = "Maio";
-                month[5] = "Junho";
-                month[6] = "Julho";
-                month[7] = "Agosto";
-                month[8] = "Setembro";
-                month[9] = "Outubro";
-                month[10] = "Novembro";
-                month[11] = "Dezembro";
-            var weekday = new Array();
-                weekday[0] = "Domingo";
-                weekday[1] = "Segunda-feira";
-                weekday[2] = "Terça-feira";
-                weekday[3] = "Quarta-feira";
-                weekday[4] = "Quinta-feira";
-                weekday[5] = "Sexta-feira";
-                weekday[6] = "Sábado";
-            // var n = month[d.getMonth()];
-            function formataData(strData) {
-                  return weekday[strData.getDay()] + ', ' + strData.getDate() + ' de ' + month[strData.getMonth()] + ' de ' + strData.getFullYear();
-            }
-            $('#myModalProjetoVer').on('hidden.bs.modal', function (event) {
-                     var modal = $(this);
-                     modal.find('.modal-tarefas-lista').html('');
-                     modal.find('.modal-body').find('.data-faltam').html('');
-                     modal.find('.modal-title').text('');
-                     modal.find('.modal-body').find('.descricao').text('');
-                     modal.find('.modal-body').find('.data-inicio').text('');
-                     modal.find('.modal-body').find('.data-prazo').text('');
-            });
-            $('#myModalProjetoVer').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget); // Button that triggered the modal
-                    var modal = $(this);
-                    var codigo_projeto = button.data('codigoprojeto');
-                    var titulo = button.data('titulo');
-                    var descricao = button.data('descricao');
-                    var prioridade = button.data('prioridade');
-                    switch(prioridade) {
-                        case 3:
-                            var pclass = "#ff4332";
-                            break;
-                        case 2:
-                            var pclass = "#ffbe1c";
-                            break;
-                        case 1:
-                            var pclass = "#77b50e";
-                            break;
-                        default:
-                            // nothing
-                    }
-                    var data_inicio = new Date(button.data('inicio'));
-                    data_inicio.setDate(data_inicio.getDate() + 1);
-                    var data_prazo = new Date(button.data('prazo'));
-                    data_prazo.setDate(data_prazo.getDate() + 1);
-                    var hoje = new Date();
-                    var faltam = Math.floor((data_prazo - hoje) / (1000*60*60*24));
-                    var total = Math.floor((data_prazo - data_inicio) / (1000*60*60*24));
-                    var check_inicio = Math.floor((data_inicio - hoje) / (1000*60*60*24));
-                    var check_fim = Math.floor((data_prazo - hoje) / (1000*60*60*24));
-                    modal.find('.modal-header').css('background-color',pclass);
-
-                    if (check_inicio>=0) {
-                            // nao começou
-                            var comecou = false;
-                            if (check_inicio==0) {
-                              modal.find('.modal-body').find('.data-faltam').text('Começou hoje!').addClass('alert alert-success').removeClass('alert-danger alert-warning');
-                            } else {
-                              if (check_inicio == 1) {
-                                modal.find('.modal-body').find('.data-faltam').text('Começa Amanhã').addClass('alert alert-success').removeClass('alert-danger alert-warning');
-                              } else {
-                                modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_inicio + ' dias para começar.').addClass('alert alert-success').removeClass('alert-danger alert-warning');
-                              }
-                            }
-                            modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', '0%').text('0%');
-                    } else {
-                            var comecou = true;
-                            // começou
-                            if (check_fim<=0) {
-                              if (check_fim==0) { 
-                                var porcento = 100;
-                                modal.find('.modal-body').find('.data-faltam').text('Termina hoje').addClass('alert alert-danger').removeClass('alert-success alert-warning');
-                              } else {
-                                // atrasado
-                                modal.find('.modal-body').find('.data-faltam').text('Atrasado ' + faltam*(-1) + ' dias.').addClass('alert alert-danger').removeClass('alert-success alert-warning');
-                                var porcento = 100;
-                              } 
-                            } else {
-                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias para terminar.').addClass('alert alert-warning').removeClass('alert-danger alert-success');
-                              var porcento = [(total-faltam) * 100] / total;
-                            }
-                            modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', porcento.toFixed(2) + '%').text(porcento.toFixed(2)+'%');
-                    }
-                    // ajax pegando os dados da tarefa
-                      modal.find('.modal-title').text(titulo);
-                      modal.find('.modal-body').find('.descricao').text(descricao);
-                      modal.find('.modal-body').find('.data-inicio').text('Início: ' + formataData(data_inicio));
-                      modal.find('.modal-body').find('.data-prazo').text('Prazo: ' + formataData(data_prazo));
-            });
-            $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
-                  var modal = $(this);
-                  //modal.modal('hide');
-                  modal.find('.modal-tarefas-lista').html('');
-                  // moda.empty().load(location + '/projetos #myModalTarefaVer', '',function(){
-                  //       console.log('loaded');
-                  // });
-                  window.location = location + '/projetos';
-                  // if (moda==null) {
-                  //       window.location = location + '/projetos';//?update';
-                  // }
-                  // FIX AQUI
-                  // if ($('.tarefa-observacoes').css('display')=='block') {
-                  //       $('.tarefa-observacoes').css('display', 'none');
-                  // }
-            });
-
+            
+            // Funções do App
             function mostraOpcoes(codigo_tipo, codigo_observacao) {
                   if (codigo_tipo == 1) {
                        return '<div class="form-group">'
@@ -544,10 +132,6 @@
                         });
                   }   
             }
-            $('body').delegate('.show-obs','click',function(){
-                  $(this).next().stop(true,true).slideToggle("slow");
-            });
-
             function mostrarObs(codigoTarefa, dono, lider, UsuarioTarefaNome, UsuarioTarefaAvatar) { 
                  
                   var url =  location + '/tarefa/jsontasksobs';
@@ -584,7 +168,7 @@
                                     + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
                                     + '<div class="media-left">'
                                     + '<a href="#">'
-                                    + '<img class=" img-circle tarefa-avatar" src="' + location + '/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
+                                    + '<img class="img-circle tarefa-avatar" src="' + location + '/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
                                     + '<small>' + UsuarioTarefaNome + '</small>'
                                     + '</a>'
                                     + '</div>'
@@ -602,7 +186,6 @@
                             }
                   });
             }
-
             function showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var resposta = [], output="", atrasado=0;
                   if (data_fim!==null) {
@@ -680,7 +263,6 @@
                   }
                   return resposta;
             }
-
             function usuarioAcoes(codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por) {
                   var hoje = new Date();
                   var data_inicio = new Date(data_inicio);
@@ -758,7 +340,6 @@
                   } 
                   return output;
             }
-
             function getTarefaPrioridade(codigo) {
                   var code = parseInt(codigo);
                   
@@ -792,11 +373,6 @@
                   }     
                   return out;
             }
-   
-            // $('.tarefas-box').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            //       $(this).removeClass('animated flipInX');
-            // });
-            var elmodal = null;
             function showPendente(codigo_status, codigo_dono, data_fim,encerrada,lider, codigo_usuario) {
                   // console.log(data_fim,encerrada);
                   if (codigo_status==0) {
@@ -823,7 +399,145 @@
                               }
                         }
                   }
-              }
+            }
+            function formatState (state) {
+                  var $state = $(
+                    '<span><img src="http://placehold.it/20x20" class="img-circle" /> ' + state.text + '</span>'
+                    // '<span>' +  state.element.value.toLowerCase() + '</span>'
+                  );
+                  return $state;
+            }
+            function showMensagem(el, data, elbox) {
+                  var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+                  var mensagemHTML = $.parseHTML(data.mensagem);
+                  el.addClass('alert ' + classe +  ' animated-alt-med fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                        var isso = $(this);
+                        setTimeout(function(){
+                              isso.removeClass('animated-alt-med fadeInUp').addClass('animated-alt-med fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                    isso.removeClass('animated-alt-med fadeOutDown ' + classe).html('');
+                              });
+                              if (elbox!=="") {
+                                    setTimeout(function(){
+                                          elbox.hide('slow');
+                                    },1000);
+                              }
+                        },500);
+                        
+                  });
+            }
+
+
+            $('.tarefas-grid').masonry({
+                itemSelector: '.cor-coluna',
+            });
+
+            $('.projetos-acoes-btn').tooltip({
+              'delay': { "show": 500, "hide": 100 }
+            });
+
+            var location = 'http://' + window.location.hostname + "/demandou-git";
+
+            var month = new Array();
+                month[0] = "Janeiro";
+                month[1] = "Fevereiro";
+                month[2] = "Março";
+                month[3] = "Abril";
+                month[4] = "Maio";
+                month[5] = "Junho";
+                month[6] = "Julho";
+                month[7] = "Agosto";
+                month[8] = "Setembro";
+                month[9] = "Outubro";
+                month[10] = "Novembro";
+                month[11] = "Dezembro";
+            var weekday = new Array();
+                weekday[0] = "Domingo";
+                weekday[1] = "Segunda-feira";
+                weekday[2] = "Terça-feira";
+                weekday[3] = "Quarta-feira";
+                weekday[4] = "Quinta-feira";
+                weekday[5] = "Sexta-feira";
+                weekday[6] = "Sábado";
+            // var n = month[d.getMonth()];
+            function formataData(strData) {
+                  return weekday[strData.getDay()] + ', ' + strData.getDate() + ' de ' + month[strData.getMonth()] + ' de ' + strData.getFullYear();
+            }
+            $('#myModalProjetoVer').on('hidden.bs.modal', function (event) {
+                     var modal = $(this);
+                     modal.find('.modal-tarefas-lista').html('');
+                     modal.find('.modal-body').find('.data-faltam').html('');
+                     modal.find('.modal-title').text('');
+                     modal.find('.modal-body').find('.descricao').text('');
+                     modal.find('.modal-body').find('.data-inicio').text('');
+                     modal.find('.modal-body').find('.data-prazo').text('');
+            });
+            $('#myModalProjetoVer').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget); // Button that triggered the modal
+                    var modal = $(this);
+                    var codigo_projeto = button.data('codigoprojeto');
+                    var titulo = button.data('titulo');
+                    var descricao = button.data('descricao');
+                    var prioridade = button.data('prioridade');
+                    var data_inicio = new Date(button.data('inicio'));
+                    data_inicio.setDate(data_inicio.getDate() + 1);
+                    var data_prazo = new Date(button.data('prazo'));
+                    data_prazo.setDate(data_prazo.getDate() + 1);
+                    var hoje = new Date();
+                    var faltam = Math.floor((data_prazo - hoje) / (1000*60*60*24));
+                    var total = Math.floor((data_prazo - data_inicio) / (1000*60*60*24));
+                    var check_inicio = Math.floor((data_inicio - hoje) / (1000*60*60*24));
+                    var check_fim = Math.floor((data_prazo - hoje) / (1000*60*60*24));
+                    modal.find('.modal-header').css('background-color', getTarefaPrioridade(prioridade).cor);
+
+                    if (check_inicio>=0) {
+                            // nao começou
+                            var comecou = false;
+                            if (check_inicio==0) {
+                              modal.find('.modal-body').find('.data-faltam').text('Começou hoje!').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                            } else {
+                              if (check_inicio == 1) {
+                                modal.find('.modal-body').find('.data-faltam').text('Começa Amanhã').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                              } else {
+                                modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_inicio + ' dias para começar.').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                              }
+                            }
+                            modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', '0%').text('0%');
+                    } else {
+                            var comecou = true;
+                            // começou
+                            if (check_fim<=0) {
+                              if (check_fim==0) { 
+                                var porcento = 100;
+                                modal.find('.modal-body').find('.data-faltam').text('Termina hoje').addClass('alert alert-danger').removeClass('alert-success alert-warning');
+                              } else {
+                                // atrasado
+                                modal.find('.modal-body').find('.data-faltam').text('Atrasado ' + faltam*(-1) + ' dias.').addClass('alert alert-danger').removeClass('alert-success alert-warning');
+                                var porcento = 100;
+                              } 
+                            } else {
+                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias para terminar.').addClass('alert alert-warning').removeClass('alert-danger alert-success');
+                              var porcento = [(total-faltam) * 100] / total;
+                            }
+                            modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', porcento.toFixed(2) + '%').text(porcento.toFixed(2)+'%');
+                    }
+                    // ajax pegando os dados da tarefa
+                      modal.find('.modal-title').text(titulo);
+                      modal.find('.modal-body').find('.descricao').text(descricao);
+                      modal.find('.modal-body').find('.data-inicio').text('Início: ' + formataData(data_inicio));
+                      modal.find('.modal-body').find('.data-prazo').text('Prazo: ' + formataData(data_prazo));
+            });
+            $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
+                  var modal = $(this);
+                  modal.find('.modal-tarefas-lista').html('');
+                  window.location = location + '/projetos';
+            });
+
+            $('body').delegate('.show-obs','click',function(){
+                  $(this).next().stop(true,true).slideToggle("slow");
+            });
+
+            var elmodal = null;
+            
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     
                     var button = $(event.relatedTarget); // Button that triggered the modal
@@ -848,7 +562,7 @@
                       dataType: 'json',
                       success: function(data) {
                         console.log(data);
-                        var coduser = codigo_usuario;
+                        // var coduser = codigo_usuario;
                         if (data.length==0) {
                           // nada
                           $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-exclamation-triangle"></span> Relaxe, sem tarefas no projeto ainda, mas não se preocupe, você será avisado. =]</p>');
@@ -860,7 +574,7 @@
                           for (var i = 0; i <= data.length - 1;  i++) {
                                 // output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>';
                                 // console.log(coduser);
-                                output += (i==0) ? '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, coduser) + '" data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, coduser) + '" data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
+                                output += (i==0) ? '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, codigo_usuario) + '" data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, codigo_usuario) + '" data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
                           };
                           output += '</ol><div class="carousel-inner" role="listbox">';
                           data.forEach(function(item){
@@ -1038,21 +752,11 @@
                   }
                   // alert('sai');
             });
-            // $('body').delegate('.btn-edit', 'click', function() {
-            //       var el = $(this);
-            //       $("#myModalTarefaAlterar").modal('show');
-            // });
-            function formatState (state) {
-                  var $state = $(
-                    '<span><img src="http://placehold.it/20x20" class="img-circle" /> ' + state.text + '</span>'
-                    // '<span>' +  state.element.value.toLowerCase() + '</span>'
-                  );
-                  return $state;
-            }
+
+            
             var moda = null;
             $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
                     moda = $('#myModalTarefaVer');
-                    //$('#myModalTarefaVer').modal('hide');
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var codigo_tarefa = button.data('codigo');
                     var titulo = button.data('titulo');
@@ -1124,21 +828,10 @@
                            templateResult: formatState
                         });
                      });
-                    
             });
 
             $('#myModalTarefaAlterar').on('hide.bs.modal', function (event) {
-                // if (elmodal==null) {
-
-                // } else {
                   moda.modal('hide');
-                  // 
-                // }
-                // window.location = location + '/projetos';
-                // $('a[data-target=#myModalTarefaVer]').remove();
-                // setTimeout(function(){
-                //         elmodal.trigger('click');
-                //   },2000);
             });
 
             $('#myModalTarefaAlterar').on('hidden.bs.modal', function (event) {
@@ -1239,25 +932,6 @@
                   }
             });
 
-            function showMensagem(el, data, elbox) {
-                  var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                  var mensagemHTML = $.parseHTML(data.mensagem);
-                  el.addClass('alert ' + classe +  ' animated-alt-med fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                        var isso = $(this);
-                        setTimeout(function(){
-                              isso.removeClass('animated-alt-med fadeInUp').addClass('animated-alt-med fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    isso.removeClass('animated-alt-med fadeOutDown ' + classe).html('');
-                              });
-                              if (elbox!=="") {
-                                    setTimeout(function(){
-                                          elbox.hide('slow');
-                                    },1000);
-                              }
-                        },500);
-                        
-                  });
-            }
-
             $('body').delegate('#resposta_gravar','click', function(){
                   var res = $(this).parent().parent().parent().find('input#observacao_responder.switch-resposta')[0].checked;
                   console.log('grava resposta? ' + res);
@@ -1306,7 +980,6 @@
             });
 
         }
-
     }
     $(document).ready(function () {
         fn.Iniciar();

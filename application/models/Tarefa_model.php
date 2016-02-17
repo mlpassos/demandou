@@ -110,7 +110,7 @@ class Tarefa_model extends CI_Model {
                         "codigo_status_obs" => 3
                     );
                 }
-                // extensão, grava resposta e redefinir data_fim em tarefa
+                // extensão, grava resposta e redefine data_fim em tarefa
                 if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
                     if ($extender == "true") {
                         $dados['tarefa'] = array(
@@ -215,6 +215,7 @@ class Tarefa_model extends CI_Model {
                     "data_fim" => null,
                     "encerrada" => 1,
                     "encerrada_por" => $codigo_usuario,
+                    "codigo_status" => 0
                 );
                 $dados['observacao'] = array(
                     "codigo_tarefa" => $codigo_tarefa,
@@ -222,7 +223,7 @@ class Tarefa_model extends CI_Model {
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
                     // 4 - Forçada
-                    // "codigo_status_obs" => 4,
+                    "codigo_status_obs" => 4,
                     "inserido_por" =>  $codigo_usuario
                 );
             } else {

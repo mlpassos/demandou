@@ -15,10 +15,10 @@
 		</div> -->
 <div class="row">
 	<div class="tarefas-add-box col-lg-9 col-md-9">
-		<div class="col-lg-12 col-md-12">
 			<?php 
-			$hidden = array("codigo_projeto"=>$codigo_projeto);
-			echo form_open('tarefa/adicionar', ["id" => "frmTarefa-Adicionar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
+				$hidden = array("codigo_projeto"=>$codigo_projeto);
+				echo form_open('tarefa/adicionar', ["id" => "frmTarefa-Adicionar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
+		<div class="col-lg-12 col-md-12">
 			  <div class="form-group">
 			    <label for="titulo">Título</label>
 			    <?php echo form_error('titulo'); ?>
