@@ -1,4 +1,4 @@
-<div class="container-fluid ajaxload">
+<div id="ajaxload" class="container-fluid ajaxload">
 <?php if ($this->session->userdata('logado')==true) { ?>
 <div class="row">
 	<div class="col-lg-12 text-right">
@@ -147,6 +147,7 @@
 			  								if ($achou===true) {
 			  									if ($lider) {
 			  										echo $res['tarefa_total'] . ' <span class="badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
+			  										//echo $res['tarefa_total']-$res['tarefa_completadas'] . ' <span class="badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
 			  									} else {
 			  										echo $res['tarefa_total'] . ' <span class="badge" style="background-color:blue;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
 			  									}
@@ -349,172 +350,173 @@
 	</div>
 </div> -->
 <!-- Modal -->
-<div class="modal fade" id="myModalProjetoVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal Ver</h4>
-      </div>
-      <div class="modal-body">
-        <p class="descricao"></p>
-        <p class="data-inicio"></p>
-        <p class="data-prazo"></p>
-        <p class="data-faltam"></p>
-        Tempo consumido (%)
-        <div class="progress">
-		  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
-		    
-		  </div>
-		</div>
-		
-		<!-- <div class="modal-tarefas-timeline"> -->
-			
-		<!-- </div> -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="button" class="btn btn-primary">Gravar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal Adicionar</h4>
-      </div>
-      <div class="modal-body">
-        <div class="modal-tarefas-lista">		
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-        <!-- <button type="button" class="btn btn-primary">Gravar</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="myModalTarefaAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Alterar tarefa</h4>
-      </div>
-      <div class="modal-body">
-      	<form method="post" id="frmTarefa-Alterar" class="tarefa-adicionar" role="form" name="frmTarefa-Alterar" action="tarefa/alterar">
-	      	<div class="row">
-						<div class="tarefas-add-box col-lg-12 col-md-12">
-							<div class="col-lg-12 col-md-12">
-								<?php 
-								$this->load->helper('form');
-								$hidden = array("codigo_projeto"=>1,
-									"codigo_tarefa" =>1
-								);
-								// $hidden = array("codigo_tarefa"=>1);
-								//echo form_open('tarefa/alterar', ["id" => "frmTarefa-Alterar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
-								<!-- <form method="post" id="frmTarefa-Alterar" class="tarefa-adicionar" role="form" name="frmTarefa-Alterar" action="tarefa/alterar"> -->
-									<input type="hidden" name="codigo_projeto" id="codigo_projeto" value="1">
-									<input type="hidden" name="codigo_tarefa" id="codigo_tarefa" value="1">
-								  <div class="form-group">
-								    <label for="titulo">Título</label>
-								    <?php echo form_error('titulo'); ?>
-								    <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo set_value('titulo'); ?>" placeholder="Título">
-								  </div>
-								  <div class="form-group">
-								    <label for="descricao">Descrição</label>
-								    <?php 
-								    echo form_error('descricao'); 
-									$props = array(
-										"class" => "form-control",
-										"id" => "descricao",
-										"name" => "descricao",
-										"value" => set_value('descricao'),
-										"placeholder" => "descricao",
-										"rows" => "3"
-									);
-								    echo form_textarea($props);
-								    ?>
-								  </div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label class="radio-inline">
-									  <input type="radio" name="prioridade" id="prioridade1" value="3"> <span class="prioridades-radio bg-danger">ALTA</span>
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" name="prioridade" id="prioridade2" value="2"> <span class="prioridades-radio bg-warning">MÉDIA</span>
-									</label>
-									<label class="radio-inline">
-									  <input type="radio" name="prioridade" id="prioridade3" value="1"> <span class="prioridades-radio bg-success">BAIXA</span>
-									</label>
-								</div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								  <div class="form-group">
-								    <label for="data_inicio">Início</label>
-								    <?php 
-								    	echo form_error('data_inicio'); 
-								    ?>
-								    <input type="date" class="form-control"  id="data_inicio" name="data_inicio">
-								  </div>
-							</div>
-							<div class="col-lg-6 col-md-6">
-								  <div class="form-group">
-								    <label for="data_prazo">Prazo</label>
-								    <?php 
-								    	echo form_error('data_prazo'); 
-								    ?>
-								    <input type="date" class="form-control"  id="data_prazo" name="data_prazo">
-								  </div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<hr>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								  <div class="form-group">
-								    <label for="lider">Líder</label>
-								    <?php echo form_error('lider'); ?>
-								    <select style="width:100%;" id="lider" name="lider" multiple="multiple" class="form-control">
-									  <?php 
-									  	// foreach($usuarios as $u) {
-									  	// 	echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
-									  	// }
-									  ?>
-									</select>
-								  </div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<div class="form-group">
-									<label for="codigo_status">Status</label><br>
-									<label class="radio-inline">
-										<input type="radio" name="codigo_status" id="codigo_status" value="1"> Ativado
-									</label>
-									<label class="radio-inline">
-										<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
-									</label>
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								<!-- <button type="submit" class="btn btn-default">Gravar</button> -->
-								<p class="form-message"></p>
-							</div>
-							<?php //echo form_close(); ?>
-						</div>
-					</div>
+<div class="modal-container">
+	<div class="modal fade" id="myModalProjetoVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Modal Ver</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p class="descricao"></p>
+	        <p class="data-inicio"></p>
+	        <p class="data-prazo"></p>
+	        <p class="data-faltam"></p>
+	        Tempo consumido (%)
+	        <div class="progress">
+			  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">
+			    
+			  </div>
 			</div>
-      <div class="modal-footer">
-        <button type="button" class="fechar btn btn-default" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary">Gravar</button>
-      </div>
-    </div>
-    </form>
-  </div>
+			
+			<!-- <div class="modal-tarefas-timeline"> -->
+				
+			<!-- </div> -->
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModalTarefaVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Modal Adicionar</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="modal-tarefas-lista">		
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+	        <!-- <button type="button" class="btn btn-primary">Gravar</button> -->
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModalTarefaAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Alterar tarefa</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<form method="post" id="frmTarefa-Alterar" class="tarefa-adicionar" role="form" name="frmTarefa-Alterar" action="tarefa/alterar">
+		      	<div class="row">
+							<div class="tarefas-add-box col-lg-12 col-md-12">
+								<div class="col-lg-12 col-md-12">
+									<?php 
+									$this->load->helper('form');
+									$hidden = array("codigo_projeto"=>1,
+										"codigo_tarefa" =>1
+									);
+									// $hidden = array("codigo_tarefa"=>1);
+									//echo form_open('tarefa/alterar', ["id" => "frmTarefa-Alterar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
+									<!-- <form method="post" id="frmTarefa-Alterar" class="tarefa-adicionar" role="form" name="frmTarefa-Alterar" action="tarefa/alterar"> -->
+										<input type="hidden" name="codigo_projeto" id="codigo_projeto" value="1">
+										<input type="hidden" name="codigo_tarefa" id="codigo_tarefa" value="1">
+									  <div class="form-group">
+									    <label for="titulo">Título</label>
+									    <?php echo form_error('titulo'); ?>
+									    <input type="text" class="form-control" id="titulo" name="titulo" value="<?php echo set_value('titulo'); ?>" placeholder="Título">
+									  </div>
+									  <div class="form-group">
+									    <label for="descricao">Descrição</label>
+									    <?php 
+									    echo form_error('descricao'); 
+										$props = array(
+											"class" => "form-control",
+											"id" => "descricao",
+											"name" => "descricao",
+											"value" => set_value('descricao'),
+											"placeholder" => "descricao",
+											"rows" => "3"
+										);
+									    echo form_textarea($props);
+									    ?>
+									  </div>
+								</div>
+								<div class="col-lg-12 col-md-12">
+									<div class="form-group">
+										<label class="radio-inline">
+										  <input type="radio" name="prioridade" id="prioridade1" value="3"> <span class="prioridades-radio bg-danger">ALTA</span>
+										</label>
+										<label class="radio-inline">
+										  <input type="radio" name="prioridade" id="prioridade2" value="2"> <span class="prioridades-radio bg-warning">MÉDIA</span>
+										</label>
+										<label class="radio-inline">
+										  <input type="radio" name="prioridade" id="prioridade3" value="1"> <span class="prioridades-radio bg-success">BAIXA</span>
+										</label>
+									</div>
+								</div>
+								<div class="col-lg-6 col-md-6">
+									  <div class="form-group">
+									    <label for="data_inicio">Início</label>
+									    <?php 
+									    	echo form_error('data_inicio'); 
+									    ?>
+									    <input type="date" class="form-control"  id="data_inicio" name="data_inicio">
+									  </div>
+								</div>
+								<div class="col-lg-6 col-md-6">
+									  <div class="form-group">
+									    <label for="data_prazo">Prazo</label>
+									    <?php 
+									    	echo form_error('data_prazo'); 
+									    ?>
+									    <input type="date" class="form-control"  id="data_prazo" name="data_prazo">
+									  </div>
+								</div>
+								<div class="col-lg-12 col-md-12">
+									<hr>
+								</div>
+								<div class="col-lg-12 col-md-12">
+									  <div class="form-group">
+									    <label for="lider">Líder</label>
+									    <?php echo form_error('lider'); ?>
+									    <select style="width:100%;" id="lider" name="lider[]" multiple="multiple" class="form-control">
+										  <?php 
+										  	// foreach($usuarios as $u) {
+										  	// 	echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+										  	// }
+										  ?>
+										</select>
+									  </div>
+								</div>
+								<div class="col-lg-12 col-md-12">
+									<div class="form-group">
+										<label for="codigo_status">Status</label><br>
+										<label class="radio-inline">
+											<input type="radio" name="codigo_status" id="codigo_status" value="1"> Ativado
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
+										</label>
+									</div>
+								</div>
+								<div class="col-lg-12 col-md-12">
+									<!-- <button type="submit" class="btn btn-default">Gravar</button> -->
+									<p class="form-message"></p>
+								</div>
+								<?php //echo form_close(); ?>
+							</div>
+						</div>
+				</div>
+	      <div class="modal-footer">
+	        <button type="button" class="fechar btn btn-default" data-dismiss="modal">Fechar</button>
+	        <button type="submit" class="btn btn-primary">Gravar</button>
+	      </div>
+	    </div>
+	    </form>
+	  </div>
+	</div>
 </div>
 <?php } ?>
 </div><!-- /.container -->

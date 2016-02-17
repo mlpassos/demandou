@@ -405,9 +405,9 @@
             });
             $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                   var modal = $(this);
-                  modal.modal('hide');
+                  //modal.modal('hide');
                   modal.find('.modal-tarefas-lista').html('');
-                  // $('.ajaxload').empty().load(location + '/projetos', '',function(){
+                  // moda.empty().load(location + '/projetos #myModalTarefaVer', '',function(){
                   //       console.log('loaded');
                   // });
                   window.location = location + '/projetos';
@@ -461,7 +461,7 @@
                                               + '<p>' + formataData(new Date(data_resposta)) + '</p>'
                                               + '<div class="media-left">'
                                               + '<a href="#">'
-                                              + '<img class=" tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
+                                              + '<img class=" img-circle tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do avaliador da tarefa">'
                                               + '<small>' + item.nome + ' ' + item.sobrenome + '</small>'
                                               + '</a>'
                                               + '</div>'
@@ -584,7 +584,7 @@
                                     + '<p>' + formataData(new Date(item.obs_data_criada)) + '</p>'
                                     + '<div class="media-left">'
                                     + '<a href="#">'
-                                    + '<img class=" tarefa-avatar" src="' + location + '/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
+                                    + '<img class=" img-circle tarefa-avatar" src="' + location + '/uploads/' + UsuarioTarefaAvatar + '" alt="avatar do responsável pela tarefa">'
                                     + '<small>' + UsuarioTarefaNome + '</small>'
                                     + '</a>'
                                     + '</div>'
@@ -797,6 +797,33 @@
             //       $(this).removeClass('animated flipInX');
             // });
             var elmodal = null;
+            function showPendente(codigo_status, codigo_dono, data_fim,encerrada,lider, codigo_usuario) {
+                  // console.log(data_fim,encerrada);
+                  if (codigo_status==0) {
+                        return "background-color:gray;";            
+                  } else {
+                        if (lider==1) {
+                              if (data_fim==null) {
+                                    return ";";
+                              } else {
+                                    if (encerrada==null) {
+                                          return "background-color:red;";
+                                    } else {
+                                          return "background-color:green;";
+                                    }
+                              }
+
+                        } else {
+                              // console.log(codigo_dono, codigo_usuario);
+                              // console.log(codigo_usuario);
+                              if (codigo_dono==codigo_usuario) {
+                                    return "background-color:orange;";
+                              } else {
+                                    return ";";
+                              }
+                        }
+                  }
+              }
             $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     
                     var button = $(event.relatedTarget); // Button that triggered the modal
@@ -821,6 +848,7 @@
                       dataType: 'json',
                       success: function(data) {
                         console.log(data);
+                        var coduser = codigo_usuario;
                         if (data.length==0) {
                           // nada
                           $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-exclamation-triangle"></span> Relaxe, sem tarefas no projeto ainda, mas não se preocupe, você será avisado. =]</p>');
@@ -828,8 +856,11 @@
                           var aux = "";
                           var output = '<div id="carousel-example-generic" class="carousel slide">'
                                        + '<ol class="carousel-indicators">';
+                          
                           for (var i = 0; i <= data.length - 1;  i++) {
-                                output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
+                                // output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>';
+                                // console.log(coduser);
+                                output += (i==0) ? '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, coduser) + '" data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, coduser) + '" data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
                           };
                           output += '</ol><div class="carousel-inner" role="listbox">';
                           data.forEach(function(item){
@@ -874,10 +905,10 @@
                                         + '<span class="fa fa-pencil" aria-hidden="true"></span>'
                                         + '</button>'
                                         // + '</div>'
-                                        + '<div class="pull-right">'
+                                        + '<div class="tarefa-individual-box-userbox">'
                                         + '<img class="img-circle tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
                                         + '<small> ' + item.nome + ' ' + item.sobrenome + '</small>'
-                                        + '<em><small> ' + item.usuario_funcao + '</small></em>'
+                                        // + '<em><small> ' + item.usuario_funcao + '</small></em>'
                                         + '</div>'      
                                         // + '</div>'
                                         + '</div>' 
@@ -1105,9 +1136,9 @@
                 // }
                 // window.location = location + '/projetos';
                 // $('a[data-target=#myModalTarefaVer]').remove();
-                setTimeout(function(){
-                        elmodal.trigger('click');
-                  },2000);
+                // setTimeout(function(){
+                //         elmodal.trigger('click');
+                //   },2000);
             });
 
             $('#myModalTarefaAlterar').on('hidden.bs.modal', function (event) {
@@ -1160,19 +1191,6 @@
                           success: function(data) {
                               var el = form.find('.form-message');
                               showMensagem(el, data);
-                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                              // var mensagemHTML = $.parseHTML(data.mensagem);
-                              // console.log('classe: ' + classe);
-
-                              // el.addClass('alert ' + classe + ' animated fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //       var isso = $(this);
-                              //       setTimeout(function(){
-                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //                   isso.removeClass('animated fadeOutDown ' + classe).html('');
-                              //             });
-                              //       },800);
-                                    
-                              //  });
                               $('.fechar').focus();
                           },
                           error: function(stc,error){
@@ -1213,18 +1231,7 @@
                             success: function(data) {
                               console.log(data);
                               showMensagem(el, data, elbox);
-                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                              // console.log('classe: ' + classe);
-                              // el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //       var isso = $(this);
-                              //       setTimeout(function(){
-                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //                   isso.removeClass('animated fadeOutDown ' + classe).text('');
-                              //             });
-                              //       },800);
-                                    
-                              // });
-                            },
+                              },
                             error: function(error) {
                               console.log(error);
                             }
@@ -1235,18 +1242,18 @@
             function showMensagem(el, data, elbox) {
                   var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
                   var mensagemHTML = $.parseHTML(data.mensagem);
-                  el.addClass('alert ' + classe +  ' animated fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                  el.addClass('alert ' + classe +  ' animated-alt-med fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
                         var isso = $(this);
                         setTimeout(function(){
-                              isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    isso.removeClass('animated fadeOutDown ' + classe).html('');
+                              isso.removeClass('animated-alt-med fadeInUp').addClass('animated-alt-med fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                    isso.removeClass('animated-alt-med fadeOutDown ' + classe).html('');
                               });
                               if (elbox!=="") {
                                     setTimeout(function(){
                                           elbox.hide('slow');
                                     },1000);
                               }
-                        },800);
+                        },500);
                         
                   });
             }
@@ -1290,18 +1297,7 @@
                             success: function(data) {
                               console.log(data);
                               showMensagem(el,data, elbox);
-                              // var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                              // console.log('classe: ' + classe);
-                              // el.addClass('alert alert-success animated fadeInUp').text(data.mensagem).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //       var isso = $(this);
-                              //       setTimeout(function(){
-                              //             isso.removeClass('animated fadeInUp').addClass('animated fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                              //                   isso.removeClass('animated fadeOutDown ' + classe).text('');
-                              //             });
-                              //       },800);
-                                    
-                              // });
-                            },
+                               },
                             error: function(error) {
                               console.log(error);
                             }

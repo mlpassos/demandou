@@ -19,15 +19,44 @@
 }
 .tarefas-added-box {
 	overflow:auto;
+	margin:2px 0;
 	/*height:100vh;*/
-	/*background-color:green;*/
+	background-color:#ededed;
+}
+.tarefas-added-box .media {
+	background-color: white;
+}
+.tarefas-added-box-postit {
+	position: relative;
+}
+.tarefas-added-box-postit:after {     
+  content: "";
+  position:absolute;
+  z-index:-1;
+  right:0px;
+  bottom:20px;
+  width:90%;
+  height: 25px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow:2px 15px 5px rgba(0, 0, 0, 0.40);
+  -moz-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -webkit-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -o-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  -ms-transform: matrix(-1, -0.1, 0, 1, 0, 0);
+  transform: matrix(-1, -0.1, 0, 1, 0, 0);
 }
 .tarefas-added-box hr {
 	height:1px;
 	background-color:black;
 	/*padding:0;*/
 	margin:5px;
-
+}
+.tarefas-added-box .media-body {
+	position:relative;
+}
+.tarefas-added-box .media-heading {
+	/*background-color:blue;*/
+	padding:5px;
 }
 .participantes-thumbs { 
   width:30px;
@@ -37,4 +66,19 @@
 .lider-thumbs {
   width:30px;
   height:30px;
+}
+.tarefas-box-lider-img {
+  position:absolute;
+  top:10px;
+  right:5px;
+}
+.prioridade-alta {
+  background-color: #ff4332;
+}
+.prioridade-media {
+  background-color: #ffbe1c;
+}
+
+.prioridade-baixa {
+  background-color: #77b50e;
 }

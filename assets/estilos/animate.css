@@ -21,6 +21,12 @@
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }
+.animated-alt-med {
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 
 .animated.infinite {
   -webkit-animation-iteration-count: infinite;

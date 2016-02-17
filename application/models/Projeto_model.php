@@ -132,6 +132,7 @@ class Projeto_model extends CI_Model {
                         $this->excluirUsuariosProjeto($this->codigo, $excluir, 2);
                         // excluir tarefas do usuário no projeto
                         $this->excluirUsuariosProjetoTarefas($this->codigo, $excluir);
+                        // excluir respostas e observações
                     }
                     $resIgual = array();
                     $resIgual = array_intersect($resp,$resa);

@@ -106,9 +106,16 @@ class Projeto_controller extends MY_Controller {
 			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
-		$this->load->view('header_view',$this->header);
-		$this->load->view('admin/projetos/content_view', $conteudo);
-		$this->load->view('footer_view',$data_footer);	
+		if (!$this->input->is_ajax_request()) {
+		  $this->load->view('header_view',$this->header);
+			$this->load->view('admin/projetos/content_view', $conteudo);
+			$this->load->view('footer_view',$data_footer);	
+		} else {
+			$this->load->view('admin/projetos/content_view', $conteudo);	
+		}
+		// $this->load->view('header_view',$this->header);
+		// $this->load->view('admin/projetos/content_view', $conteudo);
+		// $this->load->view('footer_view',$data_footer);	
 	}
 	
 	public function adicionar() {
