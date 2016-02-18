@@ -8,7 +8,7 @@
 			 // 	var_dump($lider);
 			 // echo "</pre>";
 			 // echo "<pre>";
-			 // 	var_dump($participantes);
+			 // 	var_dump($usuarios);
 			 // echo "</pre>";
 			// foreach ($projeto as $p) {
 			// 	# code...
@@ -96,16 +96,23 @@
 		    <select id="participantes" name="participantes[]" multiple="multiple" class="form-control">
 			  <?php 
 			    // var_dump($usuarios);
-			  	
-			  		foreach($participantes as $par) {
-			  			foreach($usuarios as $u) {
-				  			if ($u['codigo']==$par['codigo']) {
-				  				echo "<option value='" . $u['codigo'] . "' selected>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
-				  			} else {
-				  				echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
-				  			}
+			  	$ray = array();
+			  	$rayLider = array();
+		  		foreach($participantes as $par) {
+		  			array_push($ray,$par['codigo']);
+		  		}
+		  		foreach($lider as $l) {
+		  			array_push($rayLider,$l['codigo']);
+		  		}
+		  		foreach($usuarios as $u) {
+			  		if (in_array($u['codigo'], $ray)) {
+			  			echo "<option value='" . $u['codigo'] . "' selected>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+			  		} else {
+			  			if (!in_array($u['codigo'], $rayLider)) {
+			  				echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
 			  			}
 			  		}
+		  		}
 			  ?>
 			</select>
 		    <!-- <input type="text" class="form-control" id="participantes" name="participantes" placeholder="Nome"> -->

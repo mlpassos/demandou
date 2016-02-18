@@ -493,12 +493,12 @@
                             // nao começou
                             var comecou = false;
                             if (check_inicio==0) {
-                              modal.find('.modal-body').find('.data-faltam').text('Começou hoje!').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                              modal.find('.modal-body').find('.data-faltam').text('Começou hoje!');
                             } else {
                               if (check_inicio == 1) {
-                                modal.find('.modal-body').find('.data-faltam').text('Começa Amanhã').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                                modal.find('.modal-body').find('.data-faltam').text('Começa Amanhã');
                               } else {
-                                modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_inicio + ' dias para começar.').addClass('alert alert-success').removeClass('alert-danger alert-warning');
+                                modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_inicio + ' dias para começar.');
                               }
                             }
                             modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', '0%').text('0%');
@@ -508,14 +508,14 @@
                             if (check_fim<=0) {
                               if (check_fim==0) { 
                                 var porcento = 100;
-                                modal.find('.modal-body').find('.data-faltam').text('Termina hoje').addClass('alert alert-danger').removeClass('alert-success alert-warning');
+                                modal.find('.modal-body').find('.data-faltam').text('Termina hoje');
                               } else {
                                 // atrasado
-                                modal.find('.modal-body').find('.data-faltam').text('Atrasado ' + faltam*(-1) + ' dias.').addClass('alert alert-danger').removeClass('alert-success alert-warning');
+                                modal.find('.modal-body').find('.data-faltam').text('Atrasado ' + faltam*(-1) + ' dias.');
                                 var porcento = 100;
                               } 
                             } else {
-                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias para terminar.').addClass('alert alert-warning').removeClass('alert-danger alert-success');
+                              modal.find('.modal-body').find('.data-faltam').text('Faltam ' + check_fim + ' dias para terminar.');
                               var porcento = [(total-faltam) * 100] / total;
                             }
                             modal.find('.modal-body').find('.progress').find('.progress-bar').css('width', porcento.toFixed(2) + '%').text(porcento.toFixed(2)+'%');
