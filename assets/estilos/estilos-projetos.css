@@ -436,6 +436,10 @@ verde #77b50e
   margin-right:5px;
 }
 
+.tarefas-box-header h3 {
+  margin-bottom:20px;
+}
+
 .img-thumbnail {
 padding:2px;
 border:initial;

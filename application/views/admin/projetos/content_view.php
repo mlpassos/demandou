@@ -251,12 +251,14 @@
 										 					// echo $r['num_tarefas_completas'];
 										 					// echo $r['num_tarefas'];
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
+										 					// if ($r['num_tarefas_completas']>=0) {
 										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small>';	
 										 					} else {
 										 						if ($t['codigo_usuario']!==$this->session->userdata('codigo_usuario')) {
 										 							echo '<small class="participantes-lista-nome badge">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
+										 							//echo '<small class="participantes-lista-nome badge">'. $r['num_tarefas'] . '</small>';		
 										 						} else {
-										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';	
+										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 						}
 										 					}	
 										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
