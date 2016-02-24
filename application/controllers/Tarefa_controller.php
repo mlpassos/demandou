@@ -214,93 +214,114 @@ class Tarefa_controller extends MY_Controller {
     }
 	
 	public function adicionar() {
-		$cp = $this->uri->segment(3);
-		// echo $codigo_projeto;
-		if ($this->session->flashdata('adicionar_ao_projeto') === NULL) {
-			// fechar essa session depois
-			$dadosflash = $this->session->userdata('gerenciar_tarefas-' . $cp);	
-		} else {
-			$dadosflash = $this->session->flashdata('adicionar_ao_projeto');	
-			$this->session->keep_flashdata('adicionar_ao_projeto');
-		}
+		if ($this->input->is_ajax_request()) {
+			// ajax
+			// $result = array("status" => "sucesso", "mensagem" => "Tarefa criada com sucesso");
+			// echo json_encode($result);
+			$this->load->helper('form');
+			$this->load->library('form_validation');
 
-		$codigo_projeto = $dadosflash['codigo_projeto'];
-		
-		// META
-		$this->header['meta'] = array(
-			array(
-			"name" => "title",
-			"content" => "Adicionar Tarefa"
-			),
-			array(
-			"name" => "description",
-			"content" => "Adicionar Tarefa"
-			),
-			array(
-			"name" => "keywords",
-			"content" => "admin,demandou,demandas, html5, sistema"
-			)
-		);
-		// CSS
-		$this->header['css']=array(
-			array('file' => 'estilos-principal.css'),
-			array('file' => 'estilos-tarefas-adicionar.css'),
-			array('file' => 'select2.min.css')
-			); 
-		// CONTEUDO
-		$this->load->model('projeto_model');
-		$data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
-		$data_content['codigo_projeto'] = $codigo_projeto;
-		$this->load->model('tarefa_model');
-		$data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
-
-		// JS
-		$data_footer['js']=array(
-			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
-			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
-			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/tarefas_adicionar.js')
-		);
-		$this->load->helper('form');
-		$this->load->library('form_validation');
-
-		$this->load->view('header_view',$this->header);
-		
-		if ($this->form_validation->run() == FALSE) {
-			//echo "inválido";
-				// $this->output->enable_profiler(TRUE);
-				$this->load->view('admin/tarefas/content_adicionar_view', $data_content);
-			// }
-		} else {
-			// echo "válido";
-			$tarefa = $this->input->post();
-			// $tarefa['codigo_usuario']
-			// echo "<pre>";
-			// var_dump($tarefa);
-			// echo "</pre>";
-			// $this->output->enable_profiler(TRUE);
-			// $this->config->load('email');
-			
-			$this->load->model('tarefa_model');
-			// $this->load->model('usuario_model');
-			// $userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
-			// echo "<pre>";
-			// 	var_dump($userInfo);
-			// echo "</pre>";
-			if ($this->tarefa_model->inserir($tarefa)) {
-				$dadosenviar = array('codigo_projeto'=>$tarefa['codigo_projeto']);
-				$this->session->set_flashdata('adicionar_ao_projeto',$dadosenviar);
-				$this->load->model('usuario_model');
-				$this->load->model('projeto_model');
-				$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
-				$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
-				$this->sendMail($tarefa, $userInfo, $projectInfo);
-				redirect(base_url() . 'tarefa/adicionar');
+			if ($this->form_validation->run() == FALSE) {
+				$result = array("status" => "erro", "mensagem" => validation_errors());
+				echo json_encode($result);
 			} else {
-				echo "Oops, deu bug. Tente novamente? =]";
+				$tarefa = $this->input->post();
+				$this->load->model('tarefa_model');
+				if ($this->tarefa_model->inserir($tarefa)) {
+					$result = array("status" => "sucesso", "mensagem" => "Tarefa criada com sucesso");
+					// email líder tarefa atualizada
+					$this->load->model('usuario_model');
+					$this->load->model('projeto_model');
+					$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider'][0]);
+					$projectInfo = $this->projeto_model->verPorCodigo($tarefa['codigo_projeto']);
+					$this->sendMail($tarefa, $userInfo, $projectInfo);
+				} else {
+					$result = array("status" => "erro", "mensagem" => "Deu bug");
+				}
+				echo json_encode($result);
 			}
+		} else {
+				$cp = $this->uri->segment(3);
+				// echo $codigo_projeto;
+				if ($this->session->flashdata('adicionar_ao_projeto') === NULL) {
+					// fechar essa session depois
+					$dadosflash = $this->session->userdata('gerenciar_tarefas-' . $cp);	
+				} else {
+					$dadosflash = $this->session->flashdata('adicionar_ao_projeto');	
+					$this->session->keep_flashdata('adicionar_ao_projeto');
+				}
+				$codigo_projeto = $dadosflash['codigo_projeto'];
+				// META
+				$this->header['meta'] = array(
+					array(
+					"name" => "title",
+					"content" => "Adicionar Tarefa"
+					),
+					array(
+					"name" => "description",
+					"content" => "Adicionar Tarefa"
+					),
+					array(
+					"name" => "keywords",
+					"content" => "admin,demandou,demandas, html5, sistema"
+					)
+				);
+				// CSS
+				$this->header['css']=array(
+					array('file' => 'estilos-principal.css'),
+					array('file' => 'estilos-tarefas-adicionar.css'),
+					array('file' => 'select2.min.css')
+					); 
+				// CONTEUDO
+				$this->load->model('projeto_model');
+				$data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
+				$data_content['codigo_projeto'] = $codigo_projeto;
+				$this->load->model('tarefa_model');
+				$data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
+				// JS
+				$data_footer['js']=array(
+					//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
+					array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
+					array('file' =>  base_url() . 'assets/js/global.js'),
+					array('file' =>  base_url() . 'assets/js/tarefas_adicionar.js')
+				);
+				$this->load->helper('form');
+				$this->load->library('form_validation');
+
+				$this->load->view('header_view',$this->header);
+				
+				if ($this->form_validation->run() == FALSE) {
+						$this->load->view('admin/tarefas/content_adicionar_view', $data_content);
+				} else {
+					$tarefa = $this->input->post();
+					// $tarefa['codigo_usuario']
+					// echo "<pre>";
+					// var_dump($tarefa);
+					// echo "</pre>";
+					// $this->output->enable_profiler(TRUE);
+					// $this->config->load('email');
+					$this->load->model('tarefa_model');
+					// $this->load->model('usuario_model');
+					// $userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
+					// $projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
+					// echo "<pre>";
+					// 	echo $projectInfo[0]['titulo'];
+					// echo "</pre>";
+					if ($this->tarefa_model->inserir($tarefa)) {
+						$dadosenviar = array('codigo_projeto'=>$tarefa['codigo_projeto']);
+						$this->session->set_flashdata('adicionar_ao_projeto',$dadosenviar);
+						$this->load->model('usuario_model');
+						$this->load->model('projeto_model');
+						$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
+						$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
+						$this->sendMail($tarefa, $userInfo, $projectInfo);
+						redirect(base_url() . 'tarefa/adicionar');
+					} else {
+						echo "Oops, deu bug. Tente novamente? =]";
+					}
+				}
+				$this->load->view('footer_view',$data_footer);	
 		}
-		$this->load->view('footer_view',$data_footer);	
 	}
 
 	function sendMail($t, $u, $p) {
@@ -309,7 +330,7 @@ class Tarefa_controller extends MY_Controller {
     $dia = date("d",strtotime($t['data_inicio']));
 
     $anop = date("Y",strtotime($t['data_prazo']));
-    $mesp = date("m",strtotime($t['data_prazo']));
+    $mesp = date("M",strtotime($t['data_prazo']));
     $diap = date("d",strtotime($t['data_prazo']));
     // instancia o objeto
     $data_inicio = $dia . ' de ' . $mes . ' de ' . $ano;
@@ -338,13 +359,17 @@ class Tarefa_controller extends MY_Controller {
       	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $p[0]['titulo'] . ': ' . $t['titulo'] . '</h3>'
       	. '<img style="float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $u[0]['arquivo_avatar'] . '">'
       	. '<p style="color:rgb(51,51,51)">'
+      	. 'Descrição: ' . $t['descricao'] 
+      	. '</p>'
+      	. '<p style="color:rgb(51,51,51)">'
       	. 'Início: ' . $data_inicio 
       	. '</p>'
       	. '<p style="color:rgb(51,51,51)">'
       	. 'Prazo: ' . $data_prazo . ' (' . timespan($now, $timestamp) . ')'
       	. '</p>'
       	. '<p style="color:rgb(51,51,51)">'
-      	. 'Descrição: ' . $t['descricao'] 
+      	. 'Adicionado por: <img style="width:38px;height:38px;border-radius:50%;" src="http://secom.pa.gov.br/demandou/uploads/' . $this->session->userdata('arquivo_avatar') . '"> '
+      	. $this->session->userdata('nome')
       	. '</p>'
       	. '</div>';
       // $this->load->library('email', $config);
@@ -364,26 +389,6 @@ class Tarefa_controller extends MY_Controller {
 
 
 	public function alterar() {
-		// $codigo_projeto = $this->input->post('codigo_projeto');
-		// CONTEUDO
-		// $this->load->model('projeto_model');
-		// $data_content['usuarios'] = $this->projeto_model->listarPorCodigo($codigo_projeto);
-		// $data_content['codigo_projeto'] = $codigo_projeto;
-		// $this->load->model('tarefa_model');
-		// $data_content['tarefas'] = $this->tarefa_model->listarPorCodigo($codigo_projeto);
-
-		// $tarefa = $this->input->post();
-		// $this->load->model('tarefa_model');
-		// // $result = $this->tarefa_model->alterar($tarefa);
-		// if ($this->tarefa_model->alterar($tarefa)) {
-		// 	$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
-		// } else {
-		// 	$result = array("status" => "erro", "mensagem" => "Deu bug");
-		// }
-		// echo json_encode($result);
-
-		
-
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -395,6 +400,12 @@ class Tarefa_controller extends MY_Controller {
 			$this->load->model('tarefa_model');
 			if ($this->tarefa_model->alterar($tarefa)) {
 				$result = array("status" => "sucesso", "mensagem" => "Alterado com sucesso");
+				// email líder tarefa atualizada
+				$this->load->model('usuario_model');
+				$this->load->model('projeto_model');
+				$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider'][0]);
+				$projectInfo = $this->projeto_model->verPorCodigo($tarefa['codigo_projeto']);
+				$this->sendMail($tarefa, $userInfo, $projectInfo);
 			} else {
 				$result = array("status" => "erro", "mensagem" => "Deu bug");
 			}

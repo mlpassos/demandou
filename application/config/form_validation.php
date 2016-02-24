@@ -231,7 +231,7 @@ $config = array(
                         )
                 ),
                   array(  
-                        'field' => 'lider',
+                        'field' => 'lider[]',
                         'label' => 'Líder',
                         'rules' => 'required', 
                         'errors' => array(

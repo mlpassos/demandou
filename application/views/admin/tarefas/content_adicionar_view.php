@@ -16,7 +16,11 @@
 <div class="row">
 	<div class="tarefas-add-box col-lg-9 col-md-9">
 			<?php 
-				$hidden = array("codigo_projeto"=>$codigo_projeto);
+				$hidden = array(
+						"codigo_projeto" =>$codigo_projeto,
+						"usuario_nome" => $this->session->userdata('nome') + ' ' + $this->session->userdata('sobrenome'),
+						"usuario_avatar" => $this->session->userdata('arquivo_avatar')
+					);
 				echo form_open('tarefa/adicionar', ["id" => "frmTarefa-Adicionar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
 		<div class="col-lg-12 col-md-12">
 			  <div class="form-group">
@@ -78,7 +82,7 @@
 			  <div class="form-group">
 			    <label for="lider">Líder</label>
 			    <?php echo form_error('lider'); ?>
-			    <select id="lider" name="lider" multiple="multiple" class="form-control">
+			    <select id="lider" name="lider[]" multiple="multiple" class="form-control">
 				  <?php 
 				  	foreach($usuarios as $u) {
 				  		echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
@@ -97,6 +101,9 @@
 					<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
 				</label>
 			</div>
+		</div>
+		<div class="col-lg-12 col-md-12">
+			<p class="form-message"></p>
 		</div>
 		<div class="col-lg-12 col-md-12">
 			<button type="submit" class="btn btn-default">Adicionar</button>

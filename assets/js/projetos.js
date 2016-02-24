@@ -866,6 +866,8 @@
                   var data = {codigo_projeto,codigo_tarefa,titulo,descricao,prioridade,data_inicio,data_prazo,lider,codigo_status};
                   //alert(data_inicio);
                   console.log(data);
+                  var el = form.find('.form-message');
+                  el.html('<img src="http://cdn2.rode.com/images/common/ajax-loader-black.gif" alt="imagem mostra que sistema está trabalhando">');//text('Atualizando dados e notificando líder.')
                   $.ajax({
                           url: location + "/tarefa/alterar",
                           type: "POST",
@@ -882,7 +884,7 @@
                           },
                           dataType: 'json',
                           success: function(data) {
-                              var el = form.find('.form-message');
+                              el.html('');
                               showMensagem(el, data);
                               $('.fechar').focus();
                           },

@@ -40,7 +40,7 @@ class Tarefa_model extends CI_Model {
 
                 $this->criado_por = $this->session->userdata('codigo_usuario');
                 $this->codigo_projeto = $tarefa['codigo_projeto'];
-                $this->codigo_usuario = $tarefa['lider'];
+                $this->codigo_usuario = $tarefa['lider'][0];
                 // usuário ativo
                 $this->codigo_status = $tarefa['codigo_status'];
                 // echo "<pre>";

@@ -248,13 +248,6 @@
 										 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
-<<<<<<< HEAD
-										 					echo $r['num_tarefas'];
-										 					echo  $r['num_tarefas_completas'];
-=======
-										 					// echo $r['num_tarefas_completas'];
-										 					// echo $r['num_tarefas'];
->>>>>>> c506687267eae8da39b27bf24cc966f8754abd3b
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
 										 					// if ($r['num_tarefas_completas']>=0) {
 										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small>';	

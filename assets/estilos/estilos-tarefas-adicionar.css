@@ -1,3 +1,13 @@
+.prioridade-alta {
+  background-color: #ff4332;
+}
+.prioridade-media {
+  background-color: #ffbe1c;
+}
+
+.prioridade-baixa {
+  background-color: #77b50e;
+}
 .tarefa-dia {
 	font-size: 25px;
 	text-align: center;
