@@ -25,7 +25,10 @@ class Tarefa_controller extends MY_Controller {
 
 	public function __construct() {
         parent::__construct();
-    
+
+        
+    		$this->load->library('email', $this->config->load('email'));
+
         $this->ativo = $this->uri->segment(1);
 
         if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
@@ -276,10 +279,22 @@ class Tarefa_controller extends MY_Controller {
 			// var_dump($tarefa);
 			// echo "</pre>";
 			// $this->output->enable_profiler(TRUE);
+			// $this->config->load('email');
+			
 			$this->load->model('tarefa_model');
+			// $this->load->model('usuario_model');
+			// $userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
+			// echo "<pre>";
+			// 	var_dump($userInfo);
+			// echo "</pre>";
 			if ($this->tarefa_model->inserir($tarefa)) {
 				$dadosenviar = array('codigo_projeto'=>$tarefa['codigo_projeto']);
 				$this->session->set_flashdata('adicionar_ao_projeto',$dadosenviar);
+				$this->load->model('usuario_model');
+				$this->load->model('projeto_model');
+				$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
+				$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
+				$this->sendMail($tarefa, $userInfo, $projectInfo);
 				redirect(base_url() . 'tarefa/adicionar');
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
@@ -287,6 +302,67 @@ class Tarefa_controller extends MY_Controller {
 		}
 		$this->load->view('footer_view',$data_footer);	
 	}
+
+	function sendMail($t, $u, $p) {
+		$ano = date("Y",strtotime($t['data_inicio']));
+    $mes = date("M",strtotime($t['data_inicio']));
+    $dia = date("d",strtotime($t['data_inicio']));
+
+    $anop = date("Y",strtotime($t['data_prazo']));
+    $mesp = date("m",strtotime($t['data_prazo']));
+    $diap = date("d",strtotime($t['data_prazo']));
+    // instancia o objeto
+    $data_inicio = $dia . ' de ' . $mes . ' de ' . $ano;
+    $data_prazo = $diap . ' de ' . $mesp . ' de ' . $anop;
+
+    switch ($t['prioridade']) {
+    		case '3':
+    			$prioridadesClass = '#ff4332';
+    			break;
+    		case '2':
+    			$prioridadesClass = '#ffbe1c';
+    			break;
+    		case '1':
+    			$prioridadesClass = '#77b50e';
+    			break;
+    		default:
+    			$prioridadesClass = 'white';
+    			break;
+    	}
+		// timespan($now, $timestamp);
+    $this->load->helper('date');
+    $timestamp = strtotime($t['data_prazo']);
+    $now = time();
+		$message = 'Olá ' . $u[0]['nome'] . ' ' . $u[0]['sobrenome'] . ','
+				. '<div>'
+      	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $p[0]['titulo'] . ': ' . $t['titulo'] . '</h3>'
+      	. '<img style="float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $u[0]['arquivo_avatar'] . '">'
+      	. '<p style="color:rgb(51,51,51)">'
+      	. 'Início: ' . $data_inicio 
+      	. '</p>'
+      	. '<p style="color:rgb(51,51,51)">'
+      	. 'Prazo: ' . $data_prazo . ' (' . timespan($now, $timestamp) . ')'
+      	. '</p>'
+      	. '<p style="color:rgb(51,51,51)">'
+      	. 'Descrição: ' . $t['descricao'] 
+      	. '</p>'
+      	. '</div>';
+      // $this->load->library('email', $config);
+      $this->email->set_newline("\r\n");
+      $this->email->from('marciopassosbel@gmail.com'); // change it to yours
+      $this->email->to($u[0]['email']);// change it to yours
+      $this->email->subject('Demandou: Nova tarefa');
+      $this->email->message($message);
+      $this->email->send(); 
+			// {
+   //    	//echo 'Email sent.';
+   //    	redirect(base_url() . 'tarefa/adicionar');
+   //   	} else {
+   //   		show_error($this->email->print_debugger());
+   //  	}
+	}	
+
+
 	public function alterar() {
 		// $codigo_projeto = $this->input->post('codigo_projeto');
 		// CONTEUDO
