@@ -1,11 +1,13 @@
 <div id="ajaxload" class="container-fluid ajaxload">
 <?php if ($this->session->userdata('logado')==true) { ?>
-<div class="row">
-	<div class="col-lg-12 text-right">
-		<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
-		<hr>
-	</div>
-</div>
+	<?php if ($this->session->userdata('codigo_perfil') == 2 ) { ?>
+		<div class="row">
+			<div class="col-lg-12 text-right">
+				<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
+				<hr>
+			</div>
+		</div>
+	<?php } ?>
 <div class="row tarefas-grid">
 	<?php foreach($projetos as $p) { ?>
 		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
@@ -213,8 +215,10 @@
 				  								} else {
 				  									if ($ta['encerrada']==1) {
 					  									$ut['num_tarefas_completas'] = 1;
-					  									$tc=$tc+1;
-					  								} 
+					  								} else {
+					  									$ut['num_tarefas_completas'] = 0;
+					  								}
+					  								$tc=$tc+1;
 				  								}
 				  								$ut['num_tarefas']=1;
 				  								
@@ -227,7 +231,7 @@
 				  								$utres[$k-1]['num_tarefas']+=1;//$conti;
 				  								if ($ta['data_fim']===NULL) {
 				  									// faz nada
-				  									//$utres[$k-1]['num_tarefas_completas'] = 0;
+				  									// $utres[$k-1]['num_tarefas_completas'] = 0;
 				  								} else {
 				  									if ($ta['encerrada']==1) {
 				  										$utres[$k-1]['num_tarefas_completas'] +=1;	
@@ -244,15 +248,22 @@
 										 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
+<<<<<<< HEAD
 										 					echo $r['num_tarefas'];
 										 					echo  $r['num_tarefas_completas'];
+=======
+										 					// echo $r['num_tarefas_completas'];
+										 					// echo $r['num_tarefas'];
+>>>>>>> c506687267eae8da39b27bf24cc966f8754abd3b
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
+										 					// if ($r['num_tarefas_completas']>=0) {
 										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small>';	
 										 					} else {
 										 						if ($t['codigo_usuario']!==$this->session->userdata('codigo_usuario')) {
 										 							echo '<small class="participantes-lista-nome badge">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
+										 							//echo '<small class="participantes-lista-nome badge">'. $r['num_tarefas'] . '</small>';		
 										 						} else {
-										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';	
+										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 						}
 										 					}	
 										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
@@ -364,7 +375,7 @@
 	        <p class="descricao"></p>
 	        <p class="data-inicio"></p>
 	        <p class="data-prazo"></p>
-	        <p class="data-faltam"></p>
+	        <p class="data-faltam alert alert-info"></p>
 	        Tempo consumido (%)
 	        <div class="progress">
 			  <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;">

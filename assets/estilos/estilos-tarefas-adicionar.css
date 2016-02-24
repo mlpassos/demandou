@@ -30,7 +30,7 @@
 	position: relative;
 }
 .tarefas-added-box-postit:after {     
-  content: "";
+  content: "marcio";
   position:absolute;
   z-index:-1;
   right:0px;

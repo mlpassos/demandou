@@ -159,6 +159,10 @@ verde #77b50e
 	padding:5px;
 }
 
+#myModalTarefaVer .modal-header {
+  margin-bottom:20px;
+}
+
 #myModalTarefaVer .modal-content {
   background-color: #ededed;
 }
@@ -419,6 +423,7 @@ verde #77b50e
 }
 .panel-title {
     font-size:22px;
+    margin-right:55px;
 }
 
 .panel-body {
@@ -429,6 +434,10 @@ verde #77b50e
   width:50px;
   height:50px;
   margin-right:5px;
+}
+
+.tarefas-box-header h3 {
+  margin-bottom:20px;
 }
 
 .img-thumbnail {
