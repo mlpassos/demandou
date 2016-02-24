@@ -75,6 +75,14 @@ class Usuario_model extends CI_Model {
                 $query = $this->db->get();
                 return $query->result_array();
         }
+        public function listarPorCodigo($codigo_usuario) {
+                $this->db->select('*');
+                $this->db->from('usuario as u');
+                $this->db->join('usuario_funcao as uf', 'uf.codigo = u.codigo_funcao');
+                $this->db->where('u.codigo', $codigo_usuario);
+                $query = $this->db->get();
+                return $query->result_array();
+        }
         public function listarAux()
         {
                 $this->db->select('codigo, nome, sobrenome, arquivo_avatar');
