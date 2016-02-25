@@ -366,12 +366,12 @@ class Tarefa_controller extends MY_Controller {
       	// . '<p style="color:rgb(51,51,51)">'
       	. '<p>'
       	. '<span style="padding:5px;color:rgb(51,51,51);background-color:#d9edf7;border-radius:4px;">'
-      	. 'Início: ' . $data_inicio
+      	. '<img style="margin-right:5px;margin-bottom:-3px;" src="http://darx.premiumcoding.com/bar/css/images/meta-date-icon.png" alt="icone data inicio">' . $data_inicio
       	. '</span>'
       	// . '</p>'
       	// . '<p style="color:rgb(51,51,51)">'
       	. '<span style="padding:5px;color:rgb(51,51,51);margin-left:5px;background-color:#d9edf7;border-radius:4px;">'
-      	. 'Prazo: ' . $data_prazo . ' (' . timespan($now, $timestamp) . ')'
+      	. '<img style="margin-right:5px;margin-bottom:-3px;" src="http://www.coventry.ac.uk/Templates/PrimarySite/UI/img/ResearchSection/content-icon-event.png" alt="icon data prazo">' . $data_prazo . ' (' . timespan($now, $timestamp) . ')'
       	. '</span>'
       	. '</p>'
       	. '<p style="color:rgb(51,51,51)">'

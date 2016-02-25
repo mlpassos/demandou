@@ -85,7 +85,7 @@
 			  						// 	echo "Suas Tarefas ";
 			  						// } 
 			  					?>
-			  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas" class="tarefa-stats badge">
+			  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas do projeto" class="tarefa-stats badge">
 		  								<?php 
 			  								$res = array();
 			  								$achou = false;
@@ -161,10 +161,12 @@
 			  								}
 			  								if ($achou===true) {
 			  									if ($lider) {
-			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_aguardando'] . '</span>';
+			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando'] . '</span>';
+			  										echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
 			  										//echo $res['tarefa_total']-$res['tarefa_completadas'] . ' <span class="badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
 			  									} else {
-			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Finalizadas" class="tarefa-stats badge" style="background-color:blue;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
+			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
+			  										echo ' <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando_usuario'] . '</span>';
 			  									}
 			  								} else {
 			  									echo "0";// . ' / ' . $res['tarefa_completadas'];
