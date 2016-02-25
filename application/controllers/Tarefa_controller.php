@@ -355,7 +355,7 @@ class Tarefa_controller extends MY_Controller {
     $timestamp = strtotime($t['data_prazo']);
     $now = time();
 		$message = 'Olá ' . $u[0]['nome'] . ' ' . $u[0]['sobrenome'] . ','
-				. '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">'
+				// . '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">'
 				. '<div style="margin-top:10px;padding:5px;background-color:#ededed;">'
 				. '<div style="padding:5px;background-color:#fff;">'
       	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $p[0]['titulo'] . ': ' . $t['titulo'] . '</h3>'
@@ -366,7 +366,7 @@ class Tarefa_controller extends MY_Controller {
       	// . '<p style="color:rgb(51,51,51)">'
       	. '<p>'
       	. '<span style="padding:5px;color:rgb(51,51,51);background-color:#d9edf7;border-radius:4px;">'
-      	. 'Início: <i class="fa fa-pencil"></i>' . $data_inicio
+      	. 'Início: ' . $data_inicio
       	. '</span>'
       	// . '</p>'
       	// . '<p style="color:rgb(51,51,51)">'
