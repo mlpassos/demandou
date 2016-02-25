@@ -228,7 +228,7 @@ class Tarefa_controller extends MY_Controller {
 				$tarefa = $this->input->post();
 				$this->load->model('tarefa_model');
 				if ($this->tarefa_model->inserir($tarefa)) {
-					$result = array("status" => "sucesso", "mensagem" => "Tarefa criada com sucesso");
+					$result = array("status" => "sucesso", "mensagem" => "Tarefa criada com sucesso", "tarefa"=>$tarefa);
 					// email líder tarefa atualizada
 					$this->load->model('usuario_model');
 					$this->load->model('projeto_model');
@@ -236,7 +236,7 @@ class Tarefa_controller extends MY_Controller {
 					$projectInfo = $this->projeto_model->verPorCodigo($tarefa['codigo_projeto']);
 					$this->sendMail($tarefa, $userInfo, $projectInfo);
 				} else {
-					$result = array("status" => "erro", "mensagem" => "Deu bug");
+					$result = array("status" => "erro", "mensagem" => "Deu bug", "tarefa"=>$tarefa);
 				}
 				echo json_encode($result);
 			}
@@ -355,22 +355,30 @@ class Tarefa_controller extends MY_Controller {
     $timestamp = strtotime($t['data_prazo']);
     $now = time();
 		$message = 'Olá ' . $u[0]['nome'] . ' ' . $u[0]['sobrenome'] . ','
-				. '<div>'
+				. '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">'
+				. '<div style="margin-top:10px;padding:5px;background-color:#ededed;">'
+				. '<div style="padding:5px;background-color:#fff;">'
       	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $p[0]['titulo'] . ': ' . $t['titulo'] . '</h3>'
       	. '<img style="float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $u[0]['arquivo_avatar'] . '">'
       	. '<p style="color:rgb(51,51,51)">'
-      	. 'Descrição: ' . $t['descricao'] 
+      	. $t['descricao'] 
       	. '</p>'
-      	. '<p style="color:rgb(51,51,51)">'
-      	. 'Início: ' . $data_inicio 
-      	. '</p>'
-      	. '<p style="color:rgb(51,51,51)">'
+      	// . '<p style="color:rgb(51,51,51)">'
+      	. '<p>'
+      	. '<span style="padding:5px;color:rgb(51,51,51);background-color:#d9edf7;border-radius:4px;">'
+      	. 'Início: <i class="fa fa-pencil"></i>' . $data_inicio
+      	. '</span>'
+      	// . '</p>'
+      	// . '<p style="color:rgb(51,51,51)">'
+      	. '<span style="padding:5px;color:rgb(51,51,51);margin-left:5px;background-color:#d9edf7;border-radius:4px;">'
       	. 'Prazo: ' . $data_prazo . ' (' . timespan($now, $timestamp) . ')'
+      	. '</span>'
       	. '</p>'
       	. '<p style="color:rgb(51,51,51)">'
       	. 'Adicionado por: <img style="width:38px;height:38px;border-radius:50%;" src="http://secom.pa.gov.br/demandou/uploads/' . $this->session->userdata('arquivo_avatar') . '"> '
       	. $this->session->userdata('nome')
       	. '</p>'
+      	. '</div>'
       	. '</div>';
       // $this->load->library('email', $config);
       $this->email->set_newline("\r\n");

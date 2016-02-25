@@ -434,6 +434,9 @@
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
+            $('.tarefa-stats').tooltip({
+              'delay': { "show": 100, "hide": 0 }
+            });
 
             var location = 'http://' + window.location.hostname + "/demandou-git";
 

@@ -134,7 +134,7 @@
                                 + '<div class="media-body">'
                                 + '<h4 class="media-heading ' + prioridadec + '">' + titulo + '</h4>'
                                 + '<p>'
-                                + 'desc'  
+                                + descricao  
                                 + '</p>'
                                 + '<img class="tarefas-box-lider-img lider-thumbs img-circle" src="http://secom.pa.gov.br/demandou/uploads/' + createdbypicture + '" alt="imagem do avatar do líder da tarefa">'
                                 + '</div>'
@@ -145,6 +145,7 @@
                               console.log(stc)
                           }
                      }).done(function(data){
+                        console.log(data);
                         console.log('fim alteração');
                      });
             });
