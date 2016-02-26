@@ -31,8 +31,9 @@
 					<!-- <i class="pin animated fadeInDownBig"></i> -->
 					<!-- tarefas -->
 					<div class="caption">
-							<header class="tarefas-box-header <?php echo $prioridadesClass; ?>">
-				        <h3><?php echo $p['titulo'];?></h3>
+						<header class="tarefas-box-header <?php echo $prioridadesClass; ?>">
+				        <h3>
+				        	<?php echo $p['titulo'];?></h3>
 				        	<?php 
 				        	$lider = false;
 				        	$usuariosProjeto = $projetos_usuarios;
@@ -96,7 +97,6 @@
 			  									$res['tarefa_aguardando'] = 0;
 			  									$aux = "";
 			  									foreach($tasks as $t) {
-
 				  								 	if ($t['codigo_projeto']==$p['codigo']) {
 				  								 		if ($aux !== $t['codigo_tarefa']) {
 				  								 			// diferente

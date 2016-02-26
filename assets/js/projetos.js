@@ -342,7 +342,6 @@
             }
             function getTarefaPrioridade(codigo) {
                   var code = parseInt(codigo);
-                  
                   switch(code) {
                        case 3:
                             var out = {
@@ -408,22 +407,22 @@
                   return $state;
             }
             function showMensagem(el, data, elbox) {
-                  var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
-                  var mensagemHTML = $.parseHTML(data.mensagem);
-                  el.addClass('alert ' + classe +  ' animated-alt-med fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                        var isso = $(this);
-                        setTimeout(function(){
-                              isso.removeClass('animated-alt-med fadeInUp').addClass('animated-alt-med fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                                    isso.removeClass('animated-alt-med fadeOutDown ' + classe).html('');
-                              });
-                              if (elbox!=="") {
-                                    setTimeout(function(){
-                                          elbox.hide('slow');
-                                    },1000);
-                              }
-                        },500);
-                        
-                  });
+              var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
+              var mensagemHTML = $.parseHTML(data.mensagem);
+              el.addClass('alert ' + classe +  ' animated-alt-med fadeInUp').html(mensagemHTML).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                    var isso = $(this);
+                    setTimeout(function(){
+                          isso.removeClass('animated-alt-med fadeInUp').addClass('animated-alt-med fadeOutDown').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                                isso.removeClass('animated-alt-med fadeOutDown ' + classe).html('');
+                          });
+                          if (elbox!=="") {
+                                setTimeout(function(){
+                                      elbox.hide('slow');
+                                },1000);
+                          }
+                    },500);
+                    
+              });
             }
 
 
@@ -525,7 +524,7 @@
                     }
                     // ajax pegando os dados da tarefa
                       modal.find('.modal-title').text(titulo);
-                      modal.find('.modal-body').find('.descricao').text(descricao);
+                      modal.find('.modal-body').find('.descricao').html(descricao);
                       modal.find('.modal-body').find('.data-inicio').text('Início: ' + formataData(data_inicio));
                       modal.find('.modal-body').find('.data-prazo').text('Prazo: ' + formataData(data_prazo));
             });

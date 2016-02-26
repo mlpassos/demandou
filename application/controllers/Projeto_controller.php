@@ -107,7 +107,7 @@ class Projeto_controller extends MY_Controller {
 			array('file' =>  base_url() . 'assets/js/projetos.js')
 		);
 		if (!$this->input->is_ajax_request()) {
-		  $this->load->view('header_view',$this->header);
+		  	$this->load->view('header_view',$this->header);
 			$this->load->view('admin/projetos/content_view', $conteudo);
 			$this->load->view('footer_view',$data_footer);	
 		} else {
@@ -152,7 +152,8 @@ class Projeto_controller extends MY_Controller {
 			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js')
+			array('file' =>  base_url() . 'assets/js/projetos_adicionar.js'),
+			array('file' =>  'http://cdn.tinymce.com/4/tinymce.min.js')
 		);
 
 		$this->load->helper('form');
@@ -227,7 +228,8 @@ class Projeto_controller extends MY_Controller {
 			//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
-			array('file' =>  base_url() . 'assets/js/projetos_alterar.js')
+			array('file' =>  base_url() . 'assets/js/projetos_alterar.js'),
+			array('file' =>  'http://cdn.tinymce.com/4/tinymce.min.js')
 		);
 
 		$this->load->helper('form');
