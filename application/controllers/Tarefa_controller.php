@@ -281,6 +281,7 @@ class Tarefa_controller extends MY_Controller {
 				// JS
 				$data_footer['js']=array(
 					//array('file' => 'http://code.jquery.com/ui/1.11.4/jquery-ui.js'), 
+					array('file' =>  'http://cdn.tinymce.com/4/tinymce.min.js'),
 					array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 					array('file' =>  base_url() . 'assets/js/global.js'),
 					array('file' =>  base_url() . 'assets/js/tarefas_adicionar.js')

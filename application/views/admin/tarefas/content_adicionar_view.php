@@ -81,7 +81,9 @@
 		<div class="col-lg-12 col-md-6">
 			  <div class="form-group">
 			    <label for="lider">Líder</label>
-			    <?php echo form_error('lider'); ?>
+			    <?php 
+			    echo form_error('lider');
+			    ?>
 			    <select id="lider" name="lider[]" multiple="multiple" class="form-control">
 				  <?php 
 				  	foreach($usuarios as $u) {

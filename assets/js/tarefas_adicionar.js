@@ -25,6 +25,23 @@
                   
             });
           }
+
+          function limitWords(textToLimit, wordLimit) {
+            var finalText = "";
+            var text2 = textToLimit.replace(/\s+/g, ' ');
+            var text3 = text2.split(' ');
+            var numberOfWords = text3.length;
+            var i=0;
+
+            if(numberOfWords > wordLimit)
+            {
+            for(i=0; i< wordLimit; i++)
+            finalText = finalText+" "+ text3[i]+" ";
+
+            return finalText+"...";
+            }
+            else return textToLimit;
+          }
           
           // select2 template
           function formatState (state) {
@@ -87,8 +104,10 @@
                           },
                           dataType: 'json',
                           success: function(data) {
+                              // checar por erro de validação
                               el.html('');
                               showMensagem(el, data);
+                              form.trigger("reset");
                               var data_prazo = new Date();
                               var dia = data_prazo.getDay();
                               var month = new Array();
@@ -134,7 +153,7 @@
                                 + '<div class="media-body">'
                                 + '<h4 class="media-heading ' + prioridadec + '">' + titulo + '</h4>'
                                 + '<p>'
-                                + descricao  
+                                + limitWords(descricao,10)
                                 + '</p>'
                                 + '<img class="tarefas-box-lider-img lider-thumbs img-circle" src="http://secom.pa.gov.br/demandou/uploads/' + createdbypicture + '" alt="imagem do avatar do líder da tarefa">'
                                 + '</div>'
@@ -187,6 +206,23 @@
           $('#data_inicio').change(function(){
             var min = $(this).val();
             $('#data_prazo').attr('min', min);
+          });
+
+          tinymce.init({
+            selector: 'textarea',
+            // forced_root_block : "",
+            invalid_elements: "table,tr,td,tbody,img",
+            height: 300,
+            plugins: [
+              'advlist autolink lists link charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen',
+              'insertdatetime media contextmenu paste code'
+            ],
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            content_css: [
+              '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+              '//www.tinymce.com/css/codepen.min.css'
+            ]
           });
 
 

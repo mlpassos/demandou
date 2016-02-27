@@ -291,5 +291,5 @@ $config = array(
         )
 );
 
-$config['error_prefix'] = '<div><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;<span class="sr-only">Error:</span>';
+$config['error_prefix'] = '<div class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>&nbsp;<span class="sr-only">Error:</span>';
 $config['error_suffix'] = '</div>';

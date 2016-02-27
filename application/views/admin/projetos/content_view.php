@@ -55,7 +55,7 @@
 				        <!-- <div class="clearfix"></div> -->
 				        <!-- FOOTER  -->
 		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">
-				    		<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
+				    		<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao='<?php echo $p['descricao']; ?>' data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalProjetoVer">
 		  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn fa fa-eye" aria-hidden="true"></span>
 				    		</a> 
 				    		<?php 
@@ -77,7 +77,7 @@
 		  							<span data-toggle="tooltip" data-placement="top" title="Gerenciar tarefas"  class="projetos-acoes-btn fa fa-tasks" aria-hidden="true"></span>
 				    			</a>	
 				    		<?php } ?>
-				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao="<?php echo $p['descricao']; ?>" data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
+				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao='<?php echo $p['descricao']; ?>' data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 		  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
 	  							<?php 
 	  								// if ($lider) {
@@ -176,36 +176,42 @@
 			    			</a>
 			    			
 			    </div> 
-	        <div class="body">
-		        <p class="tarefas-box-descricao">
+	        <div class="body tarefas-box-descricao">
+		        <!-- <p class="tarefas-box-descricao"> -->
 		        	<?php 
 		        	$this->load->helper('text');
 		        	echo word_limiter($p['descricao'],20);
 		        	//echo $p['descricao'];
 		        	?> 
-		        </p>
+		        <!-- </p> -->
 
 						<p class="tarefas-box-datas">
 			        <?php 
 			        	$this->load->helper('date');
 
 								// INíCIO
-					        	// $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
-								echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou' : 'Aguardando' ;
+					      // $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
+								// echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou' : 'Aguardando' ;
 								//echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Desativar"  class="projetos-acoes-btn fa fa-toggle-on" aria-hidden="true"></span></a>' : '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Ativar"  class="projetos-acoes-btn fa fa-toggle-off" aria-hidden="true"></span></a>' ;
 								//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
 								// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
 
-					   			// PRAZO
-					   			$timestamp = strtotime($p['data_prazo']);
+					   		// PRAZO
+					   		$timestamp = strtotime($p['data_prazo']);
 								$now = time();
 								if( strtotime($p['data_prazo']) < strtotime('now') ) {
-									echo '<br><span class="glyphicon glyphicon-warning-sign"></span> Atrasado ';
-								} 
-								// else {
-								// 	echo "<br><span class='glyphicon glyphicon-time'></span> ";
-								// 	echo timespan($now, $timestamp);
-								// }
+									$str = strtotime('now') - strtotime($p['data_prazo']);
+									$dif = ceil($str/3600/24);
+									if ($dif>1) {
+										echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dias';	
+									} else {
+										echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dia';	
+									}
+									
+								} else {
+									echo "<br><span class='fa fa-calendar'></span> ";
+									echo timespan($now, $timestamp);
+								}
 			        ?> 
 		        </p>
 		        <ul class="participantes-lista">
