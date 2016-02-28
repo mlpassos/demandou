@@ -7,6 +7,7 @@
         },
         App : function () {
             var location = 'http://' + window.location.hostname + "/demandou-git";
+
             // alert(location);
         	$('#formLogin').submit(function(e){
         		e.preventDefault();

@@ -7,6 +7,8 @@
         },
         App : function () {
 
+          var base_url = 'http://' + window.location.hostname + "/demandou-git";
+
           function showMensagem(el, data, elbox) {
             var classe = (data.status == "sucesso") ? "alert alert-success" : "alert alert-danger";
             var mensagemHTML = $.parseHTML(data.mensagem);
@@ -106,98 +108,78 @@
                           success: function(data) {
                               // checar por erro de validação
                               el.html('');
+                              console.log(data);
                               showMensagem(el, data);
-                              form.trigger("reset");
-                              var data_prazo = new Date();
-                              var dia = data_prazo.getDay();
-                              var month = new Array();
-                              month[0] = "Jan";
-                              month[1] = "Fev";
-                              month[2] = "Mar";
-                              month[3] = "Abr";
-                              month[4] = "Mai";
-                              month[5] = "Jun";
-                              month[6] = "Jul";
-                              month[7] = "Ago";
-                              month[8] = "Set";
-                              month[9] = "Out";
-                              month[10] = "Nov";
-                              month[11] = "Dez";
-                              var mes = month[data_prazo.getMonth()];
-                              switch(prioridade) {
-                                  case "3":
-                                      var prioridadec = 'prioridade-alta';
-                                      break;
-                                  case "2":
-                                      var prioridadec = 'prioridade-media';
-                                      break;
-                                  case "1":
-                                      var prioridadec = 'prioridade-baixa';
-                                      break;
-                                  default:
-                                      // nada
-                              }
-                              // setTimeout(function(){
-                              //   window.location = location;
-                              // },1000);
-                              //$('.tarefas-added-box').load(location+'/'+codigo_projeto + ' .tarefas-added-box')
-                              $('.tarefas-added-box').append('<div class="tarefas-added-box-postit media">'
-                                + '<div class="media-left">'
-                                + '<p class="tarefa-dia">'
-                                + dia
-                                + '</p>'
-                                + '<p class="tarefa-mes">'
-                                + mes + '|' + data_prazo.getYear()
-                                + '</p>'
-                                + '</div>'
-                                + '<div class="media-body">'
-                                + '<h4 class="media-heading ' + prioridadec + '">' + titulo + '</h4>'
-                                + '<p>'
-                                + limitWords(descricao,10)
-                                + '</p>'
-                                + '<img class="tarefas-box-lider-img lider-thumbs img-circle" src="http://secom.pa.gov.br/demandou/uploads/' + createdbypicture + '" alt="imagem do avatar do líder da tarefa">'
-                                + '</div>'
-                                + '</div>');
+                              if (data.status !== "erro") {
+                                var data_p = new Date(data_prazo);
+                                data_p.setDate(data_p.getDate() + 1);
+                                var dia = (data_p.getDate().toString().length < 2) ? '0' + data_p.getDate() : data_p.getDate();
+
+                                var month = new Array();
+                                month[0] = "Jan";
+                                month[1] = "Fev";
+                                month[2] = "Mar";
+                                month[3] = "Abr";
+                                month[4] = "Mai";
+                                month[5] = "Jun";
+                                month[6] = "Jul";
+                                month[7] = "Ago";
+                                month[8] = "Set";
+                                month[9] = "Out";
+                                month[10] = "Nov";
+                                month[11] = "Dez";
+                                var mes = month[data_p.getMonth()];
+                                switch(prioridade) {
+                                    case "3":
+                                        var prioridadec = 'prioridade-alta';
+                                        break;
+                                    case "2":
+                                        var prioridadec = 'prioridade-media';
+                                        break;
+                                    case "1":
+                                        var prioridadec = 'prioridade-baixa';
+                                        break;
+                                    default:
+                                        // nada
+                                }
+                                // setTimeout(function(){
+                                //   window.location = location;
+                                // },1000);
+                                //$('.tarefas-added-box').load(location+'/'+codigo_projeto + ' .tarefas-added-box')
+                                $('.tarefas-added-box').append('<div class="tarefas-added-box-postit media">'
+                                  + '<div class="media-left">'
+                                  + '<p class="tarefa-dia">'
+                                  + dia
+                                  + '</p>'
+                                  + '<p class="tarefa-mes">'
+                                  + mes + '|' + data_p.getFullYear()
+                                  + '</p>'
+                                  + '</div>'
+                                  + '<div class="media-body">'
+                                  + '<h4 class="media-heading ' + prioridadec + '">' + titulo + '</h4>'
+                                  + '<p>'
+                                  + limitWords(descricao,10)
+                                  + '</p>'
+                                  + '<img class="tarefas-box-lider-img lider-thumbs img-circle" src="http://secom.pa.gov.br/demandou/uploads/' + createdbypicture + '" alt="imagem do avatar do líder da tarefa">'
+                                  + '</div>'
+                                  + '</div>');
+                                }
                           },
                           error: function(stc,error){
                               console.log(error);
                               console.log(stc)
                           }
                      }).done(function(data){
-                        console.log(data);
+                        form.trigger("reset");
+                        $("#lider").each(function(){
+                          $(this).select2('val','');
+                        });
                         console.log('fim alteração');
                      });
             });
 
-
           var tamTarefasAdded = $('.tarefas-added-box').height();
           var tamTarefasAdd = $('.tarefas-add-box').height();
-          // var i = 0;
-
-          // if (tamTarefasAdded >= tamTarefasAdd) {
-          //   var i = 0;
-          //   do {
-          //      i += 1;
-          //      menosFonte(i);
-          //      console.log(i);
-          //      if ($('.tarefas-added-box').height()<=$('.tarefas-add-box').height()) {
-          //       i = 10;
-          //      }
-          //   } while (i < 5);
-          // }
-          
-          // function menosFonte(valor) {
-          //   $('.tarefas-added-box').css('font-size', '-='+valor);
-          //   $('.tarefas-added-box h4').css('font-size', '-='+valor);
-          //   $('.tarefas-added-box .tarefa-dia').css('font-size', '-='+valor);
-          //   $('.tarefas-added-box .tarefa-mes').css('font-size', '-='+valor);
-          // }
-
-          // $('.tarefas-added-box').animate({
-          //   'height':tamTarefasAdd 
-          // }, function(){
-          //     console.log('fim');
-          // }, 'swing',300);
 
           if (tamTarefasAdded >= tamTarefasAdd) {
             $('.tarefas-added-box').css('height', tamTarefasAdd);
@@ -210,15 +192,20 @@
 
           tinymce.init({
             selector: 'textarea',
-            // forced_root_block : "",
             invalid_elements: "table,tr,td,tbody,img",
             height: 300,
             plugins: [
               'advlist autolink lists link charmap print preview anchor',
               'searchreplace visualblocks code fullscreen',
-              'insertdatetime media contextmenu paste code'
+              'insertdatetime media paste code textcolor colorpicker wordcount'
             ],
-            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+            plugin_insertdate_dateFormat : "%d/%m/%Y",
+            plugin_insertdate_timeFormat : "%H:%M:%S",
+            language: 'pt_BR',
+            language_url: base_url + '/assets/js/tinymce/langs/pt_BR.js',
+            browser_spellcheck: true,
+            contextmenu: false,
+            toolbar: 'insertfile undo redo | styleselect | bold italic | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
             content_css: [
               '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
               '//www.tinymce.com/css/codepen.min.css'
