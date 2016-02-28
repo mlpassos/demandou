@@ -1,13 +1,11 @@
 <div id="ajaxload" class="container-fluid ajaxload">
 <?php if ($this->session->userdata('logado')==true) { ?>
-	<?php if ($this->session->userdata('codigo_perfil') == 2 ) { ?>
 		<div class="row">
 			<div class="col-lg-12 text-right">
 				<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
 				<hr>
 			</div>
 		</div>
-	<?php } ?>
 <div class="row tarefas-grid">
 	<?php foreach($projetos as $p) { ?>
 		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
