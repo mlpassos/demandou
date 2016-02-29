@@ -35,8 +35,32 @@
             maximumSelectionLength: 1,
             templateResult: formatState//,
             // disabled: true
-          });//.val(["6"]).trigger("change");
+          });
+
+          // .change(function(){
+          //   var lider = $(this).val();
+          //   $('#participantes').children().each(function(){
+          //       if ($(this).val()==lider) {
+          //         console.log('desabilitar: ' + $(this).val());
+          //         $(this).attr('disabled', 'disabled'); 
+          //         // $("#participantes").select2().trigger('change'); 
+          //       } else {
+          //         // $(this).removeAttr('disabled');
+          //       }
+          //   });
+          // });
+
           $("#participantes").select2();
+
+          // .change(function() {
+          //   $(this).children().each(function() {
+          //     console.log('disabled: ' + $(this).attr('disabled'));
+          //     if ($(this).attr('disabled')==='disabled') {
+          //       console.log('voltar a vida: ' + $(this).val());
+          //       $(this).removeAttr('disabled');
+          //     }
+          //   });
+          // });
 
 
           $('#data_inicio').change(function(){

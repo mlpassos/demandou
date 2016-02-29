@@ -69,12 +69,7 @@
 				  <?php 
 				    // var_dump($usuarios);
 				  	foreach($usuarios as $u) {
-				  		if ($u['codigo']==6) {
-				  			echo "<option value='" . $u['codigo'] . "' selected>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";	
-				  		} else {
-				  			echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
-				  		}
-				  		
+			  			echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
 				  	}
 				  ?>
 				</select>

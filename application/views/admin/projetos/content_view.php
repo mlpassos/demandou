@@ -37,8 +37,16 @@
 				        	$usuariosProjeto = $projetos_usuarios;
 				        	if ($p['papel']=="Líder") {
 				        		$lider = true;
-										//echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
-										echo '<img class="tarefas-box-lider-img img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do líder do projeto">';
+										// echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
+										//echo '<img class="tarefas-box-lider-img img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do líder do projeto">';
+										foreach($usuariosProjeto as $t) {
+	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
+	  								 			echo '<div class="tarefas-box-lider">';
+	  								 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
+	  								 			  // echo '<small> '. $t['nome'] . '</small>';
+	  								 			echo '</div>';
+	  								 	}
+	  								}
 									} else {
 										foreach($usuariosProjeto as $t) {
 	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
@@ -66,7 +74,7 @@
 					    		</a>
 				    		<? } ?>
 			    			<?php 
-			    				if ($lider) { 
+			    				//if ($lider) { 
 					    			$data = array('codigo_projeto'=>$p['codigo']);
 										// i store data to flashdata
 									  $this->session->set_userdata('gerenciar_tarefas-' . $p['codigo'],$data);
@@ -74,7 +82,7 @@
 				    			<a href="<?php echo base_url() . 'tarefa/adicionar/' . $p['codigo'];?>" id="tarefasGerenciar" class="btn btn-sm" role="button" data-codigoprojeto="<?php echo $p['codigo'];?>">
 		  							<span data-toggle="tooltip" data-placement="top" title="Gerenciar tarefas"  class="projetos-acoes-btn fa fa-tasks" aria-hidden="true"></span>
 				    			</a>	
-				    		<?php } ?>
+				    		<?php //} ?>
 				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao='<?php echo $p['descricao']; ?>' data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 		  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
 	  							<?php 
