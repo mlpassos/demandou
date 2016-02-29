@@ -37,9 +37,9 @@
 				        	$usuariosProjeto = $projetos_usuarios;
 				        	if ($p['papel']=="Líder") {
 				        		$lider = true;
-										// echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
-										//echo '<img class="tarefas-box-lider-img img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do líder do projeto">';
-										foreach($usuariosProjeto as $t) {
+									// echo '<i class="fa fa-star"> ' . $p['papel'] . '</i>';
+									//echo '<img class="tarefas-box-lider-img img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $this->session->userdata('arquivo_avatar') . '" alt="avatar do líder do projeto">';
+									foreach($usuariosProjeto as $t) {
 	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
 	  								 			echo '<div class="tarefas-box-lider">';
 	  								 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
@@ -47,15 +47,15 @@
 	  								 			echo '</div>';
 	  								 	}
 	  								}
-									} else {
-										foreach($usuariosProjeto as $t) {
-	  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
-	  								 			echo '<div class="tarefas-box-lider">';
-	  								 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
-	  								 			  // echo '<small> '. $t['nome'] . '</small>';
-	  								 			echo '</div>';
-	  								 	}
-	  								}
+							} else {
+								foreach($usuariosProjeto as $t) {
+  								 	if ($t['codigo_projeto']==$p['codigo'] AND $t['codigo_papel']==1) {
+  								 			echo '<div class="tarefas-box-lider">';
+  								 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
+  								 			  // echo '<small> '. $t['nome'] . '</small>';
+  								 			echo '</div>';
+  								 	}
+	  							}
 				        	}?>
 				       </header>
 				        <!-- <div class="clearfix"></div> -->
@@ -84,101 +84,101 @@
 				    			</a>	
 				    		<?php //} ?>
 				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao='<?php echo $p['descricao']; ?>' data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
-		  						<!-- <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>  -->
-	  							<?php 
-	  								// if ($lider) {
-			  						// 	echo "Tarefas do Projeto ";
-			  						// } else {
-			  						// 	echo "Suas Tarefas ";
-			  						// } 
-			  					?>
-			  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas do projeto" class="tarefa-stats badge">
-		  								<?php 
-			  								$res = array();
-			  								$achou = false;
-			  								if ($lider) {
-			  									$tasks = $tarefas_projeto;
-			  									$res['tarefa_total'] = 0;
-			  									$res['tarefa_completadas'] = 0;
-			  									$res['tarefa_aguardando'] = 0;
-			  									$aux = "";
-			  									foreach($tasks as $t) {
-				  								 	if ($t['codigo_projeto']==$p['codigo']) {
-				  								 		if ($aux !== $t['codigo_tarefa']) {
-				  								 			// diferente
-				  								 			if ($t['data_fim']!==null) {
-					  								 				if ($t['encerrada']==1)  {
-						  								 				// $andamento = true;
-						  								 				$res['tarefa_completadas']++;
-						  								 			} else {
-						  								 				$res['tarefa_aguardando']++;
-						  								 			}
-				  								 			}
-				  								 			$res['tarefa_total']++;
-				  								 			$aux = $t['codigo_tarefa'];
-				  								 			$achou = true;
-				  								 		} else {
-				  								 			// igual
-				  								 		}
-				  								 		//break;
-				  								 	}
-			  									}
-			  								} else {
-				  									// participante, retornar tarefas por usuário
-			  									$achou = false;
-			  									$tasks = $tarefas_projeto;
-			  									$res['tarefa_total'] = 0;
-			  									$res['tarefa_total_projeto'] = 0;
-			  									$res['tarefa_completadas'] = 0;
-			  									$res['tarefa_completadas_usuario']=0;
-			  									$res['tarefa_aguardando_usuario']=0;
-			  									$aux = "";
-			  									foreach($tasks as $t) {
-			  										if ($t['codigo_projeto']==$p['codigo']) {
-			  											if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
-					  								 		// tarefas totais do usuário
-					  								 		$res['tarefa_total']++;
-					  								 		$achou = true;
-				  										}
-				  										if ($aux !== $t['codigo_tarefa']) {
-					  										if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
-						  										if ($t['data_fim']!==null) {
-						  											if ($t['encerrada']==1)  {
-						  								 				// $andamento = true;
-						  								 				$res['tarefa_completadas_usuario']++;
-						  								 			} else {
-						  								 				$res['tarefa_aguardando_usuario']++;
-						  								 			}
+		  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas do projeto" class="tarefa-stats badge">
+	  								<?php 
+		  								$res = array();
+		  								$achou = false;
+		  								if ($lider) {
+		  									$tasks = $tarefas_projeto;
+		  									$res['tarefa_total'] = 0;
+		  									$res['tarefa_completadas'] = 0;
+		  									$res['tarefa_aguardando'] = 0;
+		  									$aux = "";
+		  									foreach($tasks as $t) {
+			  								 	if ($t['codigo_projeto']==$p['codigo']) {
+			  								 		if ($aux !== $t['codigo_tarefa']) {
+			  								 			// diferente
+			  								 			if ($t['data_fim']!==null) {
+				  								 				if ($t['encerrada']==1)  {
+					  								 				// $andamento = true;
+					  								 				$res['tarefa_completadas']++;
+					  								 			} else {
+					  								 				$res['tarefa_aguardando']++;
 					  								 			}
-					  								 		}
-
-					  								 		if ($t['data_fim']!==null) {
-					  								 			if ($t['encerrada']==1)  {
-						  								 			$res['tarefa_completadas']++;
-						  								 		} else {
-						  								 			// $res['tarefa_aguardando_usuario']++;
-						  								 		}
+			  								 			}
+			  								 			$res['tarefa_total']++;
+			  								 			$aux = $t['codigo_tarefa'];
+			  								 			$achou = true;
+			  								 		} else {
+			  								 			// igual
+			  								 		}
+			  								 		//break;
+			  								 	}
+		  									}
+		  								} else {
+			  								// participante, retornar tarefas por usuário
+		  									$achou = false;
+		  									$tasks = $tarefas_projeto;
+		  									$res['tarefa_total'] = 0;
+		  									$res['tarefa_total_projeto'] = 0;
+		  									$res['tarefa_completadas'] = 0;
+		  									$res['tarefa_completadas_usuario']=0;
+		  									$res['tarefa_aguardando_usuario']=0;
+		  									$aux = "";
+		  									foreach($tasks as $t) {
+		  										if ($t['codigo_projeto']==$p['codigo']) {
+		  											if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
+				  								 		// tarefas totais do usuário
+				  								 		$res['tarefa_total']++;
+				  								 		$achou = true;
+			  										}
+			  										if ($aux !== $t['codigo_tarefa']) {
+				  										if ( $t['codigo_usuario'] == $this->session->userdata('codigo_usuario') )  {
+					  										if ($t['data_fim']!==null) {
+					  											if ($t['encerrada']==1)  {
+					  								 				// $andamento = true;
+					  								 				$res['tarefa_completadas_usuario']++;
+					  								 			} else {
+					  								 				$res['tarefa_aguardando_usuario']++;
+					  								 			}
 				  								 			}
-																$res['tarefa_total_projeto']++;
-						  								 	$aux = $t['codigo_tarefa'];
-					  									} 
-					  								}
-			  									}
-			  								}
-			  								if ($achou===true) {
-			  									if ($lider) {
-			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando'] . '</span>';
-			  										echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
-			  										//echo $res['tarefa_total']-$res['tarefa_completadas'] . ' <span class="badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';
-			  									} else {
-			  										echo $res['tarefa_total'] . '</span> <span data-toggle="tooltip" data-placement="top" title="Finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
-			  										echo ' <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando_usuario'] . '</span>';
-			  									}
-			  								} else {
-			  									echo "0";// . ' / ' . $res['tarefa_completadas'];
-			  								}
-			  							;?>
-	  								<!-- </span> -->
+				  								 		}
+
+				  								 		if ($t['data_fim']!==null) {
+				  								 			if ($t['encerrada']==1)  {
+					  								 			$res['tarefa_completadas']++;
+					  								 		} else {
+					  								 			// $res['tarefa_aguardando_usuario']++;
+					  								 		}
+			  								 			}
+															$res['tarefa_total_projeto']++;
+					  								 	$aux = $t['codigo_tarefa'];
+				  									} 
+				  								}
+		  									}
+		  								}
+		  								if ($achou===true) {
+		  									echo $res['tarefa_total'] . '</span>';
+		  									if ($lider) {
+		  										if ($res['tarefa_aguardando'] > 0) {
+		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando'] . '</span>';
+		  										}
+		  										if ($res['tarefa_completadas'] > 0) {
+		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';	
+		  										}
+		  								} else {
+												if ($res['tarefa_completadas_usuario'] > 0) {			  										
+		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
+		  										}
+		  										if ($res['tarefa_aguardando_usuario'] > 0) {
+		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Aguardando avaliação" class="tarefa-stats badge" style="background-color:red;"> ' . $res['tarefa_aguardando_usuario'] . '</span>';
+		  										}
+		  									}
+		  								} else {
+		  									echo '0</span>';
+		  								}
+		  							;?>
+		  						<!-- </span> -->
 			    			</a>
 			    			
 			    </div> 
@@ -276,19 +276,20 @@
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
-										 					// if ($r['num_tarefas_completas']>=0) {
+										 						// EXIBE TAREFAS COMPLETAS EM VERDE
 										 						echo '<small class="participantes-lista-nome badge" style="background-color:green;background-image:none;">'. $r['num_tarefas_completas'] . '</small>';	
 										 					} else {
 										 						if ($t['codigo_usuario']!==$this->session->userdata('codigo_usuario')) {
+										 							// EXIBE TAREFAS PENDENTES EM VERMELHO
 										 							echo '<small class="participantes-lista-nome badge">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 							//echo '<small class="participantes-lista-nome badge">'. $r['num_tarefas'] . '</small>';		
 										 						} else {
-										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
+										 							// EXIBE TAREFAS PENDENTES EM VERMELHO
+										 							echo 'A<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 						}
 										 					}	
 										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	
 										 			}
-										 					
 										 				// }
 										 			// }
 										 		echo "</li>";
