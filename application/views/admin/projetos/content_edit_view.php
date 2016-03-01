@@ -78,9 +78,16 @@
 		    <select id="lider" name="lider" multiple="multiple" class="form-control">
 			  <?php 
 			    // var_dump($usuarios);
+			  	$rayLider = array();
+			  	foreach($lider as $l) {
+		  			array_push($rayLider,$l['codigo']);
+		  		}
 			  	foreach($usuarios as $u) {
-			  		if ($u['codigo']==$this->session->userdata('codigo_usuario')) {
+			  		// if ($u['codigo']==$this->session->userdata('codigo_usuario')) {
+			  		// echo "<option value='" . $u['codigo'] . "' selected>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+			  		if (in_array($u['codigo'], $rayLider)) {
 			  			echo "<option value='" . $u['codigo'] . "' selected>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+			  		
 			  		} else {
 			  			echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
 			  		}
