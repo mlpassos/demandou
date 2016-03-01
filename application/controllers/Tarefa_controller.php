@@ -179,8 +179,22 @@ class Tarefa_controller extends MY_Controller {
     	// $arquivo_obs = $_FILES['file-0'];
     	if ($lider == 1) {
     		// quem finaliza é o lider, tarefa forçada tipo 3
-    		$usuario = $this->session->userdata('codigo_usuario');	
-    		$codigo_tipo = 3;
+    		if ($this->session->userdata('codigo_usuario') == $this->input->post('codigo_usuario')) {
+    			// nao eh forçada
+    			$usuario = $this->input->post('codigo_usuario');
+	    		if ($atrasado==1) {
+	    			// obs do tipo extensão de prazo, pois está atrasada
+	    			$codigo_tipo = 2;
+	    		} else {
+	    			// obs do tipo finalização normal
+	    			$codigo_tipo = 1;
+	    		}
+    		} else {
+    			// o líder não é o dono da tarefa - forcado
+    			$usuario = $this->session->userdata('codigo_usuario');	
+    			$codigo_tipo = 3;
+    		}
+    		
     	} else {
 				// se não é o líder, só pode ser o usuário dono da tarefa
     		$usuario = $this->input->post('codigo_usuario');
