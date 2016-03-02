@@ -24,46 +24,44 @@ class Tarefa_controller extends MY_Controller {
 
 
 	public function __construct() {
-        parent::__construct();
+    parent::__construct();
 
-        
-    		$this->load->library('email', $this->config->load('email'));
+		$this->load->library('email', $this->config->load('email'));
+    $this->ativo = $this->uri->segment(1);
 
-        $this->ativo = $this->uri->segment(1);
-
-        if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
-        	$this->header['menu'] = array(
-		        		array(
-						"name" => "Projetos",
-						"link" => base_url() . 'projetos',
-						"class" => "active"
+    if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
+    	$this->header['menu'] = array(
+        		array(
+							"name" => "Projetos",
+							"link" => base_url() . 'projetos',
+							"class" => "active"
 						),
 						array(
-						"name" => "Usuários",
-						"link" => base_url() . 'usuarios',
-						"class" => ""
+							"name" => "Usuários",
+							"link" => base_url() . 'usuarios',
+							"class" => ""
 						),
 						array(
-						"name" => "Relatórios",
-						"link" => base_url() . 'relatorios',
-						"class" => ""
+							"name" => "Relatórios",
+							"link" => base_url() . 'relatorios',
+							"class" => ""
 						)
-					);
-        } else {
-	        $this->header['menu'] = array(
-					array(
-					"name" => "Projetos",
-					"link" => base_url() . 'projetos',
-					"class" => "active"
-					),
-					array(
-					"name" => "Relatórios",
-					"link" => base_url() . 'relatorios',
-					"class" => ""
-					)
+			);
+    } else {
+      $this->header['menu'] = array(
+						array(
+							"name" => "Projetos",
+							"link" => base_url() . 'projetos',
+							"class" => "active"
+						),
+						array(
+							"name" => "Relatórios",
+							"link" => base_url() . 'relatorios',
+							"class" => ""
+						)
 			);
 		}
-    }
+  }
 
 	// public function index()	{
 	// 	// META
@@ -100,104 +98,83 @@ class Tarefa_controller extends MY_Controller {
 	// 	$this->load->view('footer_view',$data_footer);	
 	// }
 
-    public function json_usertasks() {
-    	$codigo_projeto = $this->input->post('codigo_projeto');
-    	$codigo_usuario = $this->session->userdata('codigo_usuario');
-    	$this->load->model('tarefa_model');
-    	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario);
-    	echo json_encode($data['tarefas']);
+  public function json_usertasks() {
+  	$codigo_projeto = $this->input->post('codigo_projeto');
+  	$codigo_usuario = $this->session->userdata('codigo_usuario');
+  	$this->load->model('tarefa_model');
+  	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario);
+  	echo json_encode($data['tarefas']);
+  }
 
-    }
-
-
-    public function json_tarefas() {
-    	$this->load->model('tarefa_model');
-    	$data['tarefas'] = $this->tarefa_model->listar();
-    	echo json_encode($data['tarefas']);
-
-    }
+  public function json_tarefas() {
+  	$this->load->model('tarefa_model');
+  	$data['tarefas'] = $this->tarefa_model->listar();
+  	echo json_encode($data['tarefas']);
+  }
 
 	public function json_projecttasks() {
-    	$codigo_projeto = $this->input->post('codigo_projeto');
-    	$this->load->model('tarefa_model');
-    	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorProjeto($codigo_projeto);
-    	echo json_encode($data['tarefas']);
+  	$codigo_projeto = $this->input->post('codigo_projeto');
+  	$this->load->model('tarefa_model');
+  	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorProjeto($codigo_projeto);
+  	echo json_encode($data['tarefas']);
+  }
 
-    }
+  public function json_tasksobs() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$this->load->model('tarefa_model');
+  	$data['observacoes'] = $this->tarefa_model->jsonTarefasObservacoes($codigo_tarefa);
+  	echo json_encode($data['observacoes']);
+  }
 
-    public function json_tasksobs() {
-    	$codigo_tarefa = $this->input->post('codigo_tarefa');
-    	$this->load->model('tarefa_model');
-    	$data['observacoes'] = $this->tarefa_model->jsonTarefasObservacoes($codigo_tarefa);
-    	echo json_encode($data['observacoes']);
-    }
+  public function json_tasksrespostas() {
+  	$codigo_observacao = $this->input->post('codigo_observacao');
+  	$this->load->model('tarefa_model');
+  	$data['respostas'] = $this->tarefa_model->jsonTarefasRespostas($codigo_observacao);
+  	echo json_encode($data['respostas']);
+  }
 
-    public function json_tasksrespostas() {
-    	$codigo_observacao = $this->input->post('codigo_observacao');
-    	$this->load->model('tarefa_model');
-    	$data['respostas'] = $this->tarefa_model->jsonTarefasRespostas($codigo_observacao);
-    	echo json_encode($data['respostas']);
-    }
-
-
-    public function responder() {
-    	$codigo_tarefa = $this->input->post('codigo_tarefa');
-    	$codigo_observacao = $this->input->post('codigo_observacao');
-    	$resposta = $this->input->post('resposta');
-    	$lider = $this->input->post('lider');
-    	$tipo = $this->input->post('tipo');
-    	if ( ($tipo == 2 ) OR ($tipo == 1) ) {
-    		$extender = $this->input->post('extender');
-    	} else {
-    		$extender = null;
-    	}
-    	// $usuario = $this->session->userdata('codigo_usuario');	
-    	
-    	$this->load->model('tarefa_model');
-    	
-    	if ($data['resposta'] = $this->tarefa_model->responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender)) {
-    		echo json_encode(
-    			array(
-    				'status' => 'sucesso',
-    				'mensagem' => 'Observação respondida com sucesso.'
-    				)
-    		);	
-    	} else {
-    		echo json_encode(
-    			array(
-    				'status'=>'falha',
-    				'mensagem' => 'Ooops, deu bug. De novo? =]'
-    			)
-    		);
-    	}
-    }
-    public function finalizar() {
-    	$codigo_tarefa = $this->input->post('codigo_tarefa');
-    	$observacao = $this->input->post('observacao');
-    	$lider = $this->input->post('lider');
-    	$atrasado = $this->input->post('atrasado');
-    	// $arquivo_obs = $_FILES['file-0'];
-    	if ($lider == 1) {
-    		// quem finaliza é o lider, tarefa forçada tipo 3
-    		if ($this->session->userdata('codigo_usuario') == $this->input->post('codigo_usuario')) {
-    			// nao eh forçada
-    			$usuario = $this->input->post('codigo_usuario');
-	    		if ($atrasado==1) {
-	    			// obs do tipo extensão de prazo, pois está atrasada
-	    			$codigo_tipo = 2;
-	    		} else {
-	    			// obs do tipo finalização normal
-	    			$codigo_tipo = 1;
-	    		}
-    		} else {
-    			// o líder não é o dono da tarefa - forcado
-    			$usuario = $this->session->userdata('codigo_usuario');	
-    			$codigo_tipo = 3;
-    		}
-    		
-    	} else {
-				// se não é o líder, só pode ser o usuário dono da tarefa
-    		$usuario = $this->input->post('codigo_usuario');
+  public function responder() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$codigo_observacao = $this->input->post('codigo_observacao');
+  	$resposta = $this->input->post('resposta');
+  	$lider = $this->input->post('lider');
+  	$tipo = $this->input->post('tipo');
+  	if ( ($tipo == 2 ) OR ($tipo == 1) ) {
+  		$extender = $this->input->post('extender');
+  	} else {
+  		$extender = null;
+  	}
+  	// $usuario = $this->session->userdata('codigo_usuario');	
+  	
+  	$this->load->model('tarefa_model');
+  	
+  	if ($data['resposta'] = $this->tarefa_model->responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender)) {
+  		echo json_encode(
+  			array(
+  				'status' => 'sucesso',
+  				'mensagem' => 'Observação respondida com sucesso.'
+  				)
+  		);	
+  	} else {
+  		echo json_encode(
+  			array(
+  				'status'=>'falha',
+  				'mensagem' => 'Ooops, deu bug. De novo? =]'
+  			)
+  		);
+  	}
+  }
+  public function finalizar() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$observacao = $this->input->post('observacao');
+  	$lider = $this->input->post('lider');
+  	$atrasado = $this->input->post('atrasado');
+  	// $arquivo_obs = $_FILES['file-0'];
+  	if ($lider == 1) {
+  		// quem finaliza é o lider, tarefa forçada tipo 3
+  		if ($this->session->userdata('codigo_usuario') == $this->input->post('codigo_usuario')) {
+  			// nao eh forçada
+  			$usuario = $this->input->post('codigo_usuario');
     		if ($atrasado==1) {
     			// obs do tipo extensão de prazo, pois está atrasada
     			$codigo_tipo = 2;
@@ -205,27 +182,42 @@ class Tarefa_controller extends MY_Controller {
     			// obs do tipo finalização normal
     			$codigo_tipo = 1;
     		}
-    	}
+  		} else {
+  			// o líder não é o dono da tarefa - forcado
+  			$usuario = $this->session->userdata('codigo_usuario');	
+  			$codigo_tipo = 3;
+  		}
+  		
+  	} else {
+			// se não é o líder, só pode ser o usuário dono da tarefa
+  		$usuario = $this->input->post('codigo_usuario');
+  		if ($atrasado==1) {
+  			// obs do tipo extensão de prazo, pois está atrasada
+  			$codigo_tipo = 2;
+  		} else {
+  			// obs do tipo finalização normal
+  			$codigo_tipo = 1;
+  		}
+  	}
 
-    	$this->load->model('tarefa_model');
-    	
-    	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo, $usuario)) {
-    		echo json_encode(
-    			array(
-    				'status' => 'sucesso',
-    				'mensagem' => 'Tarefa finalizada com sucesso. Observação enviada.'
-    				)
-    		);	
-    	} else {
-    		echo json_encode(
-    			array(
-    				'status'=>'falha',
-    				'mensagem' => 'Ooops, deu bug. De novo? =]'
-    			)
-    		);
-    	}
-    	
-    }
+  	$this->load->model('tarefa_model');
+  	
+  	if ($data['fim'] = $this->tarefa_model->finalizar($codigo_tarefa,$observacao,$codigo_tipo, $usuario)) {
+  		echo json_encode(
+  			array(
+  				'status' => 'sucesso',
+  				'mensagem' => 'Tarefa finalizada com sucesso. Observação enviada.'
+  				)
+  		);	
+  	} else {
+  		echo json_encode(
+  			array(
+  				'status'=>'falha',
+  				'mensagem' => 'Ooops, deu bug. De novo? =]'
+  			)
+  		);
+  	}
+  }
 	
 	public function adicionar() {
 		if ($this->input->is_ajax_request()) {
@@ -397,21 +389,14 @@ class Tarefa_controller extends MY_Controller {
       	. '</p>'
       	. '</div>'
       	. '</div>';
-      // $this->load->library('email', $config);
-      $this->email->set_newline("\r\n");
-      $this->email->from('marciopassosbel@gmail.com'); // change it to yours
-      $this->email->to($u[0]['email']);// change it to yours
-      $this->email->subject('Demandou: Nova tarefa');
-      $this->email->message($message);
-      $this->email->send(); 
-			// {
-   //    	//echo 'Email sent.';
-   //    	redirect(base_url() . 'tarefa/adicionar');
-   //   	} else {
-   //   		show_error($this->email->print_debugger());
-   //  	}
-	}	
 
+    $this->email->set_newline("\r\n");
+    $this->email->from('marciopassosbel@gmail.com'); // change it to yours
+    $this->email->to($u[0]['email']);// change it to yours
+    $this->email->subject('Demandou: Nova tarefa');
+    $this->email->message($message);
+    $this->email->send(); 
+	}	
 
 	public function alterar() {
 		$this->load->helper('form');
