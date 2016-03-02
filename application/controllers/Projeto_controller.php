@@ -24,43 +24,167 @@ class Projeto_controller extends MY_Controller {
 
 
 	public function __construct() {
-        parent::__construct();
-    
-        $this->ativo = $this->uri->segment(1);
+    parent::__construct();
 
-        if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
-        	$this->header['menu'] = array(
-        		array(
-				"name" => "Projetos",
-				"link" => base_url() . 'projetos',
-				"class" => "active"
-				),
-				array(
-				"name" => "Usuários",
-				"link" => base_url() . 'usuarios',
-				"class" => ""
-				),
-				array(
-				"name" => "Relatórios",
-				"link" => base_url() . 'relatorios',
-				"class" => ""
-				)
-			);
-        } else {
-	        $this->header['menu'] = array(
-					array(
+    $this->ativo = $this->uri->segment(1);
+
+    $this->load->library('email', $this->config->load('email'));
+
+    if ( (int) $this->session->userdata('codigo_perfil')==2 ) {
+    	$this->header['menu'] = array(
+    		array(
 					"name" => "Projetos",
 					"link" => base_url() . 'projetos',
 					"class" => "active"
-					),
+				),
+					array(
+					"name" => "Usuários",
+					"link" => base_url() . 'usuarios',
+					"class" => ""
+				),
 					array(
 					"name" => "Relatórios",
 					"link" => base_url() . 'relatorios',
 					"class" => ""
-					)
+				)
+			);
+    } else {
+      $this->header['menu'] = array(
+				array(
+					"name" => "Projetos",
+					"link" => base_url() . 'projetos',
+					"class" => "active"
+				),
+				array(
+					"name" => "Relatórios",
+					"link" => base_url() . 'relatorios',
+					"class" => ""
+				)
 			);
 		}
-    }
+  }
+
+  function sendMail($projectInfo, $lideresInfo, $participantesInfo) {
+		$ano = date("Y",strtotime($projectInfo[0]['data_inicio']));
+    $mes = date("M",strtotime($projectInfo[0]['data_inicio']));
+    $dia = date("d",strtotime($projectInfo[0]['data_inicio']));
+
+    $anop = date("Y",strtotime($projectInfo[0]['data_prazo']));
+    $mesp = date("M",strtotime($projectInfo[0]['data_prazo']));
+    $diap = date("d",strtotime($projectInfo[0]['data_prazo']));
+    // instancia o objeto
+    $data_inicio = $dia . ' de ' . $mes . ' de ' . $ano;
+    $data_prazo = $diap . ' de ' . $mesp . ' de ' . $anop;
+
+    switch ($projectInfo[0]['prioridade']) {
+    		case '3':
+    			$prioridadesClass = '#ff4332';
+    			break;
+    		case '2':
+    			$prioridadesClass = '#ffbe1c';
+    			break;
+    		case '1':
+    			$prioridadesClass = '#77b50e';
+    			break;
+    		default:
+    			$prioridadesClass = 'white';
+    			break;
+    	}
+		// timespan($now, $timestamp);
+    $this->load->helper('date');
+    $timestamp = strtotime($projectInfo[0]['data_prazo']);
+    $now = time();
+    
+   //  foreach($lideresInfo as $l) {
+			// $messageLider = 'Olá ' . $l['nome'] . ' ' . $l['sobrenome'] . ','
+			// 		// . '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">'
+			// 		. '<div style="margin-top:10px;padding:5px;background-color:#ededed;">'
+			// 		. '<div style="background-color:#fff;">'
+	  //     	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $projectInfo[0]['titulo'] . '</h3>'
+	  //     	. '<img style="float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $l['arquivo_avatar'] . '">'
+	  //     	. '<p style="color:rgb(51,51,51)">'
+	  //     	. $projectInfo[0]['descricao'] 
+	  //     	. '</p>'
+	  //     	// . '<p style="color:rgb(51,51,51)">'
+	  //     	. '<p>'
+	  //     	. '<img style="margin-right:5px;margin-bottom:-3px;" src="http://darx.premiumcoding.com/bar/css/images/meta-date-icon.png" alt="icone data inicio">'
+	  //     	. '<span style="padding:5px;color:rgb(51,51,51);background-color:#d9edf7;border-radius:4px;">'
+	  //     	. $data_inicio
+	  //     	. '</span>'
+	  //     	// . '</p>'
+	  //     	// . '<p style="color:rgb(51,51,51)">'
+	  //     	. '<img style="margin-bottom:-3px;margin-left:5px;" src="http://www.coventry.ac.uk/Templates/PrimarySite/UI/img/ResearchSection/content-icon-event.png" alt="icon data prazo">'
+	  //     	. '<span style="padding:5px;color:rgb(240,240,240);margin-left:5px;background-color:#FF4332;border-radius:4px;">'
+	  //     	. $data_prazo . ' (' . timespan($now, $timestamp) . ')'
+	  //     	. '</span>'
+	  //     	. '</p>'
+	  //     	. '<p style="color:rgb(51,51,51)">'
+	  //     	. 'Adicionado por: <img style="width:38px;height:38px;border-radius:50%;" src="http://secom.pa.gov.br/demandou/uploads/' . $this->session->userdata('arquivo_avatar') . '"> '
+	  //     	. $this->session->userdata('nome')
+	  //     	. '</p>'
+	  //     	. '</div>'
+	  //     	. '</div>';
+		 //  $this->email->set_newline("\r\n");
+	  //   $this->email->from('marciopassosbel@gmail.com'); // change it to yours
+	  //   $this->email->to($l['email']);// change it to yours
+	  //   $this->email->subject('Demandou: Novo Projeto');
+	  //   $this->email->message($messageLider);
+	  //   $this->email->send(); 
+	  // }
+	  //foreach($participantesInfo as $p) {
+			// $messageParticipantes = 'Olá, '// . $p['nome'] . ' ' . $p['sobrenome'] . ','
+					// . '<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg==" crossorigin="anonymous">'
+			$messageParticipantes = '<div style="margin-top:10px;padding:5px;background-color:#ededed;">'
+					. '<div style="background-color:#fff;">'
+	      	. '<h3 style="color:rgb(51,51,51);padding:5px;background-color:' . $prioridadesClass . ';">' . $projectInfo[0]['titulo'] . '</h3>';
+			$resParticipantes = array();	
+	    foreach($participantesInfo as $p) {
+	    	$messageParticipantes .= '<img style="margin-right:5px;float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $p['arquivo_avatar'] . '">';
+	    	array_push($resParticipantes, $p['email']);
+	    }
+	    // var_dump($lideresInfo);
+	    foreach($lideresInfo as $l) {
+	    	$messageParticipantes .= '<img style="margin-right:5px;border:2px solid #FFD700;float:right;width:38px;height:38px;border-radius:50%;" alt="imagem do usuário" src="http://secom.pa.gov.br/demandou/uploads/' . $l['arquivo_avatar'] . '">';
+	    	// se líder diferente do usuário atual, guarda email para enviar notificação
+	    	// echo 'c: ' . $l['codigo'] . '<br>';
+	    	// echo 'cc: ' .$this->session->userdata('codigo_usuario');
+	    	if ( (int)$l['codigo'] == (int)$this->session->userdata('codigo_usuario') ) {
+	    		// faz nada
+	    	} else {
+	    		array_push($resParticipantes, $l['email']);
+	    	}
+	    	// echo $this->session->userdata('codigo_usuario');
+	    }  	
+	    $messageParticipantes .= '<p style="padding:5px;color:rgb(51,51,51);">'
+	      	. $projectInfo[0]['descricao'] 
+	      	. '</p>'
+	      	// . '<p style="color:rgb(51,51,51)">'
+	      	. '<p style="padding:5px;">'
+	      	. '<img style="margin-right:5px;margin-bottom:-3px;" src="http://darx.premiumcoding.com/bar/css/images/meta-date-icon.png" alt="icone data inicio">'
+	      	. '<span style="padding:5px;color:rgb(51,51,51);background-color:#d9edf7;border-radius:4px;">'
+	      	. $data_inicio
+	      	. '</span>'
+	      	// . '</p>'
+	      	// . '<p style="color:rgb(51,51,51)">'
+	      	. '<img style="margin-bottom:-3px;margin-left:5px;" src="http://www.coventry.ac.uk/Templates/PrimarySite/UI/img/ResearchSection/content-icon-event.png" alt="icon data prazo">'
+	      	. '<span style="padding:5px;color:rgb(240,240,240);margin-left:5px;background-color:#FF4332;border-radius:4px;">'
+	      	. $data_prazo . ' (' . timespan($now, $timestamp) . ')'
+	      	. '</span>'
+	      	. '</p>'
+	      	. '<p style="padding:5px;color:rgb(51,51,51)">'
+	      	. 'Adicionado por: <img style="width:38px;height:38px;border-radius:50%;" src="http://secom.pa.gov.br/demandou/uploads/' . $this->session->userdata('arquivo_avatar') . '"> '
+	      	. $this->session->userdata('nome')
+	      	. '</p>'
+	      	. '</div>'
+	      	. '</div>';
+		 	$this->email->set_newline("\r\n");
+	    $this->email->from('marciopassosbel@gmail.com', 'Demandou'); // change it to yours
+	    $this->email->to($resParticipantes);// change it to yours
+	    $this->email->subject('Demandou: Novo Projeto');
+	    $this->email->message($messageParticipantes);
+	    $this->email->send(); 
+	    // var_dump($resParticipantes);
+	}	
 
 	public function index()	{
 		if( $this->session->userdata('logado') ) {
@@ -163,18 +287,34 @@ class Projeto_controller extends MY_Controller {
 		$this->load->view('header_view',$this->header);
 		
 		if ($this->form_validation->run() == FALSE) {
-			//echo "inválido";
 			$this->load->view('admin/projetos/content_adicionar_view', $data_content);
 		} else {
-			// echo "válido";
 			$projeto = $this->input->post();
+			
+			// $this->load->model('usuario_model');
+			// $participantesInfo = $this->usuario_model->listarPorCodigos($projeto['participantes']);
+			// $lideresInfo = $this->usuario_model->listarPorCodigos($projeto['lider']);
+			// $projectInfo = $projeto;
+
 			// echo "<pre>";
-			// var_dump($projeto);
+			// 	var_dump($participantesInfo);
 			// echo "</pre>";
+			// echo "<pre>";
+			// 	var_dump($lideresInfo);
+			// echo "</pre>";
+			// echo "<pre>";
+			// 	var_dump($projectInfo);
+			// echo "</pre>";
+
 			$this->load->model('projeto_model');
-			$data['codigo_projeto'] = $this->projeto_model->inserir($projeto);
-			if ($data['codigo_projeto']!==false) {
-				$data['projeto'] = $projeto;
+			$codigo_projeto = $this->projeto_model->inserir($projeto);
+			if ($codigo_projeto!==false) {
+				$this->load->model('usuario_model');
+				$participantesInfo = $this->usuario_model->listarPorCodigos($projeto['participantes']);
+				$lideresInfo = $this->usuario_model->listarPorCodigo($projeto['lider']);
+				$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
+				$data['projeto'] = $projectInfo;
+				$this->sendMail($projectInfo,$lideresInfo,$participantesInfo);
 				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";

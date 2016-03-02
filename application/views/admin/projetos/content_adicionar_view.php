@@ -83,7 +83,10 @@
 				  <?php 
 				    // var_dump($usuarios);
 				  	foreach($usuarios as $u) {
-				  		echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";
+				  		// exclui neto dos participantes do projeto, pois ele já é lider e participa
+				  		if ($u['codigo']!==6) {
+				  			echo "<option value='" . $u['codigo'] . "'>" . $u['nome'] . " " . $u['sobrenome'] . "</option>";	
+				  		}
 				  	}
 				  ?>
 				</select>

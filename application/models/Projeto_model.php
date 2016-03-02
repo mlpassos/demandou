@@ -81,9 +81,9 @@ class Projeto_model extends CI_Model {
 
                   foreach($participantes as $p) {
                     $obj_p = array(
-                    "codigo_usuario" => $p,
-                    "codigo_projeto" => $inserido,
-                    "codigo_papel" => 2
+                        "codigo_usuario" => $p,
+                        "codigo_projeto" => $inserido,
+                        "codigo_papel" => 2
                     );
                     if ($this->db->insert('usuario_projeto', $obj_p)) {
                         //echo "Inserido: " . $obj_p['codigo_usuario'] . "<br>";

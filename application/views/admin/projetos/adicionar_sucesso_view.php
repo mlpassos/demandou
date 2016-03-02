@@ -5,14 +5,14 @@
 	<div class="col-lg-12 col-md-12">
 		<div class="well">
 			<p class="projetos-sucesso bg-success">
-				O projeto <strong><?php echo $projeto['titulo']; ?></strong> foi criado com sucesso.
+				O projeto <strong><?php echo $projeto[0]['titulo']; ?></strong> foi criado com sucesso.
 			</p>
 		</div>
 
 		<?php 
 		// $hidden = array("adicionar_ao_projeto"=>$codigo_projeto);
 		// echo form_open('tarefa/adicionar', ["id" => "frmTarefa-AdicionarAoProjeto", "class" => "tarefa-adicionar-ao-projeto", "role" => "form"], $hidden); 
-		$data = array('codigo_projeto'=>$codigo_projeto);
+		$data = array('codigo_projeto'=>$projeto[0]['codigo']);
 		// i store data to flashdata
 		$this->session->set_flashdata('adicionar_ao_projeto',$data);
 		// after storing i redirect it to the controller
