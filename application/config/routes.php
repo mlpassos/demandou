@@ -58,6 +58,7 @@ $route['projetos'] = 'projeto_controller';
 $route['projeto/jsonprojectusers'] = 'projeto_controller/json_projectusers';
 $route['projeto/adicionar'] = 'projeto_controller/adicionar';
 $route['projeto/alterar'] = 'projeto_controller/alterar';
+$route['projeto/encerrar'] = 'projeto_controller/json_projectend';
 $route['projeto/alterar/(:num)'] = 'projeto_controller/alterar/$1';
 $route['tarefa/adicionar'] = 'tarefa_controller/adicionar';
 $route['tarefa/alterar'] = 'tarefa_controller/alterar';

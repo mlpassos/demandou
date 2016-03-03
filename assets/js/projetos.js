@@ -438,6 +438,31 @@
               'delay': { "show": 100, "hide": 0 }
             });
 
+            $('.projeto-finaliza').hover(function(){
+              $(this).children('span').addClass('animated rotateIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                $(this).removeClass('animated rotateIn');
+              });
+            });
+
+            $('.projeto-finaliza').on('click', function(){
+              var codigo_projeto = $(this).attr('data-codigoprojeto');
+              var url = location + '/projeto/encerrar';
+                $.ajax({
+                  method: 'post',
+                  url: url,
+                  data: {
+                    'codigo_projeto' : codigo_projeto
+                  },
+                  dataType: 'json',
+                  success: function(data) {
+                    console.log(data);
+                  },
+                  error: function(error) {
+                    console.log(error);
+                  }
+                });
+            });
+
             var location = 'http://' + window.location.hostname + "/demandou-git";
 
             var month = new Array();

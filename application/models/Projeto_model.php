@@ -190,6 +190,15 @@ class Projeto_model extends CI_Model {
                     return false;      
                 }
         }
+        public function encerrarProjeto($codigo_projeto) {
+            $encerrar = array("codigo_status"=>2);
+            $this->db->where('codigo', $codigo_projeto);
+            if ( $this->db->update('projeto', $encerrar) ) {
+                return true;
+            } else {
+                return false;      
+            }
+        }
         public function excluirUsuariosProjeto($codigo_projeto, $codigo_usuario) {
             $this->db->where(array(
                 'codigo_projeto' => $codigo_projeto,

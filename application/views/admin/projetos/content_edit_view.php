@@ -137,6 +137,9 @@
 			<label class="radio-inline">
 				<input type="radio" name="codigo_status" id="codigo_status" value="0"> Desativado
 			</label>
+			<label class="radio-inline">
+				<input type="radio" name="codigo_status" id="codigo_status" value="2"> Encerrado
+			</label>
 		</div>
 	</div>
 	<div class="col-lg-12 col-md-12">

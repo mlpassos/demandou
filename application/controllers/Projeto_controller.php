@@ -410,4 +410,15 @@ class Projeto_controller extends MY_Controller {
   	echo json_encode($data['participantes']);
   }
 
+  public function json_projectend() {
+  	$codigo_projeto = $this->input->post('codigo_projeto');
+  	$this->load->model('projeto_model');
+  	$data['resposta'] = $this->projeto_model->encerrarProjeto($codigo_projeto);
+  	if ($data['resposta']==true) {
+  		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Projeto encerrado com sucesso."));	
+  	} else {
+  		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
+  	}
+  }
+
 }

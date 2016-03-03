@@ -165,9 +165,13 @@
 		  										}
 		  										if ($res['tarefa_completadas'] > 0) {
 		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';	
+		  											if ($res['tarefa_total'] - $res['tarefa_completadas'] == 0) {
+		  												// tarefas zeradas, encerrar projeto?
+		  												echo '<a href="#" class="projeto-finaliza" data-codigoprojeto="' . $p['codigo'] . '"><span class="badge projeto-finaliza-icon"><i class="fa fa-thumbs-o-up"></i></span></a>';
+		  											}
 		  										}
 		  								} else {
-												if ($res['tarefa_completadas_usuario'] > 0) {			  										
+													if ($res['tarefa_completadas_usuario'] > 0) {			  										
 		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas_usuario'] . '</span>';	
 		  										}
 		  										if ($res['tarefa_aguardando_usuario'] > 0) {

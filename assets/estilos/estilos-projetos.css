@@ -30,6 +30,21 @@ amarelo #ffbe1c
 vermelho #ff4332
 verde #77b50e
 */
+
+.projeto-finaliza-icon {
+  background-color:#337AB7;
+  padding:4px 5px !important;
+  /*transition:background-color .3s ease-in-out;*/
+}
+
+/*.projeto-finaliza i:before {
+  transition: all 1s ease-in-out;
+}
+.projeto-finaliza:hover i:before {
+  content: '\f164';
+}
+
+*/
 .tarefa-individual-box .panel-heading {
   position:relative;
 }
