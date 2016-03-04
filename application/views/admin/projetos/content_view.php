@@ -167,7 +167,12 @@
 		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';	
 		  											if ($res['tarefa_total'] - $res['tarefa_completadas'] == 0) {
 		  												// tarefas zeradas, encerrar projeto?
-		  												echo '<a href="#" class="projeto-finaliza" data-codigoprojeto="' . $p['codigo'] . '"><span class="badge projeto-finaliza-icon"><i class="fa fa-thumbs-o-up"></i></span></a>';
+		  												echo '<a href="#" data-toggle="tooltip" data-placement="top" title="Encerrar projeto" class="tarefa-stats projeto-finaliza" data-codigoprojeto="' . $p['codigo'] . '">'
+		  												. '<span class="fa-stack">'
+  														. '<i class="fa fa-circle fa-stack-2x"></i>'
+														  . '<i class="fa fa-flag fa-stack-1x fa-inverse"></i>'
+														  . '</span>'
+														  . '</a>';
 		  											}
 		  										}
 		  								} else {

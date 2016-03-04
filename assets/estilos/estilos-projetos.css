@@ -31,20 +31,43 @@ vermelho #ff4332
 verde #77b50e
 */
 
-.projeto-finaliza-icon {
+/*.projeto-finaliza-icon {
   background-color:#337AB7;
-  padding:4px 5px !important;
-  /*transition:background-color .3s ease-in-out;*/
+  width:25px;
+  height:25px;
+  border-radius:50%;
 }
+
+.projeto-finaliza > span {
+  position:relative;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition:background-color .3s cubic-bezier(0.215, 0.610, 0.355, 1.000);
+}
+
+.projeto-finaliza:hover > span {
+  background-color:#27577f;
+}
+
+.projeto-finaliza > span > i {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+}*/
+
+/*.projeto-finaliza:hover > span > i {
+  transform: translateY(-2px);
+  -web-kit-transform: translateY(-2px);
+}*/
 
 /*.projeto-finaliza i:before {
   transition: all 1s ease-in-out;
-}
-.projeto-finaliza:hover i:before {
+}*/
+/*.projeto-finaliza:hover >span > i:before {
   content: '\f164';
-}
+}*/
 
-*/
+
 .tarefa-individual-box .panel-heading {
   position:relative;
 }

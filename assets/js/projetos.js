@@ -438,11 +438,15 @@
               'delay': { "show": 100, "hide": 0 }
             });
 
-            $('.projeto-finaliza').hover(function(){
-              $(this).children('span').addClass('animated rotateIn').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-                $(this).removeClass('animated rotateIn');
-              });
-            });
+            // $('.projeto-finaliza').hover(function(){
+            //   $(this).children('span').children('i').removeClass('fa-thumbs-o-up').addClass('animated-alt-med bounce fa-thumbs-up');//.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+            //   //});
+            // }, function(){
+            //   // hoverOut
+            //   $(this).children('span').children('i').removeClass('animated-alt-med bounce fa-thumbs-up').addClass('fa-thumbs-o-up');//.addClass('animated-alt pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            //     //$(this).removeClass('animated-alt pulse');
+            //   //});
+            // });
 
             $('.projeto-finaliza').on('click', function(){
               var codigo_projeto = $(this).attr('data-codigoprojeto');
