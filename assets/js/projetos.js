@@ -427,14 +427,106 @@
             }
 
 
-            $('.tarefas-grid').masonry({
+            var grid = $('.tarefas-grid').isotope({
                 itemSelector: '.cor-coluna',
+                layoutMode: 'fitRows',
+                getSortData: {
+                  titulo: '.tarefa-titulo',
+                  prioridade: '.tarefa-prioridade',//,
+                  total_tarefas: function( itemElem ) {
+                    var valor = $( itemElem ).find('.total_tarefas').text();
+                    //console.log(valor);
+                    return parseInt(valor);
+                  },
+                  data_prazo: function( itemElem ) {
+                    var valor = $( itemElem ).find('.data_prazo').text();
+                    console.log(valor);
+                    return new Date(valor);
+                  },
+                  participantes: '[data-filter-by]'
+                }
+            });
+
+            var filterFns = {
+              // show if number is greater than 50
+              totalTasks: function() {
+                var number = $(this).find('.total-tarefa').text();
+                console.log(number);
+                return number;
+              },
+              // show if name ends with -ium
+              participantes: function() {
+                var nome = [];
+                $(this).find('.filter').each(function(){
+                  nome.push($(this).attr('data-filter-by'));
+                  // console.log(nome);
+                });//.attr('data-filter-by');//children().children().children('.tarefas-box-descricao').children('.participantes-lista').children('li').children('img');//text();
+                // console.log('nome: ' + nome[1]);
+                return nome[1];//.match( name );
+              }
+            };
+
+            // $('.filter-all').click(function(){
+
+            // });
+
+            $('.filter').click(function(){
+               var value = $(this).attr('data-filter-by');
+               console.log(value);
+               
+               grid.isotope({
+                filter: value
+               });
+               if ($('.filter-all').css('display')=='none') {
+                $('.filter-all').fadeIn('slow');
+               } else {
+                if ($(this).hasClass('filter-all')) {
+                  $('.filter-all').fadeOut('slow');
+                }
+               }
+            });
+            $('.sort').click(function(){
+              var value = $(this).attr('data-sort-by');
+              //value = filterFns[ value ] || value;
+              // console.log(value);
+              var order = ($(this).attr('data-order-by')=='false') ? false : true;
+              var el = $(this).children('i');
+              if (order) {
+                $(this).attr('data-order-by', 'false');
+                // if (el.hasClass('fa-sort-asc')) {
+                //   el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
+                // } 
+                
+                // if (el.hasClass('fa-sort-numeric-asc')) {
+                //   el.removeClass('fa-sort-numeric-asc').addClass('fa-sort-numeric-desc');
+                // } 
+                // if (el.hasClass('fa-sort-alpha-asc')) {
+                //   el.removeClass('fa-sort-alpha-asc').addClass('fa-sort-alpha-desc');
+                // } 
+              } else {
+                $(this).attr('data-order-by', 'true');
+                // if(el.hasClass('fa-sort-desc')) {
+                //   el.removeClass('fa-sort-desc').addClass('fa-sort-asc');
+                // }
+                
+                // if(el.hasClass('fa-sort-numeric-desc')) {
+                //   el.removeClass('fa-sort-numeric-desc').addClass('fa-sort-numeric-asc');
+                // }
+                // if(el.hasClass('fa-sort-alpha-desc')) {
+                //   el.removeClass('fa-sort-alpha-desc').addClass('fa-sort-alpha-asc');
+                // }
+              }
+              console.log(order);
+              grid.isotope({
+                sortBy: value,
+                sortAscending: order
+              });
             });
 
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
-            $('.tarefa-stats').tooltip({
+            $('.tarefa-stats, .filter').tooltip({
               'delay': { "show": 100, "hide": 0 }
             });
 
@@ -448,23 +540,30 @@
             //   //});
             // });
 
-            $('.projeto-finaliza').on('click', function(){
+            $('.projeto-finaliza').click(function(){
+              // grid.isotope({ sortBy: 'prioridade' });
               var codigo_projeto = $(this).attr('data-codigoprojeto');
+              var el = $(this).parent().parent().parent().parent();
+              // console.log(el.text());
               var url = location + '/projeto/encerrar';
-                $.ajax({
-                  method: 'post',
-                  url: url,
-                  data: {
-                    'codigo_projeto' : codigo_projeto
-                  },
-                  dataType: 'json',
-                  success: function(data) {
-                    console.log(data);
-                  },
-                  error: function(error) {
-                    console.log(error);
+              $.ajax({
+                method: 'post',
+                url: url,
+                data: {
+                  'codigo_projeto' : codigo_projeto
+                },
+                dataType: 'json',
+                success: function(data) {
+                  if (data.status == "sucesso") {
+                    grid.isotope( 'remove', el ).isotope('layout');
+                  } else {
+                    alert('Deu bug, tente novamente? =]');
                   }
-                });
+                },
+                error: function(error) {
+                  console.log(error);
+                }
+              });
             });
 
             var location = 'http://' + window.location.hostname + "/demandou-git";

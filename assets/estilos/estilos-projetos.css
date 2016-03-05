@@ -68,6 +68,14 @@ verde #77b50e
 }*/
 
 
+.filter {
+  cursor:pointer;
+}
+
+.filter-all {
+  display:none;
+}
+
 .tarefa-individual-box .panel-heading {
   position:relative;
 }

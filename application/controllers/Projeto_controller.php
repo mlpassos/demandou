@@ -221,7 +221,8 @@ class Projeto_controller extends MY_Controller {
 		); 
 		// JS
 		$data_footer['js']=array(
-			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.min.js'),
 			array('file' => 'http://cdn.tinymce.com/4/tinymce.min.js'),
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),

@@ -6,9 +6,47 @@
 				<hr>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-lg-12 filtro">
+				<div class="btn-group" role="group" aria-label="...">
+				  <button type="button" class="btn btn-default filter filter-all" data-filter-by="*">
+				  	<!-- <i class="fa fa-sort"></i> -->
+				  	Mostrar todos
+				  </button>
+				  <button type="button" class="btn btn-default sort" data-sort-by="prioridade" data-order-by="true">
+				  	<i class="fa fa-sort"></i>
+				  	Prioridade
+				  </button>
+				  <button type="button" class="btn btn-default sort" data-sort-by="titulo" data-order-by="true">
+				  	<i class="fa fa-sort"></i>
+				  	Titulo
+				  </button>
+				  <button type="button" class="btn btn-default sort" data-sort-by="total_tarefas" data-order-by="true">
+				  	<i class="fa fa-sort"></i>
+				  	Total de tarefas
+				  </button>
+				  <button type="button" class="btn btn-default sort" data-sort-by="data_prazo" data-order-by="true">
+				  	<i class="fa fa-sort"></i>
+				  	Prazo
+				  </button>
+				</div>
+				<hr>
+			</div>
+		</div>
 <div class="row tarefas-grid">
-	<?php foreach($projetos as $p) { ?>
-		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
+	<?php 
+	
+	foreach($projetos as $p) { 
+		$up = $projetos_usuarios;
+		$rs = array();
+			foreach($up as $up) {
+			 	if ($up['codigo_projeto']==$p['codigo']) {
+			 			array_push($rs,$up['codigo_usuario']);
+			 	}
+			}
+			// var_dump($rs);
+?>
+		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12 <?php echo "usuario-" . implode(" usuario-",$rs); ?> " data-filter-by="<?php echo "usuario-" . implode("usuario-",$rs); ?> ">
 				<?php 
 					switch ($p['prioridade']) {
 		        		case '3':
@@ -30,7 +68,8 @@
 					<!-- tarefas -->
 					<div class="caption">
 						<header class="tarefas-box-header <?php echo $prioridadesClass; ?>">
-				        <h3>
+				        <span style="display:none;" class="tarefa-prioridade"><?php echo $p['prioridade']; ?></span>
+				        <h3 class="tarefa-titulo">
 				        	<?php echo $p['titulo'];?></h3>
 				        	<?php 
 				        	$lider = false;
@@ -84,7 +123,7 @@
 				    			</a>	
 				    		<?php //} ?>
 				    		<a href="#" class="btn btn-sm" role="button" data-codigousuario="<?php echo $this->session->userdata('codigo_usuario'); ?>" data-lider="<?php if ($lider) { echo "1";} else {echo "0";}; ?>" data-codigoprojeto="<?php echo $p['codigo'];?>" data-prioridade="<?php echo $p['prioridade']; ?>" data-prazo="<?php echo $p['data_prazo']; ?>" data-inicio="<?php echo $p['data_inicio']; ?>" data-descricao='<?php echo $p['descricao']; ?>' data-titulo="<?php echo $p['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
-		  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas do projeto" class="tarefa-stats badge">
+		  						<span data-toggle="tooltip" data-placement="top" title="Total de tarefas do projeto" class="tarefa-stats total_tarefas badge">
 	  								<?php 
 		  								$res = array();
 		  								$achou = false;
@@ -213,6 +252,9 @@
 
 					   		// PRAZO
 					   		$timestamp = strtotime($p['data_prazo']);
+					   		?>
+								<span style="display:none;" class="data_prazo"><?php echo $p['data_prazo']; ?></span>
+					   		<?php
 								$now = time();
 								if( strtotime($p['data_prazo']) < strtotime('now') ) {
 									$str = strtotime('now') - strtotime($p['data_prazo']);
@@ -281,7 +323,7 @@
 				  					// if ($lider) {
 				  						// if ($t['codigo_papel']==2) {
 										 		echo "<li class='participantes-lista-item'>";
-										 			echo '<img class="img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
+										 			echo '<img data-toggle="tooltip" data-placement="top" title="Filtrar por usuário" data-filter="participantes" data-filter-by=".usuario-' . $t['codigo_usuario'] . '" class="filter img-circle participantes-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do participante do projeto">';
 										 			foreach($utres as $r) {
 										 				if ($r['codigo_usuario']==$t['codigo_usuario']) {
 										 					if ($r['num_tarefas'] - $r['num_tarefas_completas']==0) {
