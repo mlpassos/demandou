@@ -74,6 +74,7 @@ verde #77b50e
 
 .filter-all {
   display:none;
+  /*opacity:0;*/
 }
 
 .tarefa-individual-box .panel-heading {

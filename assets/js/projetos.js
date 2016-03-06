@@ -478,21 +478,36 @@
                 filter: value
                });
                if ($('.filter-all').css('display')=='none') {
-                $('.filter-all').fadeIn('slow');
+                $('.filter-all').css({'display':'block'}).addClass('animated-alt fadeInUp').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                  $(this).removeClass('animated-alt fadeInUp');
+                });//.fadeIn('slow');
                } else {
                 if ($(this).hasClass('filter-all')) {
-                  $('.filter-all').fadeOut('slow');
+                  $('.filter-all').addClass('animated-alt fadeOutDown').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+                    $(this).removeClass('animated-alt fadeOutDown').css({'display':'none'});
+                  });//.fadeIn('slo//.fadeOut('slow');
                 }
                }
             });
+            var count = 0;
             $('.sort').click(function(){
               var value = $(this).attr('data-sort-by');
               //value = filterFns[ value ] || value;
               // console.log(value);
               var order = ($(this).attr('data-order-by')=='false') ? false : true;
               var el = $(this).children('i');
+              
               if (order) {
                 $(this).attr('data-order-by', 'false');
+                if (count>0) {
+                   if (el.hasClass('fa-sort-asc')) {
+                     el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
+                   }  else {
+                     el.removeClass('fa-sort-desc').addClass('fa-sort-asc');
+                   }                 
+                }
+                count++;
+
                 // if (el.hasClass('fa-sort-asc')) {
                 //   el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
                 // } 
@@ -505,9 +520,11 @@
                 // } 
               } else {
                 $(this).attr('data-order-by', 'true');
-                // if(el.hasClass('fa-sort-desc')) {
-                //   el.removeClass('fa-sort-desc').addClass('fa-sort-asc');
-                // }
+                if(el.hasClass('fa-sort-desc')) {
+                  el.removeClass('fa-sort-desc').addClass('fa-sort-asc');
+                } else {
+                   el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
+                }
                 
                 // if(el.hasClass('fa-sort-numeric-desc')) {
                 //   el.removeClass('fa-sort-numeric-desc').addClass('fa-sort-numeric-asc');

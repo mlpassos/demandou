@@ -14,19 +14,19 @@
 				  	Mostrar todos
 				  </button>
 				  <button type="button" class="btn btn-default sort" data-sort-by="prioridade" data-order-by="true">
-				  	<i class="fa fa-sort"></i>
+				  	<i class="fa fa-sort-asc"></i>
 				  	Prioridade
 				  </button>
 				  <button type="button" class="btn btn-default sort" data-sort-by="titulo" data-order-by="true">
-				  	<i class="fa fa-sort"></i>
+				  	<i class="fa fa-sort-asc"></i>
 				  	Titulo
 				  </button>
 				  <button type="button" class="btn btn-default sort" data-sort-by="total_tarefas" data-order-by="true">
-				  	<i class="fa fa-sort"></i>
+				  	<i class="fa fa-sort-asc"></i>
 				  	Total de tarefas
 				  </button>
 				  <button type="button" class="btn btn-default sort" data-sort-by="data_prazo" data-order-by="true">
-				  	<i class="fa fa-sort"></i>
+				  	<i class="fa fa-sort-asc"></i>
 				  	Prazo
 				  </button>
 				</div>
