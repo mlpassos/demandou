@@ -68,10 +68,9 @@ verde #77b50e
 }*/
 
 .projeto-trash i {
-  transform: translateY(5px) translateX(-5px);
+  transform: translateY(-8px) translateX(-2px);
   opacity:0;
-
-  transition:all .3s ease-in;
+  transition:all .3s .6s ease-in;
 }
 
 /*.projeto-trash i:hover {
@@ -258,9 +257,10 @@ verde #77b50e
   opacity:1;
 }*/
 .tarefas-box:hover .projeto-trash i  {
-  opacity:.3;
+  opacity:.5;
   cursor: pointer;
-  transform: translateY(-15px) translateX(-5px);
+  font-size:12px;
+  /*transform: translateY(-8px) translateX(-2px);*/
 }
 
 
