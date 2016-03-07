@@ -213,7 +213,7 @@ class Projeto_controller extends MY_Controller {
 		// CSS
 		$this->header['css']=array(
 			array('file' => 'estilos-principal.css'),
-			// array('file' => 'iphone-style.css'),
+			array('file' => 'hover.css'),
 			array('file' => 'animate.css'),
 			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
 			array('file' => 'select2.min.css'),

@@ -489,24 +489,32 @@
                 }
                }
             });
-            var count = 0;
+            var count = [];
+
             $('.sort').click(function(){
               var value = $(this).attr('data-sort-by');
+
+              
               //value = filterFns[ value ] || value;
-              // console.log(value);
+              console.log($.inArray( value, count ));
               var order = ($(this).attr('data-order-by')=='false') ? false : true;
               var el = $(this).children('i');
               
               if (order) {
                 $(this).attr('data-order-by', 'false');
-                if (count>0) {
+                if ($.inArray( value, count ) !== -1) {
                    if (el.hasClass('fa-sort-asc')) {
                      el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
                    }  else {
                      el.removeClass('fa-sort-desc').addClass('fa-sort-asc');
                    }                 
                 }
-                count++;
+                count.push(value);
+                // if ($.inArray( value, count )) {
+                //   // faz nada
+                // } else {
+                //   count.push(value);  
+                // }
 
                 // if (el.hasClass('fa-sort-asc')) {
                 //   el.removeClass('fa-sort-asc').addClass('fa-sort-desc');
@@ -533,7 +541,7 @@
                 //   el.removeClass('fa-sort-alpha-desc').addClass('fa-sort-alpha-asc');
                 // }
               }
-              console.log(order);
+              //console.log(order);
               grid.isotope({
                 sortBy: value,
                 sortAscending: order
@@ -543,7 +551,7 @@
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
-            $('.tarefa-stats, .filter').tooltip({
+            $('.tarefa-stats, .filter, .fa-trash-o').tooltip({
               'delay': { "show": 100, "hide": 0 }
             });
 

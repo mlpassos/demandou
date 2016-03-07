@@ -63,7 +63,7 @@
 		        			break;
 		        	}
 				?>
-				<div class="tarefas-box">
+				<div class="tarefas-box hvr-curl-bottom-right">
 					<!-- <i class="pin animated fadeInDownBig"></i> -->
 					<!-- tarefas -->
 					<div class="caption">
@@ -390,7 +390,10 @@
 						}
 		    		?>
 	    	</div>
-				</div>
+	    	<div class="projeto-trash">
+	    		<i class="fa fa-trash-o pull-right hvr-icon-trash-o" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+	    	</div>
+			</div>
 		</div>
 	<?php }; ?>
 </div>
