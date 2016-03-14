@@ -50,6 +50,11 @@ class Admin_controller extends MY_Controller {
 				"class" => ""
 				),
 				array(
+				"name" => "Tarefas",
+				"link" => base_url() . 'tarefas',
+				"class" => ""
+				),
+				array(
 				"name" => "Usuários",
 				"link" => base_url() . 'usuarios',
 				"class" => ""

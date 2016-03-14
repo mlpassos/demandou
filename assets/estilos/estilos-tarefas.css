@@ -67,6 +67,10 @@ verde #77b50e
   content: '\f164';
 }*/
 
+body {
+  background-color:#ededed;
+}
+
 .projeto-trash i {
   transform: translateY(-8px) translateX(-2px);
   opacity:0;
@@ -319,6 +323,7 @@ verde #77b50e
 .tarefas-box-descricao {
   /*margin-top:10px;*/
   padding:5px;
+  overflow: hidden;
 }
 .tarefas-box-datas {
   padding:5px 0;

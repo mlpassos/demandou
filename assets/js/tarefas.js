@@ -555,32 +555,7 @@
               'delay': { "show": 100, "hide": 0 }
             });
 
-            // $('body').delegate('.projeto-excluir', 'click', function(){
-            //   var codigo_projeto = $(this).attr('data-codigoprojeto');
-            //   var el = $(this).parent().parent();//.parent().parent();
-            //   // console.log(el.text());
-
-            //   var url = location + '/projeto/excluir';
-            //   // $.ajax({
-            //   //   method: 'post',
-            //   //   url: url,
-            //   //   data: {
-            //   //     'codigo_projeto' : codigo_projeto
-            //   //   },
-            //   //   dataType: 'json',
-            //   //   success: function(data) {
-            //   //     if (data.status == "sucesso") {
-            //   //       grid.isotope( 'remove', el ).isotope('layout');
-            //   //     } else {
-            //   //       alert('Deu bug, tente novamente? =]');
-            //   //     }
-            //   //   },
-            //   //   error: function(error) {
-            //   //     console.log(error);
-            //   //   }
-            //   // });
-            // });
-
+           
             $('#myModalConfirmar').on('show.bs.modal', function (event) {
               var button = $(event.relatedTarget); // Button that triggered the modal
               var modal = $(this);
@@ -660,43 +635,7 @@
             // }
 
 
-            // $('.projeto-finaliza').hover(function(){
-            //   $(this).children('span').children('i').removeClass('fa-thumbs-o-up').addClass('animated-alt-med bounce fa-thumbs-up');//.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-            //   //});
-            // }, function(){
-            //   // hoverOut
-            //   $(this).children('span').children('i').removeClass('animated-alt-med bounce fa-thumbs-up').addClass('fa-thumbs-o-up');//.addClass('animated-alt pulse').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-            //     //$(this).removeClass('animated-alt pulse');
-            //   //});
-            // });
-
-            // $('.projeto-finaliza').click(function(){
-            //   // grid.isotope({ sortBy: 'prioridade' });
-            //   var codigo_projeto = $(this).attr('data-codigoprojeto');
-            //   var el = $(this).parent().parent().parent().parent();
-            //   // console.log(el.text());
-            //   var url = location + '/projeto/encerrar';
-            //   // $.ajax({
-            //   //   method: 'post',
-            //   //   url: url,
-            //   //   data: {
-            //   //     'codigo_projeto' : codigo_projeto
-            //   //   },
-            //   //   dataType: 'json',
-            //   //   success: function(data) {
-            //   //     if (data.status == "sucesso") {
-            //   //       grid.isotope( 'remove', el ).isotope('layout');
-            //   //     } else {
-            //   //       alert('Deu bug, tente novamente? =]');
-            //   //     }
-            //   //   },
-            //   //   error: function(error) {
-            //   //     console.log(error);
-            //   //   }
-            //   // });
-            // });
-
-            var location = 'http://' + window.location.hostname + "/demandou-git";
+            var location = 'http://' + window.location.hostname + "/demandou-git/tarefas";
 
             var month = new Array();
                 month[0] = "Janeiro";
@@ -723,16 +662,16 @@
             function formataData(strData) {
                   return weekday[strData.getDay()] + ', ' + strData.getDate() + ' de ' + month[strData.getMonth()] + ' de ' + strData.getFullYear();
             }
-            $('#myModalProjetoVer').on('hidden.bs.modal', function (event) {
+            $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
                      var modal = $(this);
-                     modal.find('.modal-tarefas-lista').html('');
+                     // modal.find('.modal-tarefas-lista').html('');
                      modal.find('.modal-body').find('.data-faltam').html('');
                      modal.find('.modal-title').text('');
                      modal.find('.modal-body').find('.descricao').text('');
                      modal.find('.modal-body').find('.data-inicio').text('');
                      modal.find('.modal-body').find('.data-prazo').text('');
             });
-            $('#myModalProjetoVer').on('show.bs.modal', function (event) {
+            $('#myModalTarefaVer').on('show.bs.modal', function (event) {
                     var button = $(event.relatedTarget); // Button that triggered the modal
                     var modal = $(this);
                     var codigo_projeto = button.data('codigoprojeto');
@@ -787,234 +726,15 @@
                       modal.find('.modal-body').find('.data-inicio').text('Início: ' + formataData(data_inicio));
                       modal.find('.modal-body').find('.data-prazo').text('Prazo: ' + formataData(data_prazo));
             });
-            $('#myModalTarefaVer').on('hidden.bs.modal', function (event) {
-                  var modal = $(this);
-                  modal.find('.modal-tarefas-lista').html('');
-                  window.location = location + '/projetos';
-            });
-
+            
             $('body').delegate('.show-obs','click',function(){
                   $(this).next().stop(true,true).slideToggle("slow");
             });
 
             var elmodal = null;
             
-            $('#myModalTarefaVer').on('show.bs.modal', function (event) {
-                    
-                    var button = $(event.relatedTarget); // Button that triggered the modal
-                    elmodal = button;
-
-                    var codigo_projeto = button.data('codigoprojeto');
-                   
-                    var modal = $(this);    
-                   
-                    var titulo = button.data('titulo');
-                    var lider = button.data('lider');
-                    var codigo_usuario = button.data('codigousuario');
-                    // console.log("a: " + codigo_usuario);
-                    var url =  location + '/tarefa/jsonprojecttasks';
-                    modal.find('.modal-title').text(titulo);
-                    $.ajax({
-                      method: 'post',
-                      url: url,
-                      data: {
-                        'codigo_projeto' : codigo_projeto
-                      },
-                      dataType: 'json',
-                      success: function(data) {
-                        console.log(data);
-                        // var coduser = codigo_usuario;
-                        if (data.length==0) {
-                          // nada
-                          $('#myModalTarefaVer .modal-tarefas-lista').append('<p><span class="fa fa-exclamation-triangle"></span> Relaxe, sem tarefas no projeto ainda, mas não se preocupe, você será avisado. =]</p>');
-                        } else {
-                          var aux = "";
-                          var output = '<div id="carousel-example-generic" class="carousel slide">'
-                                       + '<ol class="carousel-indicators">';
-                          
-                          for (var i = 0; i <= data.length - 1;  i++) {
-                                // output += (i==0) ? '<li data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>' : '<li data-target="#carousel-example-generic" data-slide-to="' + i + '"><img class="thumbs-carousel img-circle" src="' + location + '/uploads/' + data[i].arquivo_avatar + '"></li>';
-                                // console.log(coduser);
-                                output += (i==0) ? '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, codigo_usuario) + '" data-target="#carousel-example-generic" class="active" data-slide-to="' + i + '"></li>' : '<li style="' + showPendente(data[i].codigo_status, data[i].codigo_usuario, data[i].data_fim, data[i].encerrada, lider, codigo_usuario) + '" data-target="#carousel-example-generic" data-slide-to="' + i + '"></li>';
-                          };
-                          output += '</ol><div class="carousel-inner" role="listbox">';
-                          data.forEach(function(item){
-                            // var usuarioEditavel = (codigo_usuario == item.codigo_usuario) ? true
-                            // console.log(item.data_inicio);
-                            if (aux!==item.codigo_tarefa) {
-                              var data_inicio = new Date(item.data_inicio);
-                              data_inicio.setDate(data_inicio.getDate() + 1);
-                              var data_prazo = new Date(item.data_prazo);
-                              data_prazo.setDate(data_prazo.getDate() + 1);
-                              if (item.data_fim === null) {
-                                    var data_fim = item.data_fim;
-                              } else {
-                                    var data_fim = new Date(item.data_fim);
-                                    data_fim.setDate(data_fim.getDate() + 1);
-                              }
-                              // $('#myModalTarefaVer .modal-tarefas-lista').append(''
-                                      // output += ''//
-                                      if (item.codigo_status==1) {
-                                          var status = '<i class="fa fa-toggle-on"></i>';
-                                      } else {
-                                          var status = '<i class="fa fa-toggle-off"></i>';
-                                      }
-                                      output += (aux=="") ? '<div class="item active">' : '<div class="item">'
-                                      output += '<div class="tarefa-individual-box panel">'
-                                        // + '<i class="pin animated fadeInDown"></i>'
-                                        + '<div class="panel-heading tarefas-single ' + getTarefaPrioridade(item.prioridade).classe + '">'
-                                        // + '<div class="pull-left">'
-                                        + '<h2 class="panel-title tarefas-titulo">'+item.titulo + ' ' + status + '</h2>'
-                                        + '<button type="button" data-toggle="modal" data-target="#myModalTarefaAlterar"'
-                                        + ' data-codigo="' + item.codigo_tarefa + '"'
-                                        + ' data-titulo="' + item.titulo + '"'
-                                        + ' data-descricao="' + item.descricao + '"'
-                                        + ' data-prioridade="' + item.prioridade + '"'
-                                        + ' data-inicio="' + item.data_inicio + '"'
-                                        + ' data-prazo="' + item.data_prazo + '"'
-                                        + ' data-lider="' + item.codigo_usuario + '"'
-                                        + ' data-dono="' + lider + '"'
-                                        + ' data-codigoprojeto="' + codigo_projeto + '"'
-                                        + ' data-codigostatus="' + item.codigo_status + '"'
-                                        + ' class="btn-edit btn btn-xs btn-default" aria-label="alterar tarefa">'
-                                        + '<span class="fa fa-pencil" aria-hidden="true"></span>'
-                                        + '</button>'
-                                        // + '</div>'
-                                        + '<div class="tarefa-individual-box-userbox">'
-                                        + '<img class="img-circle tarefa-avatar" src="' + location + '/uploads/' + item.arquivo_avatar + '" alt="avatar do responsável pela tarefa">'
-                                        + '<small> ' + item.nome + ' ' + item.sobrenome + '</small>'
-                                        // + '<em><small> ' + item.usuario_funcao + '</small></em>'
-                                        + '</div>'      
-                                        // + '</div>'
-                                        + '</div>' 
-                                        + '<div class="panel-body">'
-                                        + '<p>' +  item.descricao + '</p>' 
-                                        + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(data_inicio) + '</p>' 
-                                        + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(data_prazo) + '</p>'
-                                        + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, data_inicio, data_prazo, data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'
-                                       + '</div>'
-                                       + '</div>'
-                                       + '</div>';//);
-                                
-                                aux = item.codigo_tarefa; 
-                            } else {
-                              // faz nada, é igual
-                              //$("#myModalTarefaVer .tarefa-" + item.codigo_tarefa).append('<li>' + item.codigo_usuario + '-' + item.papel + '</li>');
-                            }
-                            // aqui
-                          });
-                          output += '</div>'
-                                    + '<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">'
-                                    + '<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
-                                    + '<span class="sr-only">Previous</span>' 
-                                    + '</a>'
-                                    + '<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">'
-                                    + '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'
-                                    + '<span class="sr-only">Next</span>'
-                                    + '</a>'
-                                    + '</div>';
-                           $('#myModalTarefaVer .modal-tarefas-lista').append(output);
-                        }
-                      },
-                      error: function(error) {
-                        alert('erro');
-                        console.log(error);
-                      },
-                    }).done(function(){
-
-                        $('#carousel-example-generic').carousel('pause');
-
-                        // $(':checkbox').iphoneStyle();
-                        $("input[type=checkbox].switch").each(function() {
-                            // Insert mark-up for switch
-                            //console.log($(this));
-                            $(this).before(
-                              '<span class="switch">' +
-                              '<span class="mask" /><span class="background" />' +
-                              '</span>'
-                            );
-                            // Hide checkbox
-                            $(this).hide();
-                            // Set inital state
-                            if (!$(this)[0].checked) {
-                              //alert('nao marcado');
-                              $(this).prev().find(".background").css({left: "-56px"});
-                            }
-                        }); // End each()
-                        $("span.switch").click(function() {
-                            // If on, slide switch off
-                            console.log('estava ' + $(this).next()[0].checked);
-                            var codigo_tarefa = $(this).next()[0].attributes[4].value;
-                            if ($(this).next()[0].checked) {
-                              // console.log('Foi pra ' + $(this).next()[0].checked);
-                              $(this).find(".background").animate({left: "-56px"}, 200);
-                              $('.tarefa-obs-' + codigo_tarefa).hide('slow');
-                              // $('#myModalTarefaFinalizar').modal('hide');
-                            // Otherwise, slide switch on
-                            } else {
-                              // console.log($(this).next()[0].attributes[4].value);
-                              // console.log($(this).next()[0].codigotarefa);
-                              // var codigo_tarefa = $(this).next()[0].attr('data-codigotarefa');
-                              $('.tarefa-obs-' + codigo_tarefa).show('slow');
-                              // $('#myModalTarefaFinalizar').modal('show');
-                              $(this).find(".background").animate({left: "0px"}, 200);
-                              // console.log($(this).next()[0].checked);
-                            }
-                            // Toggle state of checkbox
-                            $(this).next()[0].checked = !$(this).next()[0].checked;
-                            console.log('está ' + $(this).next()[0].checked);
-                        });
-                    });
-            });
             
-            // var files;
-            // $('body').delegate('#arquivo_obs', 'change', function(e){
-            //       // alert('po');
-            //       files = e.target.files;
-            // });
-
-            $('body').delegate('.tarefas-titulo', 'mouseenter', function() {
-                  var el = $(this).next('.btn-edit');
-                  // console.log($('#usuario_codigo').val());
-                  // só dono altera tarefa
-                  if (el.attr('data-dono')=="1") {
-                        // alert('é');
-                        if (el.hasClass('animated-alt fadeOutDown')) {
-                              el.removeClass('animated-alt fadeOutDown');
-                        }
-                        el.addClass('animated-alt fadeInUp');
-                  } else {
-                        el.css('opacity',0);
-                  }
-                  
-                  // alert('oi');
-            });
-            $('body').delegate('.tarefas-titulo', 'mouseleave', function() {
-                  var el = $(this).next('.btn-edit');
-                  if (el.attr('data-dono')=="1") {
-                        el.removeClass('animated-alt fadeInUp').addClass('animated-alt fadeOutDown').css('opacity',0);
-                  } else {
-                        el.css('opacity',0);
-                  }
-                  // alert('sai');
-            });
-
-            $('body').delegate('.btn-edit', 'mouseenter', function() {
-                  var el = $(this);
-                  if (el.attr('data-dono')=="1") {
-                        el.removeClass('animated-alt fadeOutDown').css('opacity',1);
-                  }
-                  // alert('sai');
-            });
-            $('body').delegate('.btn-edit', 'mouseleave', function() {
-                  var el = $(this);
-                  if (el.attr('data-dono')=="1") {
-                        el.addClass('animated-alt fadeOutDown').css('opacity',0);;
-                  }
-                  // alert('sai');
-            });
-
-            
+        
             var moda = null;
             $('#myModalTarefaAlterar').on('show.bs.modal', function (event) {
                     moda = $('#myModalTarefaVer');
@@ -1228,53 +948,6 @@
                               console.log(data);
                               showMensagem(el, data, elbox);
                               },
-                            error: function(error) {
-                              console.log(error);
-                            }
-                    });
-                  }
-            });
-
-            $('body').delegate('#resposta_gravar','click', function(){
-                  var res = $(this).parent().parent().parent().find('input#observacao_responder.switch-resposta')[0].checked;
-                  console.log('grava resposta? ' + res);
-                  if (res) {
-                    // grava
-                    var el = $(this).parent().find('.tarefa-resposta-mensagem');
-                    var elbox = $(this).parent();
-                    var resposta = $(this).parent().find('#observacao_resposta').val();
-                    var lider = $(this).parent().attr('data-lider');
-                    var tipo = $(this).parent().attr('data-tipo');
-                    // alert('tipo: ' + tipo);
-                    // var tipo = $(this).parent().attr('data-tipo');
-                    var codigo_observacao = $(this).parent().attr('class').match(/\d+/)[0];
-                    // if (tipo == "2" || tipo == "1") {
-                    var extender = $('#observacao_extender-' + codigo_observacao + '-sim')[0].checked;
-                    // alert('extender: ' + extender);
-                        // var nextende = $('#observacao_extender-' + codigo_observacao + '-nao')[0].checked;
-                    // }
-                    var codigo_tarefa = $(this).parent().attr('data-codigotarefa');
-                    var r = {resposta, lider, codigo_observacao, tipo};
-                    console.log(r);
-                    var url =  location + '/tarefa/responder';
-                    $.ajax({
-                            method: 'post',
-                            url: url,
-                            data: {
-                              'codigo_observacao' : codigo_observacao,
-                              'resposta' : resposta,
-                              'lider': lider,
-                              'tipo' : tipo,
-                              'codigo_tarefa' : codigo_tarefa,
-                              'extender' : extender
-                              // não precisa pois é lider e pega no session->userdata()
-                              // 'codigo_usuario': codigo_usuario
-                            },
-                            dataType: 'json',
-                            success: function(data) {
-                              console.log(data);
-                              showMensagem(el,data, elbox);
-                               },
                             error: function(error) {
                               console.log(error);
                             }

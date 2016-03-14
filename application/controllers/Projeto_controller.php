@@ -38,6 +38,11 @@ class Projeto_controller extends MY_Controller {
 					"class" => "active"
 				),
 					array(
+					"name" => "Tarefas",
+					"link" => base_url() . 'tarefas',
+					"class" => ""
+				),
+					array(
 					"name" => "Usuários",
 					"link" => base_url() . 'usuarios',
 					"class" => ""
@@ -417,6 +422,17 @@ class Projeto_controller extends MY_Controller {
   	$data['resposta'] = $this->projeto_model->encerrarProjeto($codigo_projeto);
   	if ($data['resposta']==true) {
   		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Projeto encerrado com sucesso."));	
+  	} else {
+  		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
+  	}
+  }
+  
+  public function json_projectdelete() {
+  	$codigo_projeto = $this->input->post('codigo_projeto');
+  	$this->load->model('projeto_model');
+  	$data['resposta'] = $this->projeto_model->excluirProjeto($codigo_projeto);
+  	if ($data['resposta']==true) {
+  		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Projeto excluído com sucesso."));	
   	} else {
   		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
   	}

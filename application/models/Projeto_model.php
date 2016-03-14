@@ -199,6 +199,25 @@ class Projeto_model extends CI_Model {
                 return false;      
             }
         }
+        public function excluirProjeto($codigo_projeto) {
+            $this->db->where(array(
+                'codigo' => $codigo_projeto
+                // 'codigo_usuario' => $codigo_usuario
+                )
+            );
+            if ($this->db->delete('projeto')) {
+                $this->db->where(array(
+                    'codigo_projeto' => $codigo_projeto
+                    // 'codigo_usuario' => $codigo_usuario
+                    )
+                );
+                if ($this->db->delete('tarefa')) {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        }
         public function excluirUsuariosProjeto($codigo_projeto, $codigo_usuario) {
             $this->db->where(array(
                 'codigo_projeto' => $codigo_projeto,

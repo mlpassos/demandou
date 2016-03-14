@@ -63,7 +63,7 @@
 		        			break;
 		        	}
 				?>
-				<div class="tarefas-box hvr-curl-bottom-right">
+				<div class="tarefas-box hvr-curl-bottom-right projeto-<?php echo $p['codigo']; ?>">
 					<!-- <i class="pin animated fadeInDownBig"></i> -->
 					<!-- tarefas -->
 					<div class="caption">
@@ -206,10 +206,10 @@
 		  											echo ' <span data-toggle="tooltip" data-placement="top" title="Tarefas finalizadas" class="tarefa-stats badge" style="background-color:green;"> ' . $res['tarefa_completadas'] . '</span>';	
 		  											if ($res['tarefa_total'] - $res['tarefa_completadas'] == 0) {
 		  												// tarefas zeradas, encerrar projeto?
-		  												echo '<a href="#" data-toggle="tooltip" data-placement="top" title="Encerrar projeto" class="tarefa-stats projeto-finaliza" data-codigoprojeto="' . $p['codigo'] . '">'
+		  												echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $p["titulo"] . '" data-codigoprojeto="'. $p["codigo"] . '" data-codigoprojeto="'. $p["codigo"] . '">'
 		  												. '<span class="fa-stack">'
   														. '<i class="fa fa-circle fa-stack-2x"></i>'
-														  . '<i class="fa fa-flag fa-stack-1x fa-inverse"></i>'
+														  . '<i class="fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title="Encerrar projeto"></i>'
 														  . '</span>'
 														  . '</a>';
 		  											}
@@ -390,9 +390,13 @@
 						}
 		    		?>
 	    	</div>
+	    	<?php if ($lider) { ?>
 	    	<div class="projeto-trash">
-	    		<i class="fa fa-trash-o pull-right hvr-icon-trash-o" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+	    		<a data-toggle="modal" data-target="#myModalConfirmar" data-tipo="excluir" data-texto="Você tem certeza que deseja excluir o projeto" data-titulo="<?php echo $p['titulo']; ?>" href="#" class="projeto-excluir" data-codigoprojeto="<?php echo $p['codigo']; ?>">
+	    			<i class="fa fa-trash-o pull-right hvr-icon-trash-o" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
+	    		</a>
 	    	</div>
+	    	<?php } ?>
 			</div>
 		</div>
 	<?php }; ?>
@@ -439,6 +443,22 @@
 </div> -->
 <!-- Modal -->
 <div class="modal-container">
+	<div class="modal fade" id="myModalConfirmar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Aviso</h4>
+	      </div>
+	      <div class="modal-body">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default confirma-sim" data-dismiss="modal" data-codigoprojeto="" data-tipo="" data-elemento="">Sim</button>
+	        <button type="button" class="btn btn-default confirma-nao" data-dismiss="modal">Não</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 	<div class="modal fade" id="myModalProjetoVer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">

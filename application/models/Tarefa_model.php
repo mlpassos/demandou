@@ -277,7 +277,7 @@ class Tarefa_model extends CI_Model {
                 // join usuario as u on t.codigo_usuario = u.codigo
                 // ORDER BY  `t`.`codigo` ASC 
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('t.codigo_status as codigo_status, t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
+                $this->db->select('t.prioridade, t.codigo_status as codigo_status, t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
                 $this->db->where('t.codigo_status', 1);

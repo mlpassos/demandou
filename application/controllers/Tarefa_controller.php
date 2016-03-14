@@ -34,6 +34,11 @@ class Tarefa_controller extends MY_Controller {
         		array(
 							"name" => "Projetos",
 							"link" => base_url() . 'projetos',
+							"class" => ""
+						),
+						array(
+							"name" => "Tarefas",
+							"link" => base_url() . 'tarefas',
 							"class" => "active"
 						),
 						array(
@@ -62,6 +67,64 @@ class Tarefa_controller extends MY_Controller {
 			);
 		}
   }
+
+  public function index()	{
+		if( $this->session->userdata('logado') ) {
+			$this->load->model('tarefa_model');
+      $conteudo['tarefas'] = $this->tarefa_model->listar();
+        	// $conteudo['projetos_usuarios'] = $this->projeto_model->listarParticipantesGerais();
+        	// $this->load->model('tarefa_model');
+        	// envia tarefas por projeto, para os líderes, exibe todas as tarefas do usuário
+        	// $conteudo['tarefas_projeto'] = $this->tarefa_model->listar();
+    } 
+		// META
+		$this->header['meta'] = array(
+			array(
+			"name" => "title",
+			"content" => "Tarefas"
+			),
+			array(
+			"name" => "description",
+			"content" => "Tarefas"
+			),
+			array(
+			"name" => "keywords",
+			"content" => "admin,demandou,demandas, html5, sistema"
+			)
+		);
+		// CSS
+		$this->header['css']=array(
+			array('file' => 'hover.css'),
+			array('file' => 'animate.css'),
+			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
+			array('file' => 'select2.min.css'),
+			// array('file' => 'estilos-projetos.css')
+			array('file' => 'estilos-tarefas.css')
+		); 
+		// JS
+		$data_footer['js']=array(
+			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.min.js'),
+			array('file' => 'http://cdn.tinymce.com/4/tinymce.min.js'),
+			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
+			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
+			// array('file' =>  base_url() . 'assets/js/jquery.ajaxfileupload.js'),
+			array('file' =>  base_url() . 'assets/js/global.js'),
+			array('file' =>  base_url() . 'assets/js/admin.js'),
+			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
+			array('file' =>  base_url() . 'assets/js/tarefas.js')
+		);
+		if (!$this->input->is_ajax_request()) {
+		  	$this->load->view('header_view',$this->header);
+			$this->load->view('admin/tarefas/content_view', $conteudo);
+			$this->load->view('footer_view',$data_footer);	
+		} else {
+			$this->load->view('admin/tarefas/content_view', $conteudo);	
+		}
+		// $this->load->view('header_view',$this->header);
+		// $this->load->view('admin/projetos/content_view', $conteudo);
+		// $this->load->view('footer_view',$data_footer);	
+	}
 
 	// public function index()	{
 	// 	// META
