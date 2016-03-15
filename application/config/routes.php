@@ -64,6 +64,7 @@ $route['projeto/excluir'] = 'projeto_controller/json_projectdelete';
 $route['projeto/alterar/(:num)'] = 'projeto_controller/alterar/$1';
 $route['tarefa/adicionar'] = 'tarefa_controller/adicionar';
 $route['tarefa/alterar'] = 'tarefa_controller/alterar';
+$route['tarefa/excluir'] = 'tarefa_controller/json_taskdelete';
 $route['tarefa/adicionar/(:num)'] = 'tarefa_controller/adicionar/$1';
 $route['tarefa/jsonusertasks'] = 'tarefa_controller/json_usertasks';
 $route['tarefa/jsonprojecttasks'] = 'tarefa_controller/json_projecttasks';

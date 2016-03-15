@@ -21,10 +21,10 @@
 				  	<i class="fa fa-sort-asc"></i>
 				  	Titulo
 				  </button>
-				  <button type="button" class="btn btn-default sort" data-sort-by="total_tarefas" data-order-by="true">
+				  <!-- <button type="button" class="btn btn-default sort" data-sort-by="total_tarefas" data-order-by="true">
 				  	<i class="fa fa-sort-asc"></i>
 				  	Total de tarefas
-				  </button>
+				  </button> -->
 				  <button type="button" class="btn btn-default sort" data-sort-by="data_prazo" data-order-by="true">
 				  	<i class="fa fa-sort-asc"></i>
 				  	Prazo
@@ -70,19 +70,39 @@
 				        	<?php 
 							 			echo '<div class="tarefas-box-lider">';
 							 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
-							 			  // echo '<small> '. $t['nome'] . '</small>';
+							 			  echo '<p><small> '. $t['nome'] .  '</small></p>';
 							 			echo '</div>';
 				        	?>
 				       </header>
 				        <!-- <div class="clearfix"></div> -->
 				        <!-- FOOTER  -->
 		        	<div class="tarefas-acoes btn-group btn-group-xs" role="group" aria-label="...">
-				    		<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="<?php echo $t['codigo_tarefa'];?>" data-prioridade="<?php echo $t['prioridade']; ?>" data-prazo="<?php echo $t['data_prazo']; ?>" data-inicio="<?php echo $t['data_inicio']; ?>" data-descricao='<?php echo $t['descricao']; ?>' data-titulo="<?php echo $t['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
+				    		<a href="#" class="btn btn-sm" role="button" data-codigotarefa="<?php echo $t['codigo_tarefa'];?>" data-prioridade="<?php echo $t['prioridade']; ?>" data-prazo="<?php echo $t['data_prazo']; ?>" data-inicio="<?php echo $t['data_inicio']; ?>" data-descricao='<?php echo $t['descricao']; ?>' data-titulo="<?php echo $t['titulo']; ?>" data-toggle="modal" data-target="#myModalTarefaVer">
 		  						<span data-toggle="tooltip" data-placement="top" title="Ver"  class="projetos-acoes-btn fa fa-eye" aria-hidden="true"></span>
 				    		</a> 
-			    			<a href="<?php echo base_url() . 'tarefa/alterar/' . $t['codigo_tarefa'];?>" class="btn btn-sm" role="button">
+			    			<a 
+			    			data-codigo="<?php echo $t['codigo_tarefa'];?>" 
+			    			data-codigoprojeto="<?php echo $t['codigo_projeto'];?>" 
+			    			data-codigostatus="<?php echo $t['codigo_status'];?>"
+			    			data-prioridade="<?php echo $t['prioridade']; ?>" 
+			    			data-prazo="<?php echo $t['data_prazo']; ?>" 
+			    			data-inicio="<?php echo $t['data_inicio']; ?>" 
+			    			data-descricao='<?php echo $t['descricao']; ?>' 
+			    			data-titulo="<?php echo $t['titulo']; ?>" 
+			    			data-lider="<?php echo $t['codigo_usuario']; ?>"
+			    			href="#" data-toggle="modal" data-target="#myModalTarefaAlterar" class="btn btn-sm" role="button">
 		  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn fa fa-pencil" aria-hidden="true"></span>
 				    		</a>
+				    		<?php 
+				    			if ($t['encerrada']==1 AND $t['data_fim']!==null) {
+				    				echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $t["titulo"] . '" data-codigotarefa="'. $t["codigo_tarefa"] . '" data-codigoprojeto="'. $t["codigo_projeto"] . '">'
+											. '<span class="fa-stack">'
+											. '<i class="fa fa-circle fa-stack-2x"></i>'
+										  . '<i class="fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Desativar tarefa"></i>'
+										  . '</span>'
+										  . '</a>';
+				    			}
+				    		?>
 			    </div> 
 	        <div class="body tarefas-box-descricao">
 		        <!-- <p class="tarefas-box-descricao"> -->
@@ -149,7 +169,7 @@
 	    	</div>
 	    	<?php if ($lider) { ?>
 	    	<div class="projeto-trash">
-	    		<a data-toggle="modal" data-target="#myModalConfirmar" data-tipo="excluir" data-texto="Você tem certeza que deseja excluir o projeto" data-titulo="<?php echo $t['titulo']; ?>" href="#" class="projeto-excluir" data-codigoprojeto="<?php echo $t['codigo_tarefa']; ?>">
+	    		<a data-toggle="modal" data-target="#myModalConfirmar" data-tipo="excluir" data-texto="Você tem certeza que deseja excluir o projeto" data-titulo="<?php echo $t['titulo']; ?>" href="#" class="projeto-excluir" data-codigotarefa="<?php echo $t['codigo_tarefa']; ?>">
 	    			<i class="fa fa-trash-o pull-right hvr-icon-trash-o" data-toggle="tooltip" data-placement="top" title="Excluir"></i>
 	    		</a>
 	    	</div>

@@ -485,4 +485,14 @@ class Tarefa_controller extends MY_Controller {
 			echo json_encode($result);
 		}
 	}
+	public function json_taskdelete() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$this->load->model('tarefa_model');
+  	$data['resposta'] = $this->tarefa_model->excluirTarefa($codigo_tarefa);
+  	if ($data['resposta']==true) {
+  		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Tarefa excluída com sucesso."));	
+  	} else {
+  		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
+  	}
+  }
 }

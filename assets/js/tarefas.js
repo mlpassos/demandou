@@ -559,7 +559,7 @@
             $('#myModalConfirmar').on('show.bs.modal', function (event) {
               var button = $(event.relatedTarget); // Button that triggered the modal
               var modal = $(this);
-              var codigo_projeto = button.data('codigoprojeto');
+              var codigo_tarefa= button.data('codigotarefa');
               var titulo = button.data('titulo');
               var tipo = button.data('tipo');
               var headerClass = (tipo === "excluir" ? 'bg-excluir' : 'bg-aviso');
@@ -567,7 +567,7 @@
               var foco = modal.find('.confirma-nao');
               modal.find('.modal-body').html('').html(texto);
               modal.find('.modal-header').addClass(headerClass);
-              modal.find('.confirma-sim').attr('data-codigoprojeto', codigo_projeto);
+              modal.find('.confirma-sim').attr('data-codigotarefa', codigo_tarefa);
               modal.find('.confirma-sim').attr('data-tipo', tipo);
               foco.focus();
             });
@@ -581,19 +581,19 @@
 
             // function confirmar(codigo) {
             $('#myModalConfirmar .confirma-sim').click(function(){
-              var cp = $(this).attr('data-codigoprojeto');
+              var ct = $(this).attr('data-codigotarefa');
               var tipo = $(this).attr('data-tipo');
-              var el = $('.projeto-'+cp).parent();
+              var el = $('.projeto-'+ct).parent();
               console.log('el: ' + el.attr('class'));
               // alert($(this).attr('data-codigoprojeto'));
               if (tipo == "excluir") {
-                var url = location + '/projeto/excluir';
+                var url = location.replace('tarefas','tarefa/excluir');
                 // exclui
                 $.ajax({
                   method: 'post',
                   url: url,
                   data: {
-                    'codigo_projeto' : cp
+                    'codigo_tarefa' : ct
                   },
                   dataType: 'json',
                   success: function(data) {
@@ -609,7 +609,7 @@
                   }
                 });
               } else if (tipo == "finalizar") {
-                var url = location + '/projeto/encerrar';
+                var url = location + '/tarefa/encerrar';
                 // finaliza
                 $.ajax({
                   method: 'post',
@@ -817,9 +817,9 @@
                               }
                         }
                     });
-                    // alert(codigo_projeto);
+
                     $.ajax({
-                          url: location + "/projeto/jsonprojectusers",
+                          url: location.replace('tarefas', 'projeto/jsonprojectusers'),
                           type: "POST",
                           data: {
                               codigo_projeto:codigo_projeto 
@@ -852,7 +852,8 @@
             });
 
             $('#myModalTarefaAlterar').on('hide.bs.modal', function (event) {
-                  moda.modal('hide');
+                  // moda.modal('hide');
+                  window.location = location;
             });
 
             $('#myModalTarefaAlterar').on('hidden.bs.modal', function (event) {
@@ -890,7 +891,7 @@
                   var el = form.find('.form-message');
                   el.html('<img src="http://cdn2.rode.com/images/common/ajax-loader-black.gif" alt="imagem mostra que sistema está trabalhando">');//text('Atualizando dados e notificando líder.')
                   $.ajax({
-                          url: location + "/tarefa/alterar",
+                          url: location.replace('tarefas', '/tarefa/alterar'),
                           type: "POST",
                           data: {
                               codigo_projeto : codigo_projeto,

@@ -263,9 +263,24 @@ class Tarefa_model extends CI_Model {
             }
         }
 
-        public function excluir($codigo) {
-                $this->db->where('codigo', $codigo);
-                return $this->db->delete('tb_livro');
+        public function excluirTarefa($codigo_tarefa) {
+            $this->db->where(array(
+                'codigo' => $codigo_tarefa
+                // 'codigo_usuario' => $codigo_usuario
+                )
+            );
+            if ($this->db->delete('tarefa')) {
+                // $this->db->where(array(
+                //     'codigo_projeto' => $codigo_projeto
+                //     // 'codigo_usuario' => $codigo_usuario
+                //     )
+                // );
+                // if ($this->db->delete('tarefa')) {
+                return true;
+                // }
+            // } else {
+                // return false;
+            }
         }
 
 
