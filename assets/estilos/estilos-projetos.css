@@ -67,6 +67,11 @@ verde #77b50e
   content: '\f164';
 }*/
 
+.input-procurar {
+  margin-top:5px;
+}
+
+
 .projeto-trash i {
   transform: translateY(-8px) translateX(-2px);
   opacity:0;

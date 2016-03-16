@@ -30,6 +30,10 @@
 				  	Prazo
 				  </button>
 				</div>
+				<div class="input-group input-procurar">
+				  <span class="input-group-addon" id="procurar-addon"><i class="fa fa-search"></i></span>
+				  <input type="text" id="search-term" class="form-control" placeholder="Procurar" aria-describedby="procurar-addon">
+				</div>
 				<hr>
 			</div>
 		</div>
@@ -336,7 +340,7 @@
 										 							//echo '<small class="participantes-lista-nome badge">'. $r['num_tarefas'] . '</small>';		
 										 						} else {
 										 							// EXIBE TAREFAS PENDENTES EM VERMELHO
-										 							echo 'A<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
+										 							echo '<small class="participantes-lista-nome badge destaque-user">'. ($r['num_tarefas'] - $r['num_tarefas_completas']) . '</small>';		
 										 						}
 										 					}	
 										 				}	// 	// echo '<small class="participantes-lista-nome2 badge">'. $r['num_tarefas_completas'] . '</small>';	

@@ -51,6 +51,11 @@ class Home_controller extends MY_Controller {
 				"class" => ""
 				),
 				array(
+				"name" => "Tarefas",
+				"link" => base_url() . 'tarefas',
+				"class" => ""
+				),
+				array(
 				"name" => "Relatórios",
 				"link" => base_url() . 'relatorios',
 				"class" => ""

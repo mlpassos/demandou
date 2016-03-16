@@ -7,6 +7,7 @@
         },
         App : function () {
             var base_url = 'http://' + window.location.hostname + "/demandou-git";
+            var location = base_url + '/tarefas';
             
             // Funções do App
             function mostraOpcoes(codigo_tipo, codigo_observacao) {
@@ -443,8 +444,12 @@
                     console.log(valor);
                     return new Date(valor);
                   },
-                  participantes: '[data-filter-by]'
+                  lider: '[data-filter-by]'
                 }
+            }).isotopeSearchFilter({
+              itemsContainer: $(".tarefas-grid"),
+              itemSelector: '.cor-coluna',
+              filtersSelector: '.filters'
             });
 
             var filterFns = {
@@ -455,7 +460,7 @@
                 return number;
               },
               // show if name ends with -ium
-              participantes: function() {
+              lider: function() {
                 var nome = [];
                 $(this).find('.filter').each(function(){
                   nome.push($(this).attr('data-filter-by'));
@@ -551,7 +556,7 @@
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
-            $('.tarefa-stats, .filter, .fa-trash-o').tooltip({
+            $('.tarefa-stats, .filter, .fa-trash-o, .tarefa-desativar').tooltip({
               'delay': { "show": 100, "hide": 0 }
             });
 
@@ -580,6 +585,7 @@
 
 
             // function confirmar(codigo) {
+            // alert(location);
             $('#myModalConfirmar .confirma-sim').click(function(){
               var ct = $(this).attr('data-codigotarefa');
               var tipo = $(this).attr('data-tipo');
@@ -588,6 +594,7 @@
               // alert($(this).attr('data-codigoprojeto'));
               if (tipo == "excluir") {
                 var url = location.replace('tarefas','tarefa/excluir');
+                // console.log(url);
                 // exclui
                 $.ajax({
                   method: 'post',
@@ -609,13 +616,13 @@
                   }
                 });
               } else if (tipo == "finalizar") {
-                var url = location + '/tarefa/encerrar';
+                var url = location.replace('tarefas','/tarefa/encerrar');
                 // finaliza
                 $.ajax({
                   method: 'post',
                   url: url,
                   data: {
-                    'codigo_projeto' : cp
+                    'codigo_tarefa' : ct
                   },
                   dataType: 'json',
                   success: function(data) {

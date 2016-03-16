@@ -445,6 +445,10 @@
                   },
                   participantes: '[data-filter-by]'
                 }
+            }).isotopeSearchFilter({
+              itemsContainer: $(".tarefas-grid"),
+              itemSelector: '.cor-coluna',
+              filtersSelector: '.filters'
             });
 
             var filterFns = {
@@ -859,6 +863,7 @@
                                       } else {
                                           var status = '<i class="fa fa-toggle-off"></i>';
                                       }
+                                      
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
                                       output += '<div class="tarefa-individual-box panel">'
                                         // + '<i class="pin animated fadeInDown"></i>'
@@ -868,7 +873,7 @@
                                         + '<button type="button" data-toggle="modal" data-target="#myModalTarefaAlterar"'
                                         + ' data-codigo="' + item.codigo_tarefa + '"'
                                         + ' data-titulo="' + item.titulo + '"'
-                                        + ' data-descricao="' + item.descricao + '"'
+                                        + " data-descricao='" + item.descricao + "'"
                                         + ' data-prioridade="' + item.prioridade + '"'
                                         + ' data-inicio="' + item.data_inicio + '"'
                                         + ' data-prazo="' + item.data_prazo + '"'
@@ -888,7 +893,7 @@
                                         // + '</div>'
                                         + '</div>' 
                                         + '<div class="panel-body">'
-                                        + '<p>' +  item.descricao + '</p>' 
+                                        + "<p>" +  item.descricao + "</p>"
                                         + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(data_inicio) + '</p>' 
                                         + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(data_prazo) + '</p>'
                                         + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, data_inicio, data_prazo, data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'

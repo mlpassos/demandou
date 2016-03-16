@@ -194,24 +194,31 @@ class Projeto_model extends CI_Model {
             $encerrar = array("codigo_status"=>2);
             $this->db->where('codigo', $codigo_projeto);
             if ( $this->db->update('projeto', $encerrar) ) {
-                return true;
+                $this->db->where('codigo_projeto', $codigo_projeto);
+                if ($this->db->update('tarefa', $encerrar)) {
+                    return true;    
+                } else {
+                    return false;
+                }
             } else {
                 return false;      
             }
+            // atualizar tarefas
         }
         public function excluirProjeto($codigo_projeto) {
+            // APENAS DESATIVA NAO EXCLUI
             $this->db->where(array(
                 'codigo' => $codigo_projeto
-                // 'codigo_usuario' => $codigo_usuario
                 )
             );
-            if ($this->db->delete('projeto')) {
+            $obj = array("codigo_status" => 0);
+            if ($this->db->update('projeto', $obj)) {
                 $this->db->where(array(
                     'codigo_projeto' => $codigo_projeto
                     // 'codigo_usuario' => $codigo_usuario
                     )
                 );
-                if ($this->db->delete('tarefa')) {
+                if ($this->db->update('tarefa', $obj)) {
                     return true;
                 }
             } else {

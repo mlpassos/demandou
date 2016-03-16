@@ -264,22 +264,22 @@ class Tarefa_model extends CI_Model {
         }
 
         public function excluirTarefa($codigo_tarefa) {
-            $this->db->where(array(
-                'codigo' => $codigo_tarefa
-                // 'codigo_usuario' => $codigo_usuario
-                )
-            );
-            if ($this->db->delete('tarefa')) {
-                // $this->db->where(array(
-                //     'codigo_projeto' => $codigo_projeto
-                //     // 'codigo_usuario' => $codigo_usuario
-                //     )
-                // );
-                // if ($this->db->delete('tarefa')) {
+            $excluir = array("codigo_status"=>0);
+            $this->db->where('codigo', $codigo_tarefa);
+            if ( $this->db->update('tarefa', $excluir) ) {
                 return true;
-                // }
-            // } else {
-                // return false;
+            } else {
+                return false;
+            }
+        }
+
+        public function encerrarTarefa($codigo_tarefa) {
+            $encerrar = array("codigo_status"=>2);
+            $this->db->where('codigo', $codigo_tarefa);
+            if ( $this->db->update('tarefa', $encerrar) ) {
+                return true;    
+            } else {
+                return false;      
             }
         }
 
@@ -292,9 +292,10 @@ class Tarefa_model extends CI_Model {
                 // join usuario as u on t.codigo_usuario = u.codigo
                 // ORDER BY  `t`.`codigo` ASC 
                 // $this->output->enable_profiler(TRUE);
-                $this->db->select('t.prioridade, t.codigo_status as codigo_status, t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
+                $this->db->select('p.titulo as projeto_titulo, t.prioridade, t.codigo_status as codigo_status, t.codigo as codigo_tarefa, t.codigo_projeto, t.titulo, t.descricao, t.data_inicio, t.data_prazo, t.data_fim,  t.encerrada, t.encerrada_por, t.codigo_usuario as codigo_usuario, u.nome as nome, u.sobrenome as sobrenome, u.arquivo_avatar as arquivo_avatar');
                 $this->db->from('tarefa as t');
                 $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+                $this->db->join('projeto as p', 't.codigo_projeto = p.codigo');
                 $this->db->where('t.codigo_status', 1);
                 $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();

@@ -57,7 +57,12 @@ class Tarefa_controller extends MY_Controller {
 						array(
 							"name" => "Projetos",
 							"link" => base_url() . 'projetos',
-							"class" => "active"
+							"class" => ""
+						),
+						array(
+						"name" => "Tarefas",
+						"link" => base_url() . 'tarefas',
+						"class" => "active"
 						),
 						array(
 							"name" => "Relatórios",
@@ -94,6 +99,7 @@ class Tarefa_controller extends MY_Controller {
 		);
 		// CSS
 		$this->header['css']=array(
+			array('file' => 'estilos-principal.css'),
 			array('file' => 'hover.css'),
 			array('file' => 'animate.css'),
 			// array('file' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css'),
@@ -105,6 +111,7 @@ class Tarefa_controller extends MY_Controller {
 		$data_footer['js']=array(
 			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.min.js'),
+			array('file' =>  base_url() . 'assets/js/isotopeSearchFilter.jquery.js'),
 			array('file' => 'http://cdn.tinymce.com/4/tinymce.min.js'),
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
@@ -491,6 +498,16 @@ class Tarefa_controller extends MY_Controller {
   	$data['resposta'] = $this->tarefa_model->excluirTarefa($codigo_tarefa);
   	if ($data['resposta']==true) {
   		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Tarefa excluída com sucesso."));	
+  	} else {
+  		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
+  	}
+  }
+  public function json_taskend() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$this->load->model('tarefa_model');
+  	$data['resposta'] = $this->tarefa_model->encerrarTarefa($codigo_tarefa);
+  	if ($data['resposta']==true) {
+  		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Tarefa desativada com sucesso."));	
   	} else {
   		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
   	}

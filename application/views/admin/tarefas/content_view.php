@@ -30,11 +30,16 @@
 				  	Prazo
 				  </button>
 				</div>
+				<div class="input-group input-procurar">
+				  <span class="input-group-addon" id="procurar-addon"><i class="fa fa-search"></i></span>
+				  <input type="text" id="search-term" class="form-control" placeholder="Procurar" aria-describedby="procurar-addon">
+				</div>
 				<hr>
 			</div>
 		</div>
 <div class="row tarefas-grid">
 	<?php 
+	$andamentoValor = 0;
 	if ($this->session->userdata('codigo_usuario')==6) {
 		$lider = true;
 	} else {
@@ -42,7 +47,7 @@
 	}
 	foreach($tarefas as $t) { 
 ?>
-		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12">
+		<div class="cor-coluna col-lg-2 col-md-3 col-sm-4 col-xs-12 <?php echo "usuario-" . $t["codigo_usuario"]; ?>" data-filter-by="<?php echo "usuario-" . $t["codigo_usuario"]; ?>">
 				<?php 
 					switch ($t['prioridade']) {
 		        		case '3':
@@ -66,10 +71,10 @@
 						<header class="tarefas-box-header <?php echo $prioridadesClass; ?>">
 				        <span style="display:none;" class="tarefa-prioridade"><?php echo $t['prioridade']; ?></span>
 				        <h3 class="tarefa-titulo">
-				        	<?php echo $t['titulo'];?></h3>
+				        	<?php echo  $t['titulo'] . '<br><small>' . $t['projeto_titulo'];?></small></h3>
 				        	<?php 
 							 			echo '<div class="tarefas-box-lider">';
-							 			  echo '<img class="img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
+							 			  echo '<img data-filter="lider" data-filter-by=".usuario-' . $t['codigo_usuario'] . '" class="filter img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
 							 			  echo '<p><small> '. $t['nome'] .  '</small></p>';
 							 			echo '</div>';
 				        	?>
@@ -95,10 +100,10 @@
 				    		</a>
 				    		<?php 
 				    			if ($t['encerrada']==1 AND $t['data_fim']!==null) {
-				    				echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $t["titulo"] . '" data-codigotarefa="'. $t["codigo_tarefa"] . '" data-codigoprojeto="'. $t["codigo_projeto"] . '">'
+				    				echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-alvo="tarefa" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $t["titulo"] . '" data-codigotarefa="'. $t["codigo_tarefa"] . '" data-codigoprojeto="'. $t["codigo_projeto"] . '">'
 											. '<span class="fa-stack">'
 											. '<i class="fa fa-circle fa-stack-2x"></i>'
-										  . '<i class="fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Desativar tarefa"></i>'
+										  . '<i class="tarefa-desativar fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Desativar tarefa"></i>'
 										  . '</span>'
 										  . '</a>';
 				    			}
@@ -108,40 +113,74 @@
 		        <!-- <p class="tarefas-box-descricao"> -->
 		        	<?php 
 		        	$this->load->helper('text');
-		        	echo word_limiter($t['descricao'],20);
+		        	echo word_limiter($t['descricao'],10);
 		        	//echo $p['descricao'];
 		        	?> 
 		        <!-- </p> -->
 
 						<p class="tarefas-box-datas">
 			        <?php 
-			        	$this->load->helper('date');
+			        	if ($t['encerrada']==1 AND $t['data_fim']!==null) {
+			        		// Encerrada
+			        		$andamentoValor = 100;
+			        		$andamentoClass = "progress-bar-success";
+			        		echo "<i class='fa fa-thumbs-up'></i>";
+			        	} else {
+				        	$this->load->helper('date');
 
-								// INíCIO
-					      // $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
-								// echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou' : 'Aguardando' ;
-								//echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Desativar"  class="projetos-acoes-btn fa fa-toggle-on" aria-hidden="true"></span></a>' : '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Ativar"  class="projetos-acoes-btn fa fa-toggle-off" aria-hidden="true"></span></a>' ;
-								//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
-								// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
+									// INíCIO
+						      // $data_inicio = date("l",strtotime($p['data_inicio'])) . ', ' . date("d",strtotime($p['data_inicio']))  . ' de ' . date("F",strtotime($p['data_inicio'])) . ' de ' . date("Y",strtotime($p['data_inicio']));
+									// echo (strtotime($p['data_inicio']) < strtotime('now')) ? 'Iniciou' : 'Aguardando' ;
+									//echo (strtotime($p['data_inicio']) < strtotime('now')) ? '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Desativar"  class="projetos-acoes-btn fa fa-toggle-on" aria-hidden="true"></span></a>' : '<a href="#" class="btn btn-sm" role="button" data-codigoprojeto="' . $p['codigo'] . '"  data-toggle="modal" data-target="#myModalProjetoDesativar"><span data-toggle="tooltip" data-placement="top" title="Ativar"  class="projetos-acoes-btn fa fa-toggle-off" aria-hidden="true"></span></a>' ;
+									//echo strftime('%A, %d de %B de %Y', strtotime($p['data_inicio']));
+									// echo '<span class="fa fa-calendar"></span> ' . $data_inicio;
 
-					   		// PRAZO
-					   		$timestamp = strtotime($t['data_prazo']);
-					   		?>
-								<span style="display:none;" class="data_prazo"><?php echo $t['data_prazo']; ?></span>
-					   		<?php
-								$now = time();
-								if( strtotime($t['data_prazo']) < strtotime('now') ) {
+						   		// PRAZO
+						   		$timestamp = strtotime($t['data_prazo']);
+						   		?>
+									<span style="display:none;" class="data_prazo"><?php echo $t['data_prazo']; ?></span>
+						   		<?php
+									$now = time();
 									$str = strtotime('now') - strtotime($t['data_prazo']);
 									$dif = ceil($str/3600/24);
-									if ($dif>1) {
-										echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dias';	
+									// echo 'dif: ' . $dif;
+									if( strtotime($t['data_prazo']) < strtotime('now') ) {
+										$str = strtotime('now') - strtotime($t['data_prazo']);
+										$dif = ceil($str/3600/24);
+										// echo 'dif: ' . $dif;
+										if ($dif>1) {
+											echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dias';	
+										} else if ($dif == -1) {
+											echo '<br><span class="fa fa-exclamation-circle"></span> Termina hoje!';	
+										} else {
+											echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dia';	
+										}
+										$andamentoValor = 100;
+										$andamentoClass = "progress-bar-danger";
+										// echo "v: " . $andamentoValor;
 									} else {
-										echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dia';	
+										echo "<br><span class='fa fa-calendar'></span> ";
+										echo timespan($now, $timestamp);
+
+										$str = strtotime('now') - strtotime($t['data_prazo']);
+										$dif = ceil($str/3600/24);
+										if ($dif==-1) {
+											echo '<br><span class="fa fa-exclamation-circle"></span> Termina hoje!';	
+										}
+										$total = strtotime($t['data_prazo']) - strtotime($t['data_inicio']);
+				    				$faltam = strtotime($t['data_prazo']) - strtotime('now');
+										$difTotal = ceil($total/3600/24);
+										$difFaltam = ceil($faltam/3600/24);
+										// echo 'total: ' . $difTotal;
+					    			// $andamentoValor = "50"; //($difTotal - $difFaltam) * 100 / $difTotal;
+					    			$andamentoValor = number_format((100 * ($difTotal - $difFaltam))/$difTotal,2);
+					    			if ($andamentoValor==0.00 AND $difTotal >=1) {
+					    				$andamentoClass = "progress-bar-danger";
+					    				$andamentoValor = 100;
+					    			} else {
+						    			$andamentoClass = "progress-bar-info";
+					    			}
 									}
-									
-								} else {
-									echo "<br><span class='fa fa-calendar'></span> ";
-									echo timespan($now, $timestamp);
 								}
 			        ?> 
 		        </p>
@@ -152,10 +191,17 @@
 	    	<div class="projeto-andamento">
 	    		<?php 
 	    		// if ($lider) {
-		    			$andamentoValor = 80;//number_format(($tarefa_completadas/$tarefa_total) * 100,2);
-		    	?>	
+	    		// 		$total = strtotime($t['data_prazo']) - strtotime($t['data_inicio']);
+	    		// 		$faltam = strtotime($t['data_prazo']) - strtotime('now');
+							// $difTotal = ceil($total/3600/24);
+							// $difFaltam = ceil($faltam/3600/24);
+		    	// 		$andamentoValor = $difFaltam;//($difTotal-$difFaltam) * 100 / $difTotal;//number_format(($tarefa_completadas/$tarefa_total) * 100,2);
+		    	// $andamentoValor = 10;
+		    	// echo "v: " . $andamentoValor;
+		    	?>
+
 		    	<div class="progress">
-  					<div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="<?php echo $andamentoValor . '%'; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $andamentoValor .'%'; ?>;min-width: 2em;">
+  					<div class="progress-bar progress-bar-striped <?php echo $andamentoClass; ?>" role="progressbar" aria-valuenow="<?php echo $andamentoValor . '%'; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $andamentoValor .'%'; ?>;min-width: 2em;">
 							<?php echo $andamentoValor . '%'; ?>
   					</div>
 					</div>
@@ -167,7 +213,10 @@
 						// }
 		    		?>
 	    	</div>
-	    	<?php if ($lider) { ?>
+	    	<?php 
+	    		
+	    		if ($lider OR $t['codigo_usuario'] == $this->session->userdata('codigo_usuario')) { 
+	    	?>
 	    	<div class="projeto-trash">
 	    		<a data-toggle="modal" data-target="#myModalConfirmar" data-tipo="excluir" data-texto="Você tem certeza que deseja excluir o projeto" data-titulo="<?php echo $t['titulo']; ?>" href="#" class="projeto-excluir" data-codigotarefa="<?php echo $t['codigo_tarefa']; ?>">
 	    			<i class="fa fa-trash-o pull-right hvr-icon-trash-o" data-toggle="tooltip" data-placement="top" title="Excluir"></i>

@@ -71,6 +71,10 @@ body {
   background-color:#ededed;
 }
 
+.input-procurar {
+  margin-top:5px;
+}
+
 .projeto-trash i {
   transform: translateY(-8px) translateX(-2px);
   opacity:0;
@@ -488,6 +492,14 @@ body {
   opacity:1;
 }*/
 
+.input-group-addon {
+  margin-top:5px;
+}
+
+h3 small {
+  color:rgb(51,51,51);
+  /*font-style: italic;*/
+}
 
 .panel-heading small {
   display:block;
