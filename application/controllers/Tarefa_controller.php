@@ -465,7 +465,9 @@ class Tarefa_controller extends MY_Controller {
     $this->email->to($u[0]['email']);// change it to yours
     $this->email->subject('Demandou: Nova tarefa');
     $this->email->message($message);
-    $this->email->send(); 
+    if (!$this->email->send()) {
+	    	// erro
+	  };
 	}	
 
 	public function alterar() {

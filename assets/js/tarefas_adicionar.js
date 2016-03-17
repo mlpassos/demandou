@@ -64,6 +64,7 @@
                   // var location = 'http://' + window.location.hostname + "/demandou-git";
                   var form = $(this);
                   var codigo_projeto = form.find("input[name='codigo_projeto']").val();
+                  var criado_por = form.find("input[name='criado_por']").val();
                   // var codigo_tarefa = form.find("input[name='codigo_tarefa']").val();
                   var createdby = form.find("input[name='usuario_nome']").val();
                   var createdbypicture = form.find("input[name='usuario_avatar']").val();
@@ -86,7 +87,7 @@
                               codigo_status = '0';
                         }
                   });
-                  var data = {codigo_projeto,titulo,descricao,prioridade,data_inicio,data_prazo,lider,codigo_status};
+                  var data = {criado_por, codigo_projeto,titulo,descricao,prioridade,data_inicio,data_prazo,lider,codigo_status};
                   //alert(data_inicio);
                   console.log(data);
                   var el = form.find('.form-message');
@@ -96,6 +97,7 @@
                           type: "POST",
                           data: {
                               codigo_projeto : codigo_projeto,
+                              criado_por : criado_por,
                               titulo : titulo,
                               descricao : descricao,
                               prioridade : prioridade,

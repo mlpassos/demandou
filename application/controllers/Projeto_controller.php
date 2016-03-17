@@ -192,7 +192,9 @@ class Projeto_controller extends MY_Controller {
 	    $this->email->to($resParticipantes);// change it to yours
 	    $this->email->subject('Demandou: Novo Projeto');
 	    $this->email->message($messageParticipantes);
-	    $this->email->send(); 
+	    if (!$this->email->send()) {
+	    	// erro
+	    }; 
 	    // var_dump($resParticipantes);
 	}	
 

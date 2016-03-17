@@ -38,7 +38,7 @@ class Tarefa_model extends CI_Model {
                 $this->data_prazo = $anop . '-' . $mesp . '-' . $diap;
                 $this->data_fim = NULL;
 
-                $this->criado_por = $this->session->userdata('codigo_usuario');
+                $this->criado_por = $tarefa['criado_por'];
                 $this->codigo_projeto = $tarefa['codigo_projeto'];
                 $this->codigo_usuario = $tarefa['lider'][0];
                 // usuário ativo

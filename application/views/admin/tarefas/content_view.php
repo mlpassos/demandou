@@ -1,11 +1,11 @@
 <div id="ajaxload" class="container-fluid ajaxload">
 <?php if ($this->session->userdata('logado')==true) { ?>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-lg-12 text-right">
 				<a href="<?php echo base_url(); ?>projeto/adicionar" class="btn btn-primary btn-large" role="button"><span class="glyphicon glyphicon-plus-sign"></span> Adicionar projeto</a>
 				<hr>
 			</div>
-		</div>
+		</div> -->
 		<div class="row">
 			<div class="col-lg-12 filtro">
 				<div class="btn-group" role="group" aria-label="...">
@@ -99,14 +99,16 @@
 		  						<span data-toggle="tooltip" data-placement="top" title="Alterar"  class="projetos-acoes-btn fa fa-pencil" aria-hidden="true"></span>
 				    		</a>
 				    		<?php 
-				    			if ($t['encerrada']==1 AND $t['data_fim']!==null) {
-				    				echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-alvo="tarefa" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $t["titulo"] . '" data-codigotarefa="'. $t["codigo_tarefa"] . '" data-codigoprojeto="'. $t["codigo_projeto"] . '">'
-											. '<span class="fa-stack">'
-											. '<i class="fa fa-circle fa-stack-2x"></i>'
-										  . '<i class="tarefa-desativar fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Desativar tarefa"></i>'
-										  . '</span>'
-										  . '</a>';
-				    			}
+				    		// 	if ($t['encerrada']==1 AND $t['data_fim']!==null) {
+				    		// 		if ($lider OR $t['codigo_usuario'] == $this->session->userdata('codigo_usuario')) { 
+					    	// 		echo '<a href="#" class="tarefa-stats projeto-finaliza" data-toggle="modal" data-target="#myModalConfirmar" data-alvo="tarefa" data-tipo="finalizar" data-texto="Você tem certeza que deseja finalizar o projeto" data-titulo="' . $t["titulo"] . '" data-codigotarefa="'. $t["codigo_tarefa"] . '" data-codigoprojeto="'. $t["codigo_projeto"] . '">'
+										// 	echo '<span class="fa-stack">'
+										// 		. '<i class="fa fa-circle fa-stack-2x"></i>'
+										// 	  . '<i style="color:rgb(100,240,100);" class="tarefa-desativar fa fa-flag fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Finalizada"></i>'
+										// 	  . '</span>';
+										//  . '</a>';
+										// }
+				    		// 	}
 				    		?>
 			    </div> 
 	        <div class="body tarefas-box-descricao">
@@ -122,8 +124,8 @@
 			        <?php 
 			        	if ($t['encerrada']==1 AND $t['data_fim']!==null) {
 			        		// Encerrada
-			        		$andamentoValor = 100;
-			        		$andamentoClass = "progress-bar-success";
+			        		// $andamentoValor = 100;
+			        		// $andamentoClass = "progress-bar-success";
 			        		echo "<i class='fa fa-thumbs-up'></i>";
 			        	} else {
 				        	$this->load->helper('date');
@@ -141,8 +143,8 @@
 									<span style="display:none;" class="data_prazo"><?php echo $t['data_prazo']; ?></span>
 						   		<?php
 									$now = time();
-									$str = strtotime('now') - strtotime($t['data_prazo']);
-									$dif = ceil($str/3600/24);
+									// $str = strtotime('now') - strtotime($t['data_prazo']);
+									// $dif = ceil($str/3600/24);
 									// echo 'dif: ' . $dif;
 									if( strtotime($t['data_prazo']) < strtotime('now') ) {
 										$str = strtotime('now') - strtotime($t['data_prazo']);
@@ -155,31 +157,31 @@
 										} else {
 											echo '<br><span class="fa fa-exclamation-circle"></span> Atrasado ' . $dif . ' dia';	
 										}
-										$andamentoValor = 100;
-										$andamentoClass = "progress-bar-danger";
+										// $andamentoValor = 100;
+										// $andamentoClass = "progress-bar-danger";
 										// echo "v: " . $andamentoValor;
 									} else {
 										echo "<br><span class='fa fa-calendar'></span> ";
 										echo timespan($now, $timestamp);
 
-										$str = strtotime('now') - strtotime($t['data_prazo']);
-										$dif = ceil($str/3600/24);
-										if ($dif==-1) {
-											echo '<br><span class="fa fa-exclamation-circle"></span> Termina hoje!';	
-										}
-										$total = strtotime($t['data_prazo']) - strtotime($t['data_inicio']);
-				    				$faltam = strtotime($t['data_prazo']) - strtotime('now');
-										$difTotal = ceil($total/3600/24);
-										$difFaltam = ceil($faltam/3600/24);
-										// echo 'total: ' . $difTotal;
-					    			// $andamentoValor = "50"; //($difTotal - $difFaltam) * 100 / $difTotal;
-					    			$andamentoValor = number_format((100 * ($difTotal - $difFaltam))/$difTotal,2);
-					    			if ($andamentoValor==0.00 AND $difTotal >=1) {
-					    				$andamentoClass = "progress-bar-danger";
-					    				$andamentoValor = 100;
-					    			} else {
-						    			$andamentoClass = "progress-bar-info";
-					    			}
+										// $str = strtotime('now') - strtotime($t['data_prazo']);
+										// $dif = ceil($str/3600/24);
+										// if ($dif==-1) {
+										// 	echo '<br><span class="fa fa-exclamation-circle"></span> Termina hoje!';	
+										// }
+										// $total = strtotime($t['data_prazo']) - strtotime($t['data_inicio']);
+				    		// 		$faltam = strtotime($t['data_prazo']) - strtotime('now');
+										// $difTotal = ceil($total/3600/24);
+										// $difFaltam = ceil($faltam/3600/24);
+										// // echo 'total: ' . $difTotal;
+					    	// 		// $andamentoValor = "50"; //($difTotal - $difFaltam) * 100 / $difTotal;
+					    	// 		$andamentoValor = number_format((100 * ($difTotal - $difFaltam))/$difTotal,2);
+					    	// 		if ($andamentoValor==0.00 AND $difTotal >=1) {
+					    	// 			$andamentoClass = "progress-bar-danger";
+					    	// 			$andamentoValor = 100;
+					    	// 		} else {
+						    // 			$andamentoClass = "progress-bar-info";
+					    	// 		}
 									}
 								}
 			        ?> 
@@ -199,12 +201,12 @@
 		    	// $andamentoValor = 10;
 		    	// echo "v: " . $andamentoValor;
 		    	?>
-
+<!-- 
 		    	<div class="progress">
   					<div class="progress-bar progress-bar-striped <?php echo $andamentoClass; ?>" role="progressbar" aria-valuenow="<?php echo $andamentoValor . '%'; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $andamentoValor .'%'; ?>;min-width: 2em;">
 							<?php echo $andamentoValor . '%'; ?>
   					</div>
-					</div>
+					</div> -->
 					<?php 
 						// } else {
 						// 	echo "<p class='sem-andamento'>";

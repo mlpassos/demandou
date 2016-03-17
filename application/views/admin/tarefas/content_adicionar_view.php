@@ -19,7 +19,8 @@
 				$hidden = array(
 						"codigo_projeto" =>$codigo_projeto,
 						"usuario_nome" => $this->session->userdata('nome') + ' ' + $this->session->userdata('sobrenome'),
-						"usuario_avatar" => $this->session->userdata('arquivo_avatar')
+						"usuario_avatar" => $this->session->userdata('arquivo_avatar'),
+						"criado_por" => $this->session->userdata('codigo_usuario')
 					);
 				echo form_open('tarefa/adicionar', ["id" => "frmTarefa-Adicionar", "class" => "tarefa-adicionar", "role" => "form"], $hidden); ?>
 		<div class="col-lg-12 col-md-12">
