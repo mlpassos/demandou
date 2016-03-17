@@ -126,7 +126,11 @@
 			        		// Encerrada
 			        		// $andamentoValor = 100;
 			        		// $andamentoClass = "progress-bar-success";
-			        		echo "<i class='fa fa-thumbs-up'></i>";
+			        	// 	echo '<span class="fa-stack">'
+												// . '<i class="fa fa-circle fa-stack-2x"></i>'
+											 //  . '<i style="color:#3b5998;" class="tarefa-desativar fa fa-thumbs-up fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Finalizada"></i>'
+											 //  . '</span>';
+			        		echo "<i style='color:#3b5998;' class='fa fa-thumbs-o-up'></i>";
 			        	} else {
 				        	$this->load->helper('date');
 
@@ -217,7 +221,7 @@
 	    	</div>
 	    	<?php 
 	    		
-	    		if ($lider OR $t['codigo_usuario'] == $this->session->userdata('codigo_usuario')) { 
+	    		if ($lider) { 
 	    	?>
 	    	<div class="projeto-trash">
 	    		<a data-toggle="modal" data-target="#myModalConfirmar" data-tipo="excluir" data-texto="Você tem certeza que deseja excluir o projeto" data-titulo="<?php echo $t['titulo']; ?>" href="#" class="projeto-excluir" data-codigotarefa="<?php echo $t['codigo_tarefa']; ?>">
