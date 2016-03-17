@@ -32,7 +32,7 @@
 				</div>
 				<div class="input-group input-procurar">
 				  <span class="input-group-addon" id="procurar-addon"><i class="fa fa-search"></i></span>
-				  <input type="text" id="search-term" class="form-control" placeholder="Procurar" aria-describedby="procurar-addon">
+				  <input type="text" id="search-term" class="form-control" placeholder="Procurar em <?php echo sizeof($projetos);?> projetos..." aria-describedby="procurar-addon">
 				</div>
 				<hr>
 			</div>
