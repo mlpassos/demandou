@@ -89,7 +89,7 @@ class Tarefa_model extends CI_Model {
                 }
         }
 
-        public function responder($codigo_tarefa, $codigo_observacao,$resposta, $lider, $tipo, $extender) {
+        public function responder($codigo_tarefa, $codigo_observacao, $resposta, $lider, $tipo, $extender) {
             // pega usuário atual q responder, líder ou admin
             $usuario = $this->session->userdata('codigo_usuario');
             $dados['resposta'] = array(

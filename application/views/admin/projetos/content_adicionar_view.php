@@ -73,6 +73,9 @@
 				  	}
 				  ?>
 				</select>
+				<p class="lider-box">
+					* Líder já é um participante
+				</p>
 			  </div>
 		</div>
 		<div class="col-lg-6 col-md-6">

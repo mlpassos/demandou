@@ -71,6 +71,27 @@ body {
   background-color:#ededed;
 }
 
+.tarefa-finalizada {
+  color:#fff;
+  background-color:#5890FF;
+  padding:4px 5px;
+  border-radius:50%;
+  transition: background-color .3s ease-in, color .3s .3s ease-out;
+}
+/*  animation: animaUp 1s ease-in-out infinite normal;
+  transform-origin:center left;
+}
+@keyframes animaUp {
+  from {transform:rotate(0deg);}
+to {transform:rotate(5deg);}
+}*/
+
+
+.tarefa-finalizada:hover {
+  color:#5890FF;
+  background-color:#fff;
+}
+
 .input-procurar {
   margin-top:5px;
 }

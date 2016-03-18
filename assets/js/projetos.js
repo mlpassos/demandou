@@ -555,7 +555,7 @@
             $('.projetos-acoes-btn').tooltip({
               'delay': { "show": 500, "hide": 100 }
             });
-            $('.tarefa-stats, .filter, .fa-trash-o').tooltip({
+            $('.tarefa-stats, .filter, .fa-trash-o, .fa-flag').tooltip({
               'delay': { "show": 100, "hide": 0 }
             });
 

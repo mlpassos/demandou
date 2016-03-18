@@ -130,7 +130,7 @@
 												// . '<i class="fa fa-circle fa-stack-2x"></i>'
 											 //  . '<i style="color:#3b5998;" class="tarefa-desativar fa fa-thumbs-up fa-stack-1x fa-inverse" data-toggle="tooltip" data-placement="top" title=Finalizada"></i>'
 											 //  . '</span>';
-			        		echo "<i style='color:#3b5998;' class='fa fa-thumbs-o-up'></i>";
+			        		echo "<i class='fa fa-thumbs-o-up tarefa-finalizada' data-toggle='tooltip' data-placement='top' title='Tarefa entregue'></i>";
 			        	} else {
 				        	$this->load->helper('date');
 
