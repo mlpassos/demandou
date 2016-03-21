@@ -28,6 +28,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url(); ?>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>/assets/estilos/alertify.core.css" rel="stylesheet">
+    <link href="<?php echo base_url(); ?>/assets/estilos/alertify.default.css" rel="stylesheet">
+    
 
     <!-- Custom styles for this template -->
     

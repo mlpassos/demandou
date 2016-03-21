@@ -68,6 +68,7 @@ class Home_controller extends MY_Controller {
 		// JS
 		$data_footer['js']=array(
 			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
+			// array('file' => 'http://js.pusher.com/3.0/pusher.min.js'), 
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/home.js')
 		);

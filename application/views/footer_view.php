@@ -6,6 +6,9 @@
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<?php echo base_url(); ?>assets/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="https://js.pusher.com/3.0/pusher.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/alertify.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.titlealert.js"></script>
     
     <?php 
     foreach($js as $j) {

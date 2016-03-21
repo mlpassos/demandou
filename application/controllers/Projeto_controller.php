@@ -198,6 +198,17 @@ class Projeto_controller extends MY_Controller {
 	    // var_dump($resParticipantes);
 	}	
 
+	function notificar($tipo, $projectInfo, $lideresInfo, $participantesInfo) {
+		if ($tipo == "novo_projeto") {
+			$pusher = $this->ci_pusher->get_pusher();
+			$pusher->trigger('timeline', 'novo_projeto', array(
+				array('projeto' => $projectInfo[0]), 
+				array('lideres' => $lideresInfo), 
+				array('participantes' => $participantesInfo)
+			));	
+		}
+	}
+
 	public function index()	{
 		if( $this->session->userdata('logado') ) {
 			$this->load->model('projeto_model');
@@ -240,6 +251,7 @@ class Projeto_controller extends MY_Controller {
 			array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery.mobile.custom.min.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery.ajaxfileupload.js'),
+			// array('file' => 'http://js.pusher.com/3.0/pusher.min.js'),
 			array('file' =>  base_url() . 'assets/js/global.js'),
 			array('file' =>  base_url() . 'assets/js/admin.js'),
 			// array('file' =>  base_url() . 'assets/js/jquery-2.1.4.js'),
@@ -328,8 +340,9 @@ class Projeto_controller extends MY_Controller {
 				$lideresInfo = $this->usuario_model->listarPorCodigo($projeto['lider']);
 				$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
 				$data['projeto'] = $projectInfo;
-				$this->sendMail($projectInfo,$lideresInfo,$participantesInfo);
+				// $this->sendMail($projectInfo,$lideresInfo,$participantesInfo);
 				$this->load->view('admin/projetos/adicionar_sucesso_view.php', $data);
+				$this->notificar("novo_projeto", $projectInfo,$lideresInfo,$participantesInfo);
 			} else {
 				echo "Oops, deu bug. Tente novamente? =]";
 			}

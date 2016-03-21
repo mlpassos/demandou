@@ -58,7 +58,8 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'session');
+$autoload['libraries'] = array('database', 'session', 'ci_pusher');
+// $this->load->library('ci_pusher');
 
 /*
 | -------------------------------------------------------------------

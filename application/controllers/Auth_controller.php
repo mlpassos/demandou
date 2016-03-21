@@ -52,8 +52,10 @@ class Auth_controller extends MY_Controller {
 		            'arquivo_avatar'=>$resultado['arquivo_avatar'],
 		            'logado' => true
 		        ));
-		        echo json_encode($resultado);
-		        // echo json_encode('ok');
+				// $this->load->library('ci_pusher');
+				$pusher = $this->ci_pusher->get_pusher();
+				$pusher->trigger('geral', 'login', $resultado);
+        echo json_encode($resultado);
 		} else {
 			$this->session->set_userdata( array('logado' => false) );
 			echo json_encode(array("status"=>"falha"));
