@@ -20,6 +20,7 @@ class Tarefa_model extends CI_Model {
         }
 
         public function inserir($tarefa) {
+                $this->load->helper('string');
                 // hack pra converter data do input html5 no formato mysql
                 $ano = date("Y",strtotime($tarefa['data_inicio']));
                 $mes = date("m",strtotime($tarefa['data_inicio']));
@@ -31,7 +32,7 @@ class Tarefa_model extends CI_Model {
                 // instancia o objeto
                 $this->codigo = NULL;
                 $this->titulo = $tarefa['titulo'];
-                $this->descricao = $tarefa['descricao'];
+                $this->descricao = quotes_to_entities($tarefa['descricao']);
                 $this->prioridade = $tarefa['prioridade'];
    
                 $this->data_inicio = $ano . '-' . $mes . '-' . $dia;

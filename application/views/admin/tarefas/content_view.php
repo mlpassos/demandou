@@ -72,11 +72,12 @@
 				        <span style="display:none;" class="tarefa-prioridade"><?php echo $t['prioridade']; ?></span>
 				        <h3 class="tarefa-titulo">
 				        	<?php echo  $t['titulo'] . '<br><small>' . $t['projeto_titulo'];?></small></h3>
-				        	<?php 
+				        	<?php
 							 			echo '<div class="tarefas-box-lider">';
 							 			  echo '<img data-filter="lider" data-filter-by=".usuario-' . $t['codigo_usuario'] . '" class="filter img-circle lider-thumbs" src="' . base_url() . 'uploads/' . $t['arquivo_avatar'] . '" alt="avatar do líder do projeto">';
 							 			  echo '<p><small> '. $t['nome'] .  '</small></p>';
 							 			echo '</div>';
+							 			$this->load->helper('string');
 				        	?>
 				       </header>
 				        <!-- <div class="clearfix"></div> -->
@@ -92,7 +93,7 @@
 			    			data-prioridade="<?php echo $t['prioridade']; ?>" 
 			    			data-prazo="<?php echo $t['data_prazo']; ?>" 
 			    			data-inicio="<?php echo $t['data_inicio']; ?>" 
-			    			data-descricao='<?php echo $t['descricao']; ?>' 
+			    			data-descricao="<?php echo strip_quotes($t['descricao']); ?>"
 			    			data-titulo="<?php echo $t['titulo']; ?>" 
 			    			data-lider="<?php echo $t['codigo_usuario']; ?>"
 			    			href="#" data-toggle="modal" data-target="#myModalTarefaAlterar" class="btn btn-sm" role="button">
@@ -115,7 +116,8 @@
 		        <!-- <p class="tarefas-box-descricao"> -->
 		        	<?php 
 		        	$this->load->helper('text');
-		        	echo word_limiter($t['descricao'],10);
+		        	echo $t['descricao'];
+		        	// echo word_limiter($t['descricao'],20);
 		        	//echo $p['descricao'];
 		        	?> 
 		        <!-- </p> -->

@@ -863,7 +863,7 @@
                                       } else {
                                           var status = '<i class="fa fa-toggle-off"></i>';
                                       }
-                                      
+                                      // .replace(/['"]+/g, '')
                                       output += (aux=="") ? '<div class="item active">' : '<div class="item">'
                                       output += '<div class="tarefa-individual-box panel">'
                                         // + '<i class="pin animated fadeInDown"></i>'
