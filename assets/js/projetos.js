@@ -74,7 +74,7 @@
                                                 + mostraOpcoes(codigo_tipo, codigo_observacao)
                                                 + '<label for="observacao_resposta">Observações</label>'
                                                 + '<textarea id="observacao_resposta" name="observacao_resposta" class="form-control" rows="3"></textarea>'
-                                                + '<button type="button" class="btn btn-primary btn-small" id="resposta_gravar"><i class="fa fa-disk"></i> Responder</button>'
+                                                + '<button type="button" class="btn-responder btn btn-info btn-xs" id="resposta_gravar"><i class="fa fa-disk"></i> Responder</button>'
                                                 + '<p class="tarefa-resposta-mensagem"></p>'
                                                 + '</div>'
                                                 + '</div>'
@@ -292,7 +292,7 @@
                               if (encerrada===null) {
                                     var andamento = showAndamento(check_fim, check_inicio, total, faltam, hoje, codigoUsuarioAtual, UsuarioTarefaAvatar, UsuarioTarefaNome, codigoUsuarioTarefa,data_inicio,data_prazo, data_fim, codigoTarefa, lider, encerrada, encerrada_por);
                                     output += andamento.out;
-                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                    output += '<button type="button" class="mostrar-historico hidden btn btn-xs btn-info show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '"><i class="fa fa-eye"></i> Mostrar histórico</button>';
                                     output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                                     output += '<div>'
@@ -311,14 +311,14 @@
                                     // + '<p class="help-block">Conteúdo/Relatório produzido</p>'
                                     // + '</div>'
                                     // + '</form>'
-                                    + '<button type="button" class="btn btn-primary btn-small" id="tarefa_gravar"><i class="fa fa-disk"></i> Salvar</button>'
+                                    + '<button type="button" class="btn btn-info btn-xs" id="tarefa_gravar"><i class="fa fa-disk"></i> Enviar</button>'
                                     + '<p class="tarefa-observacao-mensagem"></p>'
                                     + '</div>'
                                     + '</div>'
                                     + '</div>';
                               } else {
                                     output += '<div class="alert alert-danger">Tarefa encerrada pelo líder.</div>';
-                                     output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>';
+                                     output += '<button type="button" class="mostrar-historico hidden btn btn-xs btn-info show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '"><i class="fa fa-eye"></i> Mostrar histórico</button>';
                                     output += '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '"></p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               }
@@ -326,13 +326,13 @@
                               // verificar se existe solicitação de novo prazo pendente, se tiver exibir a resposta.
                               if (encerrada===null) {
                                     output += '<p class="alert alert-info">Tarefa finalizada em <em>' + formataData(new Date(data_fim)) + '</em>, aguardando validação.</p>';
-                                    output += '<button type="button" class="btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '" style="display:none;">Mostrar histórico</button>'
+                                    output += '<button type="button" class="mostrar-historico btn btn-xs btn-info show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '" style="display:none;"><i class="fa fa-eye"></i> Mostrar histórico</button>'
                                           +' <p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
                                           + '</p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
                               } else {
                                     output += '<p class="alert alert-success"><i class="icone-thumbs fa fa-thumbs-up"></i> Tarefa encerrada.</p>';
-                                    output += '<button type="button" class="hidden btn btn-xs btn-primary show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '">Mostrar histórico</button>'
+                                    output += '<button type="button" class="mostrar-historico hidden btn btn-xs btn-info show-obs show-obs-' + codigoTarefa + '" id="showObs-' + codigoTarefa + '"><i class="fa fa-eye"></i> Mostrar histórico</button>'
                                           + '<p class="tarefa-observacoes tarefa-observacoes-' + codigoTarefa + '">'
                                           + '</p>';
                                     mostrarObs(codigoTarefa, dono, lider,UsuarioTarefaNome,UsuarioTarefaAvatar);
@@ -699,6 +699,22 @@
             //   //   }
             //   // });
             // });
+            function limitWords(textToLimit, wordLimit) {
+              var finalText = "";
+              var text2 = textToLimit.replace(/\s+/g, ' ');
+              var text3 = text2.split(' ');
+              var numberOfWords = text3.length;
+              var i=0;
+
+              if(numberOfWords > wordLimit)
+              {
+              for(i=0; i< wordLimit; i++)
+              finalText = finalText+" "+ text3[i]+" ";
+
+              return finalText+"...";
+              }
+              else return textToLimit;
+            }
 
             var location = 'http://' + window.location.hostname + "/demandou-git";
 
@@ -893,7 +909,11 @@
                                         // + '</div>'
                                         + '</div>' 
                                         + '<div class="panel-body">'
-                                        + "<p>" +  item.descricao + "</p>"
+                                        + "<div class='teaser'>" +  limitWords(item.descricao,20) + "</div>"
+                                        + "<div class='full-text' style='display:none;'>" +  item.descricao + "</div>"
+                                        + "<button type='button' class='vermais btn btn-info btn-xs'>"
+                                        + '<i class="fa fa-eye"></i> Ver mais'
+                                        + "</button>"
                                         + '<p><span class="glyphicon glyphicon-calendar"></span> ' +  formataData(data_inicio) + '</p>' 
                                         + '<p><span class="glyphicon glyphicon-time"></span> ' +  formataData(data_prazo) + '</p>'
                                         + '<div>' + usuarioAcoes(codigo_usuario, item.arquivo_avatar, item.nome + ' ' + item.sobrenome, item.codigo_usuario, data_inicio, data_prazo, data_fim, item.codigo_tarefa, lider, item.encerrada, item.encerrada_por) + '</div>'
@@ -976,6 +996,25 @@
             // $('body').delegate('#arquivo_obs', 'change', function(e){
             //       // alert('po');
             //       files = e.target.files;
+            // });
+
+            $('body').delegate('.vermais','click' , function() {
+                // alert('oi');
+                $(this).text("Ver mais").parent().find(".teaser").toggleClass('teaser-borda').slideToggle('slow');//addClass('animated fadeOutDown').css('display', 'none');//.slideToggle('slow');
+                console.log($(this).text());
+                if ($(this).hasClass('.vermenos')) {
+                  $(this).html('<i class="fa fa-eye"></i> Ver mais').removeClass('.vermenos').parent().find(".full-text").slideToggle('slow');//.addClass('animated fadeOutDown').css('display', 'none').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                    //$(this).removeClass('animated fadeOutDown')
+                  //});//.slideToggle('slow');    
+                } else {
+                  $(this).html('<i class="fa fa-eye-slash"></i> Ver menos').addClass('.vermenos').parent().find(".full-text").slideToggle('slow');//.css('display', 'block').addClass('animated fadeInUp').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                    //$(this).removeClass('animated fadeInUp')
+                  //});//.slideToggle('slow');      
+                }
+                
+            });
+            // , function(){
+            //     $(this).text("Ver mais").parent().find(".full-text").hide();    
             // });
 
             $('body').delegate('.tarefas-titulo', 'mouseenter', function() {

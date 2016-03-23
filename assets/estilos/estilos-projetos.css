@@ -71,11 +71,36 @@ verde #77b50e
   margin-top:5px;
 }
 
+p.full-text {
+  display:none !important;
+}
+
+.vermais {
+  margin:10px 0 10px 0;
+}
 
 .projeto-trash i {
   transform: translateY(-8px) translateX(-2px);
   opacity:0;
   transition:all .3s ease-out;
+}
+
+.mostrar-historico {
+  margin:10px 0 10px 0;
+}
+
+.btn-responder {
+  margin:10px 0 10px 0;
+}
+
+.teaser {
+  border-bottom: 1px solid rgba(200,0,0,.6);
+  padding-bottom: 10px;
+  transition: border-bottom 1s ease-in-out;
+}
+
+.teaser-borda {
+  border-bottom: 1px solid white;
 }
 
 /*.projeto-trash i:hover {
