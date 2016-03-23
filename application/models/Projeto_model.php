@@ -265,6 +265,29 @@ class Projeto_model extends CI_Model {
             $query = $this->db->get();
             return $query->result_array();
         }
+
+        public function listarTotalAtivo() {
+            $this->db->select('count(*) as total');
+            $this->db->from('projeto');
+            $this->db->where('codigo_status', 1);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+
+        public function listarTotalEncerrado() {
+            $this->db->select('count(*) as total');
+            $this->db->from('projeto');
+            $this->db->where('codigo_status', 2);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+
+        // Listar projetos criados na última semana
+        // SELECT * FROM `projeto` WHERE
+        // data_criado between now() - interval 30 day and now()
+        // ORDER BY `projeto`.`data_criado`  ASC
+
+
         public function listarLider($codigo_projeto) {
             $this->db->select("pa.nome as papel, u.codigo, u.nome, u.sobrenome");
             $this->db->from('projeto as p');
@@ -314,14 +337,16 @@ class Projeto_model extends CI_Model {
             return $query->result_array();
         }
         public function listarPorUsuario($codigo_usuario) {
-            // $this->output->enable_profiler(TRUE);
+            $this->output->enable_profiler(TRUE);
             $this->db->select("pa.nome as papel, p.codigo AS codigo,  p.titulo AS titulo,  p.descricao AS descricao,  p.data_inicio AS data_inicio,  p.data_prazo AS data_prazo,  p.prioridade AS prioridade");
             $this->db->from('projeto as p');
             $this->db->join('usuario_projeto as up', 'p.codigo=up.codigo_projeto');
             $this->db->join('papel as pa', 'up.codigo_papel=pa.codigo');
             // projeto ativo
             $this->db->where('p.codigo_status', 1);
+            // if ($codigo_usuario!==6) {
             $this->db->where('up.codigo_usuario', $codigo_usuario);
+            // }
             $this->db->order_by('p.data_prazo', 'ASC');
             $query = $this->db->get();
             return $query->result_array();

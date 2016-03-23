@@ -380,6 +380,45 @@ class Tarefa_model extends CI_Model {
         //         $query = $this->db->get();
         //         return $query->result_array();
         // }
+
+        public function listarTotalAtivo() {
+            $this->db->select('count(*) as total');
+            $this->db->from('tarefa');
+            $this->db->where('codigo_status', 1);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+        public function listarTotalEncerrado() {
+            $this->db->select('count(*) as total');
+            $this->db->from('tarefa');
+            $this->db->where('codigo_status', 2);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+        public function listarTotalEntregue() {
+            // $this->output->enable_profiler(TRUE);
+            $this->db->select('count(*) as total');
+            $this->db->from('tarefa');
+            $this->db->where('data_fim is not null');
+            $this->db->where('encerrada is not null');
+            $this->db->where('codigo_status', 1);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+        public function listarTotalAguardando() {
+            // $this->output->enable_profiler(TRUE);
+            $this->db->select('count(*) as total');
+            $this->db->from('tarefa as t');
+            $this->db->join('tarefa_observacoes as tob', 't.codigo = tob.codigo_tarefa');
+            $this->db->where('t.data_fim is not null');
+            $this->db->where('t.encerrada is null');
+            $this->db->where('t.codigo_status', 1);
+            $this->db->where('tob.codigo_tipo', 1);
+            $this->db->where('tob.codigo_status_obs', null,false);
+            $query = $this->db->get();
+            return $query->result_array();   
+        }
+
         
         public function listarPorCodigo($codigo_projeto) {
                 // $this->output->enable_profiler(TRUE);

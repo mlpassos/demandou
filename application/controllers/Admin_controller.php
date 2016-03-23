@@ -75,8 +75,17 @@ class Admin_controller extends MY_Controller {
 			array('file' =>  base_url() . 'assets/js/admin.js')
 		);
 
+		$this->load->model('projeto_model');
+		$this->load->model('tarefa_model');
+		$data['projetos'] = $this->projeto_model->listarTotalAtivo();
+		$data['projetos_encerrados'] = $this->projeto_model->listarTotalEncerrado();
+		$data['tarefas'] = $this->tarefa_model->listarTotalAtivo();
+		$data['tarefas_encerradas'] = $this->tarefa_model->listarTotalEncerrado();
+		$data['tarefas_entregues'] = $this->tarefa_model->listarTotalEntregue();
+		$data['tarefas_aguardando'] = $this->tarefa_model->listarTotalAguardando();
+
 		$this->load->view('header_view',$data_header);
-		$this->load->view('admin/content_view');
+		$this->load->view('admin/content_view', $data);
 		$this->load->view('footer_view',$data_footer);		
 	}
 
