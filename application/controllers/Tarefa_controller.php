@@ -247,7 +247,8 @@ class Tarefa_controller extends MY_Controller {
   			$usuario = $this->input->post('codigo_usuario');
     		if ($atrasado==1) {
     			// obs do tipo extensão de prazo, pois está atrasada
-    			$codigo_tipo = 2;
+    			// $codigo_tipo = 2;
+    			$codigo_tipo = 1;
     		} else {
     			// obs do tipo finalização normal
     			$codigo_tipo = 1;
@@ -263,7 +264,8 @@ class Tarefa_controller extends MY_Controller {
   		$usuario = $this->input->post('codigo_usuario');
   		if ($atrasado==1) {
   			// obs do tipo extensão de prazo, pois está atrasada
-  			$codigo_tipo = 2;
+  			// $codigo_tipo = 2;
+  			$codigo_tipo = 1;
   		} else {
   			// obs do tipo finalização normal
   			$codigo_tipo = 1;
@@ -310,7 +312,7 @@ class Tarefa_controller extends MY_Controller {
 					$this->load->model('projeto_model');
 					$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider'][0]);
 					$projectInfo = $this->projeto_model->verPorCodigo($tarefa['codigo_projeto']);
-					$this->sendMail($tarefa, $userInfo, $projectInfo);
+					// $this->sendMail($tarefa, $userInfo, $projectInfo);
 				} else {
 					$result = array("status" => "erro", "mensagem" => "Deu bug", "tarefa"=>$tarefa);
 				}
@@ -391,7 +393,7 @@ class Tarefa_controller extends MY_Controller {
 						$this->load->model('projeto_model');
 						$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider']);
 						$projectInfo = $this->projeto_model->verPorCodigo($codigo_projeto);
-						$this->sendMail($tarefa, $userInfo, $projectInfo);
+						// $this->sendMail($tarefa, $userInfo, $projectInfo);
 						redirect(base_url() . 'tarefa/adicionar');
 					} else {
 						echo "Oops, deu bug. Tente novamente? =]";
@@ -487,7 +489,7 @@ class Tarefa_controller extends MY_Controller {
 				$this->load->model('projeto_model');
 				$userInfo = $this->usuario_model->listarPorCodigo($tarefa['lider'][0]);
 				$projectInfo = $this->projeto_model->verPorCodigo($tarefa['codigo_projeto']);
-				$this->sendMail($tarefa, $userInfo, $projectInfo);
+				// $this->sendMail($tarefa, $userInfo, $projectInfo);
 			} else {
 				$result = array("status" => "erro", "mensagem" => "Deu bug");
 			}

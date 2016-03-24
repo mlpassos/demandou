@@ -238,7 +238,7 @@ class Tarefa_model extends CI_Model {
                     "data_criada" => date("Y-m-d"),
                     "codigo_tipo" => $codigo_tipo,
                     // 1 - Em andamento
-                    // "codigo_status_obs" => 1,
+                    "codigo_status_obs" => 1,
                     "inserido_por" =>  $codigo_usuario
                 );
             }
@@ -414,7 +414,7 @@ class Tarefa_model extends CI_Model {
             $this->db->where('t.encerrada is null');
             $this->db->where('t.codigo_status', 1);
             $this->db->where('tob.codigo_tipo', 1);
-            $this->db->where('tob.codigo_status_obs', null,false);
+            $this->db->where('tob.codigo_status_obs is null');
             $query = $this->db->get();
             return $query->result_array();   
         }
