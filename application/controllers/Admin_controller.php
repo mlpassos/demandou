@@ -66,7 +66,10 @@ class Admin_controller extends MY_Controller {
 			)
 		);
 		// CSS
-		$data_header['css']=array(array('file' => 'estilos-principal.css')); 
+		$data_header['css']=array(
+			array('file' => 'estilos-principal.css'),
+			array('file' => 'estilos-admin.css')
+			); 
 		// JS
 		$data_footer['js']=array(
 			// array('file' => 'http://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.2/masonry.pkgd.min.js'), 
@@ -83,6 +86,8 @@ class Admin_controller extends MY_Controller {
 		$data['tarefas_encerradas'] = $this->tarefa_model->listarTotalEncerrado();
 		$data['tarefas_entregues'] = $this->tarefa_model->listarTotalEntregue();
 		$data['tarefas_aguardando'] = $this->tarefa_model->listarTotalAguardando();
+		$data['tarefas_semana'] = $this->tarefa_model->listarVencimentoSemana();
+		$data['tarefas_vencidas'] = $this->tarefa_model->listarVencidas();
 
 		$this->load->view('header_view',$data_header);
 		$this->load->view('admin/content_view', $data);

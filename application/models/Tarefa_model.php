@@ -285,7 +285,7 @@ class Tarefa_model extends CI_Model {
         }
 
 
-       public function listar() {
+        public function listar() {
                 // $this->output->enable_profiler(TRUE);
                 // SELECT  `t`.`codigo` AS  `codigo_tarefa` ,  `t`.`codigo_projeto` ,  `t`.`titulo` ,  `t`.`descricao` ,  `t`.`data_inicio` ,  `t`.`data_prazo` ,  `t`.`data_fim` ,  `t`.`encerrada` ,  `t`.`encerrada_por` ,  `t`.`codigo_usuario` AS `codigo_usuario`,
                 // u.nome as nome, u.sobrenome as sobrenome
@@ -301,6 +301,36 @@ class Tarefa_model extends CI_Model {
                 $this->db->order_by('t.codigo', 'ASC');
                 $query = $this->db->get();
                 return $query->result_array();
+        }
+
+        public function listarVencimentoSemana() {
+            // $this->output->enable_profiler(TRUE);
+            $this->db->select('u.arquivo_avatar, p.codigo as codigo_projeto, p.titulo as titulo_projeto, t.titulo as titulo_tarefa, u.nome, u.sobrenome, t.data_prazo as tarefa_prazo');
+            $this->db->from('projeto as p');
+            $this->db->join('tarefa as t', 'p.codigo = t.codigo_projeto');
+            $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+            $this->db->where('p.codigo_status', 1);
+            $this->db->where('t.codigo_status', 1);
+            $this->db->where('t.data_prazo >= NOW()');
+            $this->db->where('t.data_prazo < NOW() + INTERVAL 1 WEEK');
+            $this->db->order_by('t.codigo', 'ASC');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        public function listarVencidas() {
+            // $this->output->enable_profiler(TRUE);
+            $this->db->select('u.arquivo_avatar, p.codigo as codigo_projeto, p.titulo as titulo_projeto, t.titulo as titulo_tarefa, u.nome, u.sobrenome, t.data_prazo as tarefa_prazo');
+            $this->db->from('projeto as p');
+            $this->db->join('tarefa as t', 'p.codigo = t.codigo_projeto');
+            $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+            $this->db->where('p.codigo_status', 1);
+            $this->db->where('t.codigo_status', 1);
+            $this->db->where('t.data_prazo < NOW()');
+            $this->db->where('t.data_fim is null and t.encerrada is null');
+            $this->db->order_by('t.codigo', 'ASC');
+            $query = $this->db->get();
+            return $query->result_array();
         }
 
         public function listarAux() {
