@@ -88,6 +88,8 @@ class Admin_controller extends MY_Controller {
 		$data['tarefas_aguardando'] = $this->tarefa_model->listarTotalAguardando();
 		$data['tarefas_semana'] = $this->tarefa_model->listarVencimentoSemana();
 		$data['tarefas_vencidas'] = $this->tarefa_model->listarVencidas();
+		$data['tarefas_aguardam'] = $this->tarefa_model->listarAguardando();
+		// $data['tarefas_obs'] = $this->tarefa_model->listarTarefasObs();
 
 		$this->load->view('header_view',$data_header);
 		$this->load->view('admin/content_view', $data);

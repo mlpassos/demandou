@@ -3,6 +3,23 @@
   height:22px;
   margin-right:5px;
 }
+
+.user-thumbs-obs {
+  width:38px;
+  height:38px;
+  /*margin-right:5px;*/
+}
+
+#tarefa-historico-opcoes {
+  /*display:none;*/
+}
+
+.popover #tarefa-historico-opcoes {
+  /*display:block !important;*/
+}
+
+
+
 .bg-gray {
     color: #000;
     background-color: #d2d6de !important

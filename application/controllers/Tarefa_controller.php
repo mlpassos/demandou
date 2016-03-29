@@ -182,6 +182,14 @@ class Tarefa_controller extends MY_Controller {
   	echo json_encode($data['tarefas']);
   }
 
+  // public function json_tarefasobs() {
+  // 	$codigo_projeto = $this->input->post('codigo_projeto');
+  // 	$codigo_usuario = $this->session->userdata('codigo_usuario');
+  // 	$this->load->model('tarefa_model');
+  // 	$data['tarefas'] = $this->tarefa_model->jsonTarefasPorUsuario($codigo_projeto, $codigo_usuario);
+  // 	echo json_encode($data['tarefas']);
+  // }
+
 	public function json_projecttasks() {
   	$codigo_projeto = $this->input->post('codigo_projeto');
   	$this->load->model('tarefa_model');

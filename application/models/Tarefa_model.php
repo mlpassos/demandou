@@ -319,7 +319,7 @@ class Tarefa_model extends CI_Model {
         }
 
         public function listarVencidas() {
-            // $this->output->enable_profiler(TRUE);
+            $this->output->enable_profiler(TRUE);
             $this->db->select('u.arquivo_avatar, p.codigo as codigo_projeto, p.titulo as titulo_projeto, t.titulo as titulo_tarefa, u.nome, u.sobrenome, t.data_prazo as tarefa_prazo');
             $this->db->from('projeto as p');
             $this->db->join('tarefa as t', 'p.codigo = t.codigo_projeto');
@@ -331,6 +331,31 @@ class Tarefa_model extends CI_Model {
             $this->db->order_by('t.codigo', 'ASC');
             $query = $this->db->get();
             return $query->result_array();
+        }
+
+        public function listarAguardando() {
+            // $this->output->enable_profiler(TRUE);
+            $this->db->select('t.codigo as codigo_tarefa, u.arquivo_avatar, p.codigo as codigo_projeto, p.titulo as titulo_projeto, t.titulo as titulo_tarefa, u.nome, u.sobrenome, t.data_fim, t.data_prazo as tarefa_prazo');
+            $this->db->from('projeto as p');
+            $this->db->join('tarefa as t', 'p.codigo = t.codigo_projeto');
+            $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+            $this->db->where('p.codigo_status', 1);
+            $this->db->where('t.codigo_status', 1);
+            // $this->db->where('t.data_prazo < NOW()');
+            $this->db->where('t.data_fim is not null and t.encerrada is null');
+            $this->db->order_by('t.codigo', 'ASC');
+            $query = $this->db->get();
+            return $query->result_array();
+        }
+
+        public function jsonListarTarefasObs() {
+            $this->db->select('t.codigo as codigo_tarefa, u.arquivo_avatar, t.titulo as titulo_tarefa, u.nome, u.sobrenome');
+            $this->db->from('tarefa as t');
+            $this->db->join('tarefa_observacoes as tob', 't.codigo = tob.codigo_tarefa');
+            $this->db->join('usuario as u', 't.codigo_usuario = u.codigo');
+            $this->db->where('t.codigo_status', 1);
+            $query = $this->db->get();
+            return $query->result_array();   
         }
 
         public function listarAux() {
