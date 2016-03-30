@@ -74,7 +74,7 @@
 				<span class="info-box-icon"><i class="fa fa-clock-o"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Demandas entregues</span>
-					<span class="info-box-number"><?php echo $tarefas_entregues[0]['total']; ?></span>
+					<span class="info-box-number tarefas-entregues-total"><?php echo $tarefas_entregues[0]['total']; ?></span>
 					<!-- The progress section is optional -->
 					<div class="progress">
 					  <div class="progress-bar" style="width: 70%"></div>
@@ -90,7 +90,7 @@
 				<span class="info-box-icon"><i class="fa fa-clock-o"></i></span>
 				<div class="info-box-content">
 					<span class="info-box-text">Demandas aguardando avaliação</span>
-					<span class="info-box-number"><?php echo $tarefas_aguardando[0]['total']; ?></span>
+					<span class="info-box-number tarefas-aguardando-total"><?php echo $tarefas_aguardando[0]['total']; ?></span>
 					<!-- The progress section is optional -->
 					<div class="progress">
 					  <div class="progress-bar" style="width: 70%"></div>
@@ -210,7 +210,7 @@
             		$mes2 = date("m",strtotime($ta['data_fim']));
             		$dia2 = date("d",strtotime($ta['data_fim']));
               ?>
-              <tr>
+              <tr class="tarefa-aguardando-<?php echo $ta['codigo_tarefa']; ?>">
                 <td><?php echo $ta['titulo_projeto']; ?></td>
                 <td><?php echo $ta['titulo_tarefa']; ?></td>
                 <td><?php echo '<img src="' . base_url() . 'uploads/' . $ta['arquivo_avatar'] . '" class="img-circle user-thumbs">' . $ta['nome'] . ' ' . $ta['sobrenome']; ?></td>
@@ -237,17 +237,14 @@
 	                		<?php 
 	                			$this->load->helper('string');
 	                		?>
-		                	<a href="#" class="tarefa-historico" role="button" 
+		                	<a tabindex="0" class="tarefa-historico" role="button" 
 		                		data-toggle="popover" 
 		                		data-trigger="focus" 
 		                		title="&nbsp;&nbsp;&nbsp;Ações&nbsp;&nbsp;&nbsp;"
 												data-codigotarefa="<?php echo $ta['codigo_tarefa']; ?>"
 												data-titulo="<?php echo strip_quotes($ta['titulo_tarefa']); ?>"
-		                		>
-		                		<!-- data-content='<div id="tarefa-historico-opcoes"><ul class="list-inline"><li><a href="" class="tarefa-historico-opcoes-links"><i class="fa fa-thumbs-up-o"></i></a></li><li><a href="" class="tarefa-historico-opcoes-links"><i class="fa fa-thumbs-up-o"></i></a></li><li><a href="" class="tarefa-historico-opcoes-links"><i class="fa fa-thumbs-up-o"></i></a></li></ul></div>'> -->
-		                		<!-- <span class="badge"> -->
+	                		>
 		                			<i class="fa fa-2x fa-ellipsis-v"></i>
-		                		<!-- </span> -->
 		                	</a>
 		                	
 		               <!--  </li>

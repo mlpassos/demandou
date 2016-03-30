@@ -524,4 +524,15 @@ class Tarefa_controller extends MY_Controller {
   		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
   	}
   }
+  public function json_taskobsreply() {
+  	$codigo_tarefa = $this->input->post('codigo_tarefa');
+  	$codigo_usuario = $this->session->userdata('codigo_usuario'); //$this->input->post('codigo_usuario');
+  	$this->load->model('tarefa_model');
+  	$data['resposta'] = $this->tarefa_model->jsonTaskObsReply($codigo_tarefa, $codigo_usuario);
+  	if ($data['resposta']==true) {
+  		echo json_encode(array("status"=>"sucesso", "mensagem"=>"Tarefa curtida com sucesso."));	
+  	} else {
+  		echo json_encode(array("status"=>"falha", "mensagem"=>"Deu bug, tentar novamente."));
+  	}
+  }
 }

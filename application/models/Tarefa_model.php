@@ -284,7 +284,6 @@ class Tarefa_model extends CI_Model {
             }
         }
 
-
         public function listar() {
                 // $this->output->enable_profiler(TRUE);
                 // SELECT  `t`.`codigo` AS  `codigo_tarefa` ,  `t`.`codigo_projeto` ,  `t`.`titulo` ,  `t`.`descricao` ,  `t`.`data_inicio` ,  `t`.`data_prazo` ,  `t`.`data_fim` ,  `t`.`encerrada` ,  `t`.`encerrada_por` ,  `t`.`codigo_usuario` AS `codigo_usuario`,
@@ -356,6 +355,47 @@ class Tarefa_model extends CI_Model {
             $this->db->where('t.codigo_status', 1);
             $query = $this->db->get();
             return $query->result_array();   
+        }
+
+         public function jsonTaskObsReply($codigo_tarefa, $codigo_usuario) {
+            // if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
+            $dados['observacao'] = array(
+                // aceita
+                "data_alteracao" => date("Y-m-d H:i:s", time()),
+                "codigo_status_obs" => 2
+            );
+            $this->db->where('codigo_tarefa', $codigo_tarefa);
+            $this->db->where('codigo_status_obs not IN (3,4)');
+            if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
+                $query = $this->db->query('SELECT codigo FROM tarefa_observacoes ORDER BY data_alteracao DESC LIMIT 1');  
+                $result = $query->result_array(); 
+                var_dump($result);
+                $dados['tarefa'] = array(
+                    "encerrada" => 1,
+                    "encerrada_por" => $codigo_usuario
+                );
+                $this->db->where('codigo', $codigo_tarefa);
+                if ($this->db->update('tarefa', $dados['tarefa'])) {
+                    // cria resposta com codigo_obs
+                    $resposta = "Aceito. Gostei.";
+                    $dados['resposta'] = array(
+                        "codigo_observacao" => $result[0]['codigo'],
+                        "resposta" => $resposta,
+                        "data_resposta" => date("Y-m-d"),
+                        "inserido_por" =>  $codigo_usuario
+                    );
+                    if ($this->db->insert('observacoes_resposta', $dados['resposta'])) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
 
         public function listarAux() {
