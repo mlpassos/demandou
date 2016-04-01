@@ -361,15 +361,16 @@ class Tarefa_model extends CI_Model {
             // if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
             $dados['observacao'] = array(
                 // aceita
-                "data_alteracao" => date("Y-m-d H:i:s", time()),
+                // "data_alteracao" => date("Y-m-d H:i:s", time()),
                 "codigo_status_obs" => 2
             );
             $this->db->where('codigo_tarefa', $codigo_tarefa);
             $this->db->where('codigo_status_obs not IN (3,4)');
             if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
+                // get latest inserted ID
                 $query = $this->db->query('SELECT codigo FROM tarefa_observacoes ORDER BY data_alteracao DESC LIMIT 1');  
                 $result = $query->result_array(); 
-                var_dump($result);
+                // var_dump($result);
                 $dados['tarefa'] = array(
                     "encerrada" => 1,
                     "encerrada_por" => $codigo_usuario
