@@ -104,7 +104,7 @@
 	</div>
 	<div class="row">
 		<!-- Demandas Vencendo esta semana -->
-		<div class="col-lg-6">
+		<div class="col-lg-12">
 			<div class="box box-info">
             <div class="box-header with-border">
               <h3 class="box-title">Demandas vencendo esta semana</h3>
@@ -118,17 +118,27 @@
             <!-- /.box-header -->
             <div class="box-body" id="info_vencendo">
               <div class="table-responsive">
-                <table class="table no-margin">
+                <table id="table_vencendo" class="table table-striped table-bordered no-margin" cellspacing="0" width="100%">
                   <thead>
-                  <tr>
-                    <th>Projeto</th>
-                    <th>Tarefa</th>
-                    <th>Líder</th>
-                    <th>Prazo</th>
-                    <th>Tempo restante</th>
-                    <th>#</th>
-                  </tr>
+                    <tr>
+                      <th>Projeto</th>
+                      <th>Tarefa</th>
+                      <th>Líder</th>
+                      <th>Prazo</th>
+                      <th>Tempo restante</th>
+                      <th>#</th>
+                    </tr>
                   </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Projeto</th>
+                      <th>Tarefa</th>
+                      <th>Líder</th>
+                      <th>Prazo</th>
+                      <th>Tempo restante</th>
+                      <th>#</th>
+                    </tr>
+                  </tfoot>
                   <tbody>
                   <?php 
                   $this->load->helper('date');
@@ -165,9 +175,9 @@
             <!-- /.box-footer -->
       </div>
 		</div>
-		<div class="col-lg-6">
+		<!-- <div class="col-lg-6">
 			box
-		</div>
+		</div> -->
 	</div>
 	<div class="row">
 		<!-- Demandas aguardando avaliação -->
@@ -185,7 +195,7 @@
         <!-- /.box-header -->
         <div class="box-body" id="info_aguardando">
           <div class="table-responsive">
-            <table class="table no-margin">
+            <table id="table_aguardando" class="table table-striped table-bordered no-margin" cellspacing="0" width="100%">
               <thead>
               <tr>
                 <th>Projeto</th>
@@ -196,6 +206,16 @@
                 <th>#</th>
               </tr>
               </thead>
+              <tfoot>
+              <tr>
+                <th>Projeto</th>
+                <th>Tarefa</th>
+                <th>Líder</th>
+                <th>Prazo</th>
+                <th>Entrega</th>
+                <th>#</th>
+              </tr>
+              </tfoot>
               <tbody>
               <?php 
               // $this->load->helper('date');
@@ -280,17 +300,27 @@
             <!-- /.box-header -->
             <div class="box-body" id="info_atrasadas">
               <div class="table-responsive">
-                <table class="table no-margin">
+                <table id="table_atrasadas" class="table table-striped table-bordered no-margin" cellspacing="0" width="100%">
                   <thead>
-                  <tr>
-                    <th>Projeto</th>
-                    <th>Tarefa</th>
-                    <th>Líder</th>
-                    <th>Prazo</th>
-                    <th>Tempo de atraso</th>
-                    <th>#</th>
-                  </tr>
+                    <tr>
+                      <th>Projeto</th>
+                      <th>Tarefa</th>
+                      <th>Líder</th>
+                      <th>Prazo</th>
+                      <th>Tempo de atraso</th>
+                      <th>#</th>
+                    </tr>
                   </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Projeto</th>
+                      <th>Tarefa</th>
+                      <th>Líder</th>
+                      <th>Prazo</th>
+                      <th>Tempo de atraso</th>
+                      <th>#</th>
+                    </tr>
+                  </tfoot>
                   <tbody>
                   <?php 
                   // $this->load->helper('date');

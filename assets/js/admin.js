@@ -203,6 +203,11 @@
                   }
               });
 						});
+
+            $('#table_aguardando').DataTable();
+            $('#table_vencendo').DataTable();
+            $('#table_atrasadas').DataTable();
+
         }
     }
     $(document).ready(function () {

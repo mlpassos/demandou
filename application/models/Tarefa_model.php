@@ -318,7 +318,7 @@ class Tarefa_model extends CI_Model {
         }
 
         public function listarVencidas() {
-            $this->output->enable_profiler(TRUE);
+            // $this->output->enable_profiler(TRUE);
             $this->db->select('u.arquivo_avatar, p.codigo as codigo_projeto, p.titulo as titulo_projeto, t.titulo as titulo_tarefa, u.nome, u.sobrenome, t.data_prazo as tarefa_prazo');
             $this->db->from('projeto as p');
             $this->db->join('tarefa as t', 'p.codigo = t.codigo_projeto');
@@ -364,8 +364,9 @@ class Tarefa_model extends CI_Model {
                 // "data_alteracao" => date("Y-m-d H:i:s", time()),
                 "codigo_status_obs" => 2
             );
+            // var_dump($codigo_tarefa);//$dados['observacao']);
             $this->db->where('codigo_tarefa', $codigo_tarefa);
-            $this->db->where('codigo_status_obs not IN (3,4)');
+            // $this->db->where('codigo_status_obs not IN (3,4)');
             if ($this->db->update('tarefa_observacoes', $dados['observacao'])) {
                 // get latest inserted ID
                 $query = $this->db->query('SELECT codigo FROM tarefa_observacoes ORDER BY data_alteracao DESC LIMIT 1');  
