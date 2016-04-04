@@ -361,7 +361,7 @@ class Tarefa_model extends CI_Model {
             // if ( $this->db->insert('observacoes_resposta', $dados['resposta']) ) {
             $dados['observacao'] = array(
                 // aceita
-                // "data_alteracao" => date("Y-m-d H:i:s", time()),
+                "data_alteracao" => date("Y-m-d H:i:s", time()),
                 "codigo_status_obs" => 2
             );
             // var_dump($codigo_tarefa);//$dados['observacao']);
